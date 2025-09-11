@@ -121,6 +121,14 @@
             background-color: #b45309;
         }
         
+        .btn-info {
+            background-color: #0891b2;
+        }
+        
+        .btn-info:hover {
+            background-color: #0e7490;
+        }
+        
         .help-section {
             background-color: #dbeafe;
             padding: 15px;
@@ -336,6 +344,63 @@
         .progress-modal {
             background-color: #7c3aed;
         }
+        
+        /* Finance Form */
+        .finance-form {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .finance-form h4 {
+            margin-bottom: 20px;
+            color: #1e3a8a;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .modal-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .modal-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .remove-item-btn {
+            background-color: #dc2626;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .add-item-btn {
+            background-color: #059669;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        
+        .finance-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
     </style>
 </head>
 <body>
@@ -436,6 +501,7 @@
                     <button id="btn-clinic-income" class="btn-secondary">Laporan Pendapatan</button>
                     <button id="btn-clinic-realization" class="btn-secondary">Realisasi Pendapatan</button>
                     <button id="btn-clinic-budget" class="btn-secondary">Sisa Anggaran</button>
+                    <button id="btn-clinic-finance" class="btn-info">Input/Update Keuangan</button>
                     <button id="btn-clinic-edit" class="btn-warning" style="display: none;">Edit Klinik</button>
                 </div>
                 
@@ -461,11 +527,43 @@
                 <!-- Income Report Section -->
                 <div id="clinic-income-section" style="display: none;">
                     <h4>Laporan Pendapatan Kapitasi BPJS</h4>
+                    <button id="add-income-btn" class="add-item-btn" style="display: none;">+ Tambah Data Pendapatan</button>
+                    <div id="income-form-container" style="display: none;" class="finance-form">
+                        <h4>Form Input Pendapatan</h4>
+                        <div class="form-row">
+                            <div>
+                                <label for="income-month">Bulan</label>
+                                <select id="income-month">
+                                    <option value="Januari 2024">Januari 2024</option>
+                                    <option value="Februari 2024">Februari 2024</option>
+                                    <option value="Maret 2024">Maret 2024</option>
+                                    <option value="April 2024">April 2024</option>
+                                    <option value="Mei 2024">Mei 2024</option>
+                                    <option value="Juni 2024">Juni 2024</option>
+                                    <option value="Juli 2024">Juli 2024</option>
+                                    <option value="Agustus 2024">Agustus 2024</option>
+                                    <option value="September 2024">September 2024</option>
+                                    <option value="Oktober 2024">Oktober 2024</option>
+                                    <option value="November 2024">November 2024</option>
+                                    <option value="Desember 2024">Desember 2024</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="income-amount">Jumlah Pendapatan (Rp)</label>
+                                <input type="number" id="income-amount" min="0" placeholder="Masukkan jumlah pendapatan">
+                            </div>
+                        </div>
+                        <div class="finance-actions">
+                            <button type="button" id="cancel-income-btn" class="btn-secondary">Batal</button>
+                            <button type="button" id="save-income-btn" class="btn-success">Simpan</button>
+                        </div>
+                    </div>
                     <table>
                         <thead>
                             <tr>
                                 <th>Bulan</th>
                                 <th>Jumlah Pendapatan (Rp)</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="income-table-body">
@@ -478,35 +576,100 @@
                 <div id="clinic-realization-section" style="display: none;">
                     <h4>Realisasi Pendapatan</h4>
                     
-                    <h5>Honor/Jasa (30%)</h5>
+                    <div class="finance-form">
+                        <h4>Honor/Jasa (30%)</h4>
+                        <div class="form-row">
+                            <div>
+                                <label for="honor-medis">Medis (Rp)</label>
+                                <input type="number" id="honor-medis-input" min="0" placeholder="Masukkan jumlah">
+                            </div>
+                            <div>
+                                <label for="honor-paramedis">Paramedis (Rp)</label>
+                                <input type="number" id="honor-paramedis-input" min="0" placeholder="Masukkan jumlah">
+                            </div>
+                            <div>
+                                <label for="honor-pengelola">Pengelola (Rp)</label>
+                                <input type="number" id="honor-pengelola-input" min="0" placeholder="Masukkan jumlah">
+                            </div>
+                        </div>
+                        <div class="finance-actions">
+                            <button type="button" id="save-honor-btn" class="btn-success">Update Honor</button>
+                        </div>
+                    </div>
+                    
                     <div class="stats-grid">
                         <div class="stat-card honor">
                             <div class="stat-title">Medis</div>
-                            <div class="stat-value honor" id="honor-medis">Rp 0</div>
+                            <div class="stat-value honor" id="honor-medis-display">Rp 0</div>
                         </div>
                         <div class="stat-card honor">
                             <div class="stat-title">Paramedis</div>
-                            <div class="stat-value honor" id="honor-paramedis">Rp 0</div>
+                            <div class="stat-value honor" id="honor-paramedis-display">Rp 0</div>
                         </div>
                         <div class="stat-card honor">
                             <div class="stat-title">Pengelola</div>
-                            <div class="stat-value honor" id="honor-pengelola">Rp 0</div>
+                            <div class="stat-value honor" id="honor-pengelola-display">Rp 0</div>
                         </div>
                     </div>
                     
-                    <h5>Operasional (50%)</h5>
+                    <div class="finance-form">
+                        <h4>Operasional (50%)</h4>
+                        <div class="form-row">
+                            <div>
+                                <label for="operational-atk">Belanja ATK (Rp)</label>
+                                <input type="number" id="operational-atk-input" min="0" placeholder="Masukkan jumlah">
+                            </div>
+                            <div>
+                                <label for="operational-obat">Belanja Obat (Rp)</label>
+                                <input type="number" id="operational-obat-input" min="0" placeholder="Masukkan jumlah">
+                            </div>
+                        </div>
+                        <div class="finance-actions">
+                            <button type="button" id="save-operational-btn" class="btn-success">Update Operasional</button>
+                        </div>
+                    </div>
+                    
                     <div class="stats-grid">
                         <div class="stat-card operational">
                             <div class="stat-title">Belanja ATK</div>
-                            <div class="stat-value operational" id="operational-atk">Rp 0</div>
+                            <div class="stat-value operational" id="operational-atk-display">Rp 0</div>
                         </div>
                         <div class="stat-card operational">
                             <div class="stat-title">Belanja Obat</div>
-                            <div class="stat-value operational" id="operational-obat">Rp 0</div>
+                            <div class="stat-value operational" id="operational-obat-display">Rp 0</div>
                         </div>
                     </div>
                     
-                    <h5>Belanja Modal (20%)</h5>
+                    <div class="finance-form">
+                        <h4>Belanja Modal (20%)</h4>
+                        <button id="add-modal-item-btn" class="add-item-btn">+ Tambah Item Belanja Modal</button>
+                        <div id="modal-form-container" style="display: none;" class="finance-form">
+                            <h4>Form Input Item Belanja Modal</h4>
+                            <div class="form-row">
+                                <div>
+                                    <label for="modal-item-name">Nama Barang</label>
+                                    <input type="text" id="modal-item-name" placeholder="Masukkan nama barang">
+                                </div>
+                                <div>
+                                    <label for="modal-item-unit">Satuan</label>
+                                    <input type="text" id="modal-item-unit" placeholder="Masukkan satuan">
+                                </div>
+                                <div>
+                                    <label for="modal-item-price">Harga (Rp)</label>
+                                    <input type="number" id="modal-item-price" min="0" placeholder="Masukkan harga">
+                                </div>
+                                <div>
+                                    <label for="modal-item-quantity">Jumlah</label>
+                                    <input type="number" id="modal-item-quantity" min="1" placeholder="Masukkan jumlah">
+                                </div>
+                            </div>
+                            <div class="finance-actions">
+                                <button type="button" id="cancel-modal-btn" class="btn-secondary">Batal</button>
+                                <button type="button" id="save-modal-btn" class="btn-success">Simpan Item</button>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <table>
                         <thead>
                             <tr>
@@ -516,6 +679,7 @@
                                 <th>Harga</th>
                                 <th>Jumlah</th>
                                 <th>Total</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="modal-table-body">
@@ -577,6 +741,41 @@
                     </div>
                     
                     <h5>Sisa Anggaran Bulanan</h5>
+                    <button id="add-budget-btn" class="add-item-btn" style="display: none;">+ Tambah Data Anggaran Bulanan</button>
+                    <div id="budget-form-container" style="display: none;" class="finance-form">
+                        <h4>Form Input Anggaran Bulanan</h4>
+                        <div class="form-row">
+                            <div>
+                                <label for="budget-month">Bulan</label>
+                                <select id="budget-month">
+                                    <option value="Januari">Januari</option>
+                                    <option value="Februari">Februari</option>
+                                    <option value="Maret">Maret</option>
+                                    <option value="April">April</option>
+                                    <option value="Mei">Mei</option>
+                                    <option value="Juni">Juni</option>
+                                    <option value="Juli">Juli</option>
+                                    <option value="Agustus">Agustus</option>
+                                    <option value="September">September</option>
+                                    <option value="Oktober">Oktober</option>
+                                    <option value="November">November</option>
+                                    <option value="Desember">Desember</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="budget-amount">Total Anggaran (Rp)</label>
+                                <input type="number" id="budget-amount" min="0" placeholder="Masukkan total anggaran">
+                            </div>
+                            <div>
+                                <label for="budget-spent">Telah Digunakan (Rp)</label>
+                                <input type="number" id="budget-spent" min="0" placeholder="Masukkan yang telah digunakan">
+                            </div>
+                        </div>
+                        <div class="finance-actions">
+                            <button type="button" id="cancel-budget-btn" class="btn-secondary">Batal</button>
+                            <button type="button" id="save-budget-btn" class="btn-success">Simpan</button>
+                        </div>
+                    </div>
                     <table>
                         <thead>
                             <tr>
@@ -584,12 +783,74 @@
                                 <th>Total Anggaran</th>
                                 <th>Telah Digunakan</th>
                                 <th>Sisa Anggaran</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="monthly-budget-body">
                             <!-- Data sisa anggaran bulanan akan muncul di sini -->
                         </tbody>
                     </table>
+                </div>
+                
+                <!-- Finance Input/Update Section -->
+                <div id="clinic-finance-section" style="display: none;">
+                    <h4>Input/Update Data Keuangan</h4>
+                    <p>Gunakan form di bawah ini untuk menginput atau mengupdate data keuangan klinik.</p>
+                    
+                    <div class="finance-form">
+                        <h4>Update Total Anggaran</h4>
+                        <div class="form-row">
+                            <div>
+                                <label for="total-budget-input">Total Anggaran (Rp)</label>
+                                <input type="number" id="total-budget-input" min="0" placeholder="Masukkan total anggaran">
+                            </div>
+                        </div>
+                        <div class="finance-actions">
+                            <button type="button" id="save-total-budget-btn" class="btn-success">Update Total Anggaran</button>
+                        </div>
+                    </div>
+                    
+                    <div class="finance-form">
+                        <h4>Update Alokasi Anggaran per Kategori</h4>
+                        <div class="form-row">
+                            <div>
+                                <label for="honor-allocated">Alokasi Honor/Jasa (Rp)</label>
+                                <input type="number" id="honor-allocated-input" min="0" placeholder="Masukkan alokasi">
+                            </div>
+                            <div>
+                                <label for="operational-allocated">Alokasi Operasional (Rp)</label>
+                                <input type="number" id="operational-allocated-input" min="0" placeholder="Masukkan alokasi">
+                            </div>
+                            <div>
+                                <label for="modal-allocated">Alokasi Belanja Modal (Rp)</label>
+                                <input type="number" id="modal-allocated-input" min="0" placeholder="Masukkan alokasi">
+                            </div>
+                        </div>
+                        <div class="finance-actions">
+                            <button type="button" id="save-allocated-budget-btn" class="btn-success">Update Alokasi Anggaran</button>
+                        </div>
+                    </div>
+                    
+                    <div class="finance-form">
+                        <h4>Update Realisasi Anggaran per Kategori</h4>
+                        <div class="form-row">
+                            <div>
+                                <label for="honor-spent">Realisasi Honor/Jasa (Rp)</label>
+                                <input type="number" id="honor-spent-input" min="0" placeholder="Masukkan realisasi">
+                            </div>
+                            <div>
+                                <label for="operational-spent">Realisasi Operasional (Rp)</label>
+                                <input type="number" id="operational-spent-input" min="0" placeholder="Masukkan realisasi">
+                            </div>
+                            <div>
+                                <label for="modal-spent">Realisasi Belanja Modal (Rp)</label>
+                                <input type="number" id="modal-spent-input" min="0" placeholder="Masukkan realisasi">
+                            </div>
+                        </div>
+                        <div class="finance-actions">
+                            <button type="button" id="save-spent-budget-btn" class="btn-success">Update Realisasi Anggaran</button>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Edit Clinic Form -->
@@ -785,11 +1046,11 @@
                     },
                     monthlyRemaining: [
                         { month: 'Januari', budget: 148000000, spent: 118000000, remaining: 30000000 },
-                        { month: 'Februari', budget: 151000000, spent: 123000000, remaining: 28000000 },
-                        { month: 'Maret', budget: 156000000, spent: 128000000, remaining: 28000000 },
-                        { month: 'April', budget: 154000000, spent: 126000000, remaining: 28000000 },
-                        { month: 'Mei', budget: 159000000, spent: 131000000, remaining: 28000000 },
-                        { month: 'Juni', budget: 162000000, spent: 134000000, remaining: 28000000 }
+                        { month: 'Februari', budget: 151000000, spent: 120000000, remaining: 31000000 },
+                        { month: 'Maret', budget: 156000000, spent: 125000000, remaining: 31000000 },
+                        { month: 'April', budget: 154000000, spent: 123000000, remaining: 31000000 },
+                        { month: 'Mei', budget: 159000000, spent: 128000000, remaining: 31000000 },
+                        { month: 'Juni', budget: 162000000, spent: 131000000, remaining: 31000000 }
                     ]
                 }
             },
@@ -1125,6 +1386,9 @@
             
             // Setup edit form
             setupEditForm();
+            
+            // Setup finance forms
+            setupFinanceForms();
         });
         
         // Fungsi login
@@ -1283,6 +1547,14 @@
                 });
             }
             
+            // Clinic finance button
+            const clinicFinanceBtn = document.getElementById('btn-clinic-finance');
+            if (clinicFinanceBtn) {
+                clinicFinanceBtn.addEventListener('click', function() {
+                    showClinicFinance();
+                });
+            }
+            
             // Clinic edit button
             const clinicEditBtn = document.getElementById('btn-clinic-edit');
             if (clinicEditBtn) {
@@ -1307,6 +1579,125 @@
                 editForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     saveClinicEdit();
+                });
+            }
+        }
+        
+        // Setup finance forms
+        function setupFinanceForms() {
+            // Add income button
+            const addIncomeBtn = document.getElementById('add-income-btn');
+            if (addIncomeBtn) {
+                addIncomeBtn.addEventListener('click', function() {
+                    document.getElementById('income-form-container').style.display = 'block';
+                    this.style.display = 'none';
+                });
+            }
+            
+            // Cancel income button
+            const cancelIncomeBtn = document.getElementById('cancel-income-btn');
+            if (cancelIncomeBtn) {
+                cancelIncomeBtn.addEventListener('click', function() {
+                    document.getElementById('income-form-container').style.display = 'none';
+                    document.getElementById('add-income-btn').style.display = 'block';
+                });
+            }
+            
+            // Save income button
+            const saveIncomeBtn = document.getElementById('save-income-btn');
+            if (saveIncomeBtn) {
+                saveIncomeBtn.addEventListener('click', function() {
+                    saveIncomeData();
+                });
+            }
+            
+            // Save honor button
+            const saveHonorBtn = document.getElementById('save-honor-btn');
+            if (saveHonorBtn) {
+                saveHonorBtn.addEventListener('click', function() {
+                    saveHonorData();
+                });
+            }
+            
+            // Save operational button
+            const saveOperationalBtn = document.getElementById('save-operational-btn');
+            if (saveOperationalBtn) {
+                saveOperationalBtn.addEventListener('click', function() {
+                    saveOperationalData();
+                });
+            }
+            
+            // Add modal item button
+            const addModalItemBtn = document.getElementById('add-modal-item-btn');
+            if (addModalItemBtn) {
+                addModalItemBtn.addEventListener('click', function() {
+                    document.getElementById('modal-form-container').style.display = 'block';
+                });
+            }
+            
+            // Cancel modal button
+            const cancelModalBtn = document.getElementById('cancel-modal-btn');
+            if (cancelModalBtn) {
+                cancelModalBtn.addEventListener('click', function() {
+                    document.getElementById('modal-form-container').style.display = 'none';
+                });
+            }
+            
+            // Save modal button
+            const saveModalBtn = document.getElementById('save-modal-btn');
+            if (saveModalBtn) {
+                saveModalBtn.addEventListener('click', function() {
+                    saveModalData();
+                });
+            }
+            
+            // Add budget button
+            const addBudgetBtn = document.getElementById('add-budget-btn');
+            if (addBudgetBtn) {
+                addBudgetBtn.addEventListener('click', function() {
+                    document.getElementById('budget-form-container').style.display = 'block';
+                    this.style.display = 'none';
+                });
+            }
+            
+            // Cancel budget button
+            const cancelBudgetBtn = document.getElementById('cancel-budget-btn');
+            if (cancelBudgetBtn) {
+                cancelBudgetBtn.addEventListener('click', function() {
+                    document.getElementById('budget-form-container').style.display = 'none';
+                    document.getElementById('add-budget-btn').style.display = 'block';
+                });
+            }
+            
+            // Save budget button
+            const saveBudgetBtn = document.getElementById('save-budget-btn');
+            if (saveBudgetBtn) {
+                saveBudgetBtn.addEventListener('click', function() {
+                    saveBudgetData();
+                });
+            }
+            
+            // Save total budget button
+            const saveTotalBudgetBtn = document.getElementById('save-total-budget-btn');
+            if (saveTotalBudgetBtn) {
+                saveTotalBudgetBtn.addEventListener('click', function() {
+                    saveTotalBudgetData();
+                });
+            }
+            
+            // Save allocated budget button
+            const saveAllocatedBudgetBtn = document.getElementById('save-allocated-budget-btn');
+            if (saveAllocatedBudgetBtn) {
+                saveAllocatedBudgetBtn.addEventListener('click', function() {
+                    saveAllocatedBudgetData();
+                });
+            }
+            
+            // Save spent budget button
+            const saveSpentBudgetBtn = document.getElementById('save-spent-budget-btn');
+            if (saveSpentBudgetBtn) {
+                saveSpentBudgetBtn.addEventListener('click', function() {
+                    saveSpentBudgetData();
                 });
             }
         }
@@ -1426,8 +1817,12 @@
             if (editBtn) {
                 if (currentUser && currentUser.type === 'minkes') {
                     editBtn.style.display = 'block';
+                    document.getElementById('add-income-btn').style.display = 'block';
+                    document.getElementById('add-budget-btn').style.display = 'block';
                 } else {
                     editBtn.style.display = 'none';
+                    document.getElementById('add-income-btn').style.display = 'none';
+                    document.getElementById('add-budget-btn').style.display = 'none';
                 }
             }
             
@@ -1501,6 +1896,7 @@
             document.getElementById('clinic-income-section').style.display = 'none';
             document.getElementById('clinic-realization-section').style.display = 'none';
             document.getElementById('clinic-budget-section').style.display = 'none';
+            document.getElementById('clinic-finance-section').style.display = 'none';
             document.getElementById('clinic-edit-section').style.display = 'none';
             
             // Update active button
@@ -1513,6 +1909,7 @@
             document.getElementById('clinic-income-section').style.display = 'block';
             document.getElementById('clinic-realization-section').style.display = 'none';
             document.getElementById('clinic-budget-section').style.display = 'none';
+            document.getElementById('clinic-finance-section').style.display = 'none';
             document.getElementById('clinic-edit-section').style.display = 'none';
             
             // Update active button
@@ -1525,6 +1922,7 @@
             document.getElementById('clinic-income-section').style.display = 'none';
             document.getElementById('clinic-realization-section').style.display = 'block';
             document.getElementById('clinic-budget-section').style.display = 'none';
+            document.getElementById('clinic-finance-section').style.display = 'none';
             document.getElementById('clinic-edit-section').style.display = 'none';
             
             // Update active button
@@ -1537,10 +1935,40 @@
             document.getElementById('clinic-income-section').style.display = 'none';
             document.getElementById('clinic-realization-section').style.display = 'none';
             document.getElementById('clinic-budget-section').style.display = 'block';
+            document.getElementById('clinic-finance-section').style.display = 'none';
             document.getElementById('clinic-edit-section').style.display = 'none';
             
             // Update active button
             setActiveClinicButton('btn-clinic-budget');
+        }
+        
+        // Tampilkan form keuangan
+        function showClinicFinance() {
+            if (currentUser && currentUser.type === 'minkes') {
+                document.getElementById('clinic-info-section').style.display = 'none';
+                document.getElementById('clinic-income-section').style.display = 'none';
+                document.getElementById('clinic-realization-section').style.display = 'none';
+                document.getElementById('clinic-budget-section').style.display = 'none';
+                document.getElementById('clinic-finance-section').style.display = 'block';
+                document.getElementById('clinic-edit-section').style.display = 'none';
+                
+                // Isi form dengan data saat ini
+                if (currentClinic && currentClinic.budget) {
+                    document.getElementById('total-budget-input').value = currentClinic.budget.totalBudget;
+                    document.getElementById('honor-allocated-input').value = currentClinic.budget.byCategory.honor.allocated;
+                    document.getElementById('operational-allocated-input').value = currentClinic.budget.byCategory.operational.allocated;
+                    document.getElementById('modal-allocated-input').value = currentClinic.budget.byCategory.modal.allocated;
+                    document.getElementById('honor-spent-input').value = currentClinic.budget.byCategory.honor.spent;
+                    document.getElementById('operational-spent-input').value = currentClinic.budget.byCategory.operational.spent;
+                    document.getElementById('modal-spent-input').value = currentClinic.budget.byCategory.modal.spent;
+                }
+                
+                // Update active button
+                setActiveClinicButton('btn-clinic-finance');
+            } else {
+                alert('Hanya user dengan role "minkes" yang dapat mengakses fitur ini.');
+                showClinicInfo();
+            }
         }
         
         // Tampilkan form edit
@@ -1549,6 +1977,7 @@
             document.getElementById('clinic-income-section').style.display = 'none';
             document.getElementById('clinic-realization-section').style.display = 'none';
             document.getElementById('clinic-budget-section').style.display = 'none';
+            document.getElementById('clinic-finance-section').style.display = 'none';
             document.getElementById('clinic-edit-section').style.display = 'block';
             
             // Update active button
@@ -1557,7 +1986,7 @@
         
         // Set active clinic button
         function setActiveClinicButton(buttonId) {
-            document.querySelectorAll('#btn-clinic-info, #btn-clinic-income, #btn-clinic-realization, #btn-clinic-budget, #btn-clinic-edit').forEach(btn => {
+            document.querySelectorAll('#btn-clinic-info, #btn-clinic-income, #btn-clinic-realization, #btn-clinic-budget, #btn-clinic-finance, #btn-clinic-edit').forEach(btn => {
                 btn.classList.remove('btn-success');
                 btn.classList.add('btn-secondary');
             });
@@ -1577,15 +2006,38 @@
             tbody.innerHTML = '';
             
             let total = 0;
-            clinic.income.forEach(report => {
+            clinic.income.forEach((report, index) => {
                 total += report.amount;
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${report.month}</td>
                     <td>Rp ${report.amount.toLocaleString('id-ID')}</td>
+                    <td>
+                        ${currentUser && currentUser.type === 'minkes' ? `
+                        <button class="btn-warning edit-income-btn" data-index="${index}">Edit</button>
+                        <button class="btn-danger delete-income-btn" data-index="${index}">Hapus</button>
+                        ` : ''}
+                    </td>
                 `;
                 tbody.appendChild(row);
             });
+            
+            // Setup event listeners untuk tombol edit dan delete
+            if (currentUser && currentUser.type === 'minkes') {
+                document.querySelectorAll('.edit-income-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        editIncomeData(index);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-income-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        deleteIncomeData(index);
+                    });
+                });
+            }
             
             // Add total row
             const totalRow = document.createElement('tr');
@@ -1594,20 +2046,94 @@
             totalRow.innerHTML = `
                 <td><strong>TOTAL</strong></td>
                 <td><strong>Rp ${total.toLocaleString('id-ID')}</strong></td>
+                <td></td>
             `;
             tbody.appendChild(totalRow);
         }
         
+        // Edit data pendapatan
+        function editIncomeData(index) {
+            if (!currentClinic) return;
+            
+            const incomeData = currentClinic.income[index];
+            document.getElementById('income-month').value = incomeData.month;
+            document.getElementById('income-amount').value = incomeData.amount;
+            
+            // Tampilkan form
+            document.getElementById('income-form-container').style.display = 'block';
+            document.getElementById('add-income-btn').style.display = 'none';
+            
+            // Simpan index untuk update
+            document.getElementById('income-form-container').setAttribute('data-edit-index', index);
+        }
+        
+        // Simpan data pendapatan
+        function saveIncomeData() {
+            if (!currentClinic) return;
+            
+            const month = document.getElementById('income-month').value;
+            const amount = parseInt(document.getElementById('income-amount').value);
+            
+            if (!month || isNaN(amount)) {
+                alert('Mohon isi semua field dengan benar');
+                return;
+            }
+            
+            const editIndex = document.getElementById('income-form-container').getAttribute('data-edit-index');
+            
+            if (editIndex !== null) {
+                // Update existing data
+                currentClinic.income[parseInt(editIndex)] = { month, amount };
+                document.getElementById('income-form-container').removeAttribute('data-edit-index');
+            } else {
+                // Add new data
+                currentClinic.income.push({ month, amount });
+            }
+            
+            // Sembunyikan form dan tampilkan tombol add
+            document.getElementById('income-form-container').style.display = 'none';
+            document.getElementById('add-income-btn').style.display = 'block';
+            
+            // Reset form
+            document.getElementById('income-month').value = '';
+            document.getElementById('income-amount').value = '';
+            
+            // Refresh table
+            loadClinicIncome(currentClinic);
+            
+            alert('Data pendapatan berhasil disimpan!');
+        }
+        
+        // Hapus data pendapatan
+        function deleteIncomeData(index) {
+            if (!currentClinic) return;
+            
+            if (confirm('Apakah Anda yakin ingin menghapus data pendapatan ini?')) {
+                currentClinic.income.splice(index, 1);
+                loadClinicIncome(currentClinic);
+                alert('Data pendapatan berhasil dihapus!');
+            }
+        }
+        
         // Load data realisasi klinik
         function loadClinicRealization(clinic) {
-            // Update honor values
-            document.getElementById('honor-medis').textContent = `Rp ${clinic.realization.honor.medis.toLocaleString('id-ID')}`;
-            document.getElementById('honor-paramedis').textContent = `Rp ${clinic.realization.honor.paramedis.toLocaleString('id-ID')}`;
-            document.getElementById('honor-pengelola').textContent = `Rp ${clinic.realization.honor.pengelola.toLocaleString('id-ID')}`;
+            // Update honor values di form input
+            document.getElementById('honor-medis-input').value = clinic.realization.honor.medis;
+            document.getElementById('honor-paramedis-input').value = clinic.realization.honor.paramedis;
+            document.getElementById('honor-pengelola-input').value = clinic.realization.honor.pengelola;
             
-            // Update operational values
-            document.getElementById('operational-atk').textContent = `Rp ${clinic.realization.operational.atk.toLocaleString('id-ID')}`;
-            document.getElementById('operational-obat').textContent = `Rp ${clinic.realization.operational.obat.toLocaleString('id-ID')}`;
+            // Update honor values di display
+            document.getElementById('honor-medis-display').textContent = `Rp ${clinic.realization.honor.medis.toLocaleString('id-ID')}`;
+            document.getElementById('honor-paramedis-display').textContent = `Rp ${clinic.realization.honor.paramedis.toLocaleString('id-ID')}`;
+            document.getElementById('honor-pengelola-display').textContent = `Rp ${clinic.realization.honor.pengelola.toLocaleString('id-ID')}`;
+            
+            // Update operational values di form input
+            document.getElementById('operational-atk-input').value = clinic.realization.operational.atk;
+            document.getElementById('operational-obat-input').value = clinic.realization.operational.obat;
+            
+            // Update operational values di display
+            document.getElementById('operational-atk-display').textContent = `Rp ${clinic.realization.operational.atk.toLocaleString('id-ID')}`;
+            document.getElementById('operational-obat-display').textContent = `Rp ${clinic.realization.operational.obat.toLocaleString('id-ID')}`;
             
             // Update modal table
             const modalTbody = document.getElementById('modal-table-body');
@@ -1623,9 +2149,155 @@
                         <td>Rp ${item.harga.toLocaleString('id-ID')}</td>
                         <td>${item.jumlah}</td>
                         <td>Rp ${item.total.toLocaleString('id-ID')}</td>
+                        <td>
+                            ${currentUser && currentUser.type === 'minkes' ? `
+                            <button class="btn-warning edit-modal-btn" data-index="${index}">Edit</button>
+                            <button class="btn-danger delete-modal-btn" data-index="${index}">Hapus</button>
+                            ` : ''}
+                        </td>
                     `;
                     modalTbody.appendChild(row);
                 });
+                
+                // Setup event listeners untuk tombol edit dan delete
+                if (currentUser && currentUser.type === 'minkes') {
+                    document.querySelectorAll('.edit-modal-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const index = parseInt(this.getAttribute('data-index'));
+                            editModalData(index);
+                        });
+                    });
+                    
+                    document.querySelectorAll('.delete-modal-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const index = parseInt(this.getAttribute('data-index'));
+                            deleteModalData(index);
+                        });
+                    });
+                }
+            }
+        }
+        
+        // Simpan data honor
+        function saveHonorData() {
+            if (!currentClinic) return;
+            
+            const medis = parseInt(document.getElementById('honor-medis-input').value) || 0;
+            const paramedis = parseInt(document.getElementById('honor-paramedis-input').value) || 0;
+            const pengelola = parseInt(document.getElementById('honor-pengelola-input').value) || 0;
+            
+            // Update data
+            currentClinic.realization.honor.medis = medis;
+            currentClinic.realization.honor.paramedis = paramedis;
+            currentClinic.realization.honor.pengelola = pengelola;
+            
+            // Update display
+            document.getElementById('honor-medis-display').textContent = `Rp ${medis.toLocaleString('id-ID')}`;
+            document.getElementById('honor-paramedis-display').textContent = `Rp ${paramedis.toLocaleString('id-ID')}`;
+            document.getElementById('honor-pengelola-display').textContent = `Rp ${pengelola.toLocaleString('id-ID')}`;
+            
+            alert('Data honor berhasil diperbarui!');
+        }
+        
+        // Simpan data operasional
+        function saveOperationalData() {
+            if (!currentClinic) return;
+            
+            const atk = parseInt(document.getElementById('operational-atk-input').value) || 0;
+            const obat = parseInt(document.getElementById('operational-obat-input').value) || 0;
+            
+            // Update data
+            currentClinic.realization.operational.atk = atk;
+            currentClinic.realization.operational.obat = obat;
+            
+            // Update display
+            document.getElementById('operational-atk-display').textContent = `Rp ${atk.toLocaleString('id-ID')}`;
+            document.getElementById('operational-obat-display').textContent = `Rp ${obat.toLocaleString('id-ID')}`;
+            
+            alert('Data operasional berhasil diperbarui!');
+        }
+        
+        // Edit data modal
+        function editModalData(index) {
+            if (!currentClinic) return;
+            
+            const modalData = currentClinic.realization.modal[index];
+            document.getElementById('modal-item-name').value = modalData.nama;
+            document.getElementById('modal-item-unit').value = modalData.satuan;
+            document.getElementById('modal-item-price').value = modalData.harga;
+            document.getElementById('modal-item-quantity').value = modalData.jumlah;
+            
+            // Tampilkan form
+            document.getElementById('modal-form-container').style.display = 'block';
+            
+            // Simpan index untuk update
+            document.getElementById('modal-form-container').setAttribute('data-edit-index', index);
+        }
+        
+        // Simpan data modal
+        function saveModalData() {
+            if (!currentClinic) return;
+            
+            const name = document.getElementById('modal-item-name').value;
+            const unit = document.getElementById('modal-item-unit').value;
+            const price = parseInt(document.getElementById('modal-item-price').value);
+            const quantity = parseInt(document.getElementById('modal-item-quantity').value);
+            
+            if (!name || !unit || isNaN(price) || isNaN(quantity)) {
+                alert('Mohon isi semua field dengan benar');
+                return;
+            }
+            
+            const total = price * quantity;
+            const editIndex = document.getElementById('modal-form-container').getAttribute('data-edit-index');
+            
+            if (editIndex !== null) {
+                // Update existing data
+                currentClinic.realization.modal[parseInt(editIndex)] = { 
+                    id: currentClinic.realization.modal[parseInt(editIndex)].id,
+                    nama: name, 
+                    satuan: unit, 
+                    harga: price, 
+                    jumlah: quantity, 
+                    total: total 
+                };
+                document.getElementById('modal-form-container').removeAttribute('data-edit-index');
+            } else {
+                // Add new data
+                const newId = Date.now();
+                currentClinic.realization.modal.push({ 
+                    id: newId,
+                    nama: name, 
+                    satuan: unit, 
+                    harga: price, 
+                    jumlah: quantity, 
+                    total: total 
+                });
+            }
+            
+            // Sembunyikan form
+            document.getElementById('modal-form-container').style.display = 'none';
+            
+            // Reset form
+            document.getElementById('modal-item-name').value = '';
+            document.getElementById('modal-item-unit').value = '';
+            document.getElementById('modal-item-price').value = '';
+            document.getElementById('modal-item-quantity').value = '';
+            
+            // Refresh table
+            loadClinicRealization(currentClinic);
+            
+            alert('Data belanja modal berhasil disimpan!');
+        }
+        
+        // Hapus data modal
+        function deleteModalData(index) {
+            if (!currentClinic) return;
+            
+            if (confirm('Apakah Anda yakin ingin menghapus data belanja modal ini?')) {
+                currentClinic.realization.modal.splice(index, 1);
+                loadClinicRealization(currentClinic);
+                alert('Data belanja modal berhasil dihapus!');
             }
         }
         
@@ -1655,17 +2327,217 @@
             if (monthlyTbody) {
                 monthlyTbody.innerHTML = '';
                 
-                clinic.budget.monthlyRemaining.forEach(item => {
+                clinic.budget.monthlyRemaining.forEach((item, index) => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${item.month}</td>
                         <td>Rp ${item.budget.toLocaleString('id-ID')}</td>
                         <td>Rp ${item.spent.toLocaleString('id-ID')}</td>
                         <td>Rp ${item.remaining.toLocaleString('id-ID')}</td>
+                        <td>
+                            ${currentUser && currentUser.type === 'minkes' ? `
+                            <button class="btn-warning edit-budget-btn" data-index="${index}">Edit</button>
+                            <button class="btn-danger delete-budget-btn" data-index="${index}">Hapus</button>
+                            ` : ''}
+                        </td>
                     `;
                     monthlyTbody.appendChild(row);
                 });
+                
+                // Setup event listeners untuk tombol edit dan delete
+                if (currentUser && currentUser.type === 'minkes') {
+                    document.querySelectorAll('.edit-budget-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const index = parseInt(this.getAttribute('data-index'));
+                            editBudgetData(index);
+                        });
+                    });
+                    
+                    document.querySelectorAll('.delete-budget-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const index = parseInt(this.getAttribute('data-index'));
+                            deleteBudgetData(index);
+                        });
+                    });
+                }
             }
+        }
+        
+        // Edit data anggaran bulanan
+        function editBudgetData(index) {
+            if (!currentClinic) return;
+            
+            const budgetData = currentClinic.budget.monthlyRemaining[index];
+            document.getElementById('budget-month').value = budgetData.month;
+            document.getElementById('budget-amount').value = budgetData.budget;
+            document.getElementById('budget-spent').value = budgetData.spent;
+            
+            // Tampilkan form
+            document.getElementById('budget-form-container').style.display = 'block';
+            document.getElementById('add-budget-btn').style.display = 'none';
+            
+            // Simpan index untuk update
+            document.getElementById('budget-form-container').setAttribute('data-edit-index', index);
+        }
+        
+        // Simpan data anggaran bulanan
+        function saveBudgetData() {
+            if (!currentClinic) return;
+            
+            const month = document.getElementById('budget-month').value;
+            const budget = parseInt(document.getElementById('budget-amount').value);
+            const spent = parseInt(document.getElementById('budget-spent').value);
+            
+            if (!month || isNaN(budget) || isNaN(spent)) {
+                alert('Mohon isi semua field dengan benar');
+                return;
+            }
+            
+            const remaining = budget - spent;
+            const editIndex = document.getElementById('budget-form-container').getAttribute('data-edit-index');
+            
+            if (editIndex !== null) {
+                // Update existing data
+                currentClinic.budget.monthlyRemaining[parseInt(editIndex)] = { 
+                    month, 
+                    budget, 
+                    spent, 
+                    remaining 
+                };
+                document.getElementById('budget-form-container').removeAttribute('data-edit-index');
+            } else {
+                // Add new data
+                currentClinic.budget.monthlyRemaining.push({ 
+                    month, 
+                    budget, 
+                    spent, 
+                    remaining 
+                });
+            }
+            
+            // Sembunyikan form dan tampilkan tombol add
+            document.getElementById('budget-form-container').style.display = 'none';
+            document.getElementById('add-budget-btn').style.display = 'block';
+            
+            // Reset form
+            document.getElementById('budget-month').value = '';
+            document.getElementById('budget-amount').value = '';
+            document.getElementById('budget-spent').value = '';
+            
+            // Refresh table
+            loadClinicBudget(currentClinic);
+            
+            alert('Data anggaran bulanan berhasil disimpan!');
+        }
+        
+        // Hapus data anggaran bulanan
+        function deleteBudgetData(index) {
+            if (!currentClinic) return;
+            
+            if (confirm('Apakah Anda yakin ingin menghapus data anggaran bulanan ini?')) {
+                currentClinic.budget.monthlyRemaining.splice(index, 1);
+                loadClinicBudget(currentClinic);
+                alert('Data anggaran bulanan berhasil dihapus!');
+            }
+        }
+        
+        // Simpan data total anggaran
+        function saveTotalBudgetData() {
+            if (!currentClinic) return;
+            
+            const totalBudget = parseInt(document.getElementById('total-budget-input').value);
+            
+            if (isNaN(totalBudget)) {
+                alert('Mohon isi total anggaran dengan benar');
+                return;
+            }
+            
+            // Update data
+            currentClinic.budget.totalBudget = totalBudget;
+            
+            // Hitung ulang sisa anggaran
+            currentClinic.budget.remaining = totalBudget - currentClinic.budget.totalSpent;
+            
+            // Update display
+            document.getElementById('total-budget').textContent = `Rp ${totalBudget.toLocaleString('id-ID')}`;
+            document.getElementById('remaining-budget').textContent = `Rp ${currentClinic.budget.remaining.toLocaleString('id-ID')}`;
+            
+            alert('Total anggaran berhasil diperbarui!');
+        }
+        
+        // Simpan data alokasi anggaran
+        function saveAllocatedBudgetData() {
+            if (!currentClinic) return;
+            
+            const honorAllocated = parseInt(document.getElementById('honor-allocated-input').value) || 0;
+            const operationalAllocated = parseInt(document.getElementById('operational-allocated-input').value) || 0;
+            const modalAllocated = parseInt(document.getElementById('modal-allocated-input').value) || 0;
+            
+            // Update data
+            currentClinic.budget.byCategory.honor.allocated = honorAllocated;
+            currentClinic.budget.byCategory.operational.allocated = operationalAllocated;
+            currentClinic.budget.byCategory.modal.allocated = modalAllocated;
+            
+            // Hitung ulang sisa anggaran per kategori
+            currentClinic.budget.byCategory.honor.remaining = honorAllocated - currentClinic.budget.byCategory.honor.spent;
+            currentClinic.budget.byCategory.operational.remaining = operationalAllocated - currentClinic.budget.byCategory.operational.spent;
+            currentClinic.budget.byCategory.modal.remaining = modalAllocated - currentClinic.budget.byCategory.modal.spent;
+            
+            // Update display
+            const honorPercentage = Math.round((currentClinic.budget.byCategory.honor.spent / honorAllocated) * 100);
+            const operationalPercentage = Math.round((currentClinic.budget.byCategory.operational.spent / operationalAllocated) * 100);
+            const modalPercentage = Math.round((currentClinic.budget.byCategory.modal.spent / modalAllocated) * 100);
+            
+            document.getElementById('honor-percentage').textContent = `${honorPercentage}%`;
+            document.getElementById('operational-percentage').textContent = `${operationalPercentage}%`;
+            document.getElementById('modal-percentage').textContent = `${modalPercentage}%`;
+            
+            document.getElementById('honor-progress').style.width = `${honorPercentage}%`;
+            document.getElementById('operational-progress').style.width = `${operationalPercentage}%`;
+            document.getElementById('modal-progress').style.width = `${modalPercentage}%`;
+            
+            alert('Alokasi anggaran berhasil diperbarui!');
+        }
+        
+        // Simpan data realisasi anggaran
+        function saveSpentBudgetData() {
+            if (!currentClinic) return;
+            
+            const honorSpent = parseInt(document.getElementById('honor-spent-input').value) || 0;
+            const operationalSpent = parseInt(document.getElementById('operational-spent-input').value) || 0;
+            const modalSpent = parseInt(document.getElementById('modal-spent-input').value) || 0;
+            
+            // Update data
+            currentClinic.budget.byCategory.honor.spent = honorSpent;
+            currentClinic.budget.byCategory.operational.spent = operationalSpent;
+            currentClinic.budget.byCategory.modal.spent = modalSpent;
+            
+            // Hitung ulang sisa anggaran per kategori
+            currentClinic.budget.byCategory.honor.remaining = currentClinic.budget.byCategory.honor.allocated - honorSpent;
+            currentClinic.budget.byCategory.operational.remaining = currentClinic.budget.byCategory.operational.allocated - operationalSpent;
+            currentClinic.budget.byCategory.modal.remaining = currentClinic.budget.byCategory.modal.allocated - modalSpent;
+            
+            // Hitung ulang total yang telah digunakan dan sisa anggaran
+            currentClinic.budget.totalSpent = honorSpent + operationalSpent + modalSpent;
+            currentClinic.budget.remaining = currentClinic.budget.totalBudget - currentClinic.budget.totalSpent;
+            
+            // Update display
+            const honorPercentage = Math.round((honorSpent / currentClinic.budget.byCategory.honor.allocated) * 100);
+            const operationalPercentage = Math.round((operationalSpent / currentClinic.budget.byCategory.operational.allocated) * 100);
+            const modalPercentage = Math.round((modalSpent / currentClinic.budget.byCategory.modal.allocated) * 100);
+            
+            document.getElementById('honor-percentage').textContent = `${honorPercentage}%`;
+            document.getElementById('operational-percentage').textContent = `${operationalPercentage}%`;
+            document.getElementById('modal-percentage').textContent = `${modalPercentage}%`;
+            
+            document.getElementById('honor-progress').style.width = `${honorPercentage}%`;
+            document.getElementById('operational-progress').style.width = `${operationalPercentage}%`;
+            document.getElementById('modal-progress').style.width = `${modalPercentage}%`;
+            
+            document.getElementById('total-spent').textContent = `Rp ${currentClinic.budget.totalSpent.toLocaleString('id-ID')}`;
+            document.getElementById('remaining-budget').textContent = `Rp ${currentClinic.budget.remaining.toLocaleString('id-ID')}`;
+            
+            alert('Realisasi anggaran berhasil diperbarui!');
         }
         
         // Load data rekap
