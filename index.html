@@ -401,6 +401,27 @@
             margin-top: 20px;
             justify-content: flex-end;
         }
+        
+        /* Filter Section */
+        .filter-section {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-item {
+            flex: 1;
+            min-width: 200px;
+        }
     </style>
 </head>
 <body>
@@ -527,6 +548,36 @@
                 <!-- Income Report Section -->
                 <div id="clinic-income-section" style="display: none;">
                     <h4>Laporan Pendapatan Kapitasi BPJS</h4>
+                    
+                    <div class="filter-section">
+                        <div class="filter-row">
+                            <div class="filter-item">
+                                <label for="income-year-filter">Tahun</label>
+                                <select id="income-year-filter">
+                                    <!-- Options will be populated by JavaScript -->
+                                </select>
+                            </div>
+                            <div class="filter-item">
+                                <label for="income-month-filter">Bulan</label>
+                                <select id="income-month-filter">
+                                    <option value="all">Semua Bulan</option>
+                                    <option value="1">Januari</option>
+                                    <option value="2">Februari</option>
+                                    <option value="3">Maret</option>
+                                    <option value="4">April</option>
+                                    <option value="5">Mei</option>
+                                    <option value="6">Juni</option>
+                                    <option value="7">Juli</option>
+                                    <option value="8">Agustus</option>
+                                    <option value="9">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <button id="add-income-btn" class="add-item-btn" style="display: none;">+ Tambah Data Pendapatan</button>
                     <div id="income-form-container" style="display: none;" class="finance-form">
                         <h4>Form Input Pendapatan</h4>
@@ -534,18 +585,24 @@
                             <div>
                                 <label for="income-month">Bulan</label>
                                 <select id="income-month">
-                                    <option value="Januari 2024">Januari 2024</option>
-                                    <option value="Februari 2024">Februari 2024</option>
-                                    <option value="Maret 2024">Maret 2024</option>
-                                    <option value="April 2024">April 2024</option>
-                                    <option value="Mei 2024">Mei 2024</option>
-                                    <option value="Juni 2024">Juni 2024</option>
-                                    <option value="Juli 2024">Juli 2024</option>
-                                    <option value="Agustus 2024">Agustus 2024</option>
-                                    <option value="September 2024">September 2024</option>
-                                    <option value="Oktober 2024">Oktober 2024</option>
-                                    <option value="November 2024">November 2024</option>
-                                    <option value="Desember 2024">Desember 2024</option>
+                                    <option value="1">Januari</option>
+                                    <option value="2">Februari</option>
+                                    <option value="3">Maret</option>
+                                    <option value="4">April</option>
+                                    <option value="5">Mei</option>
+                                    <option value="6">Juni</option>
+                                    <option value="7">Juli</option>
+                                    <option value="8">Agustus</option>
+                                    <option value="9">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="income-year">Tahun</label>
+                                <select id="income-year">
+                                    <!-- Options will be populated by JavaScript -->
                                 </select>
                             </div>
                             <div>
@@ -562,6 +619,7 @@
                         <thead>
                             <tr>
                                 <th>Bulan</th>
+                                <th>Tahun</th>
                                 <th>Jumlah Pendapatan (Rp)</th>
                                 <th>Aksi</th>
                             </tr>
@@ -741,6 +799,17 @@
                     </div>
                     
                     <h5>Sisa Anggaran Bulanan</h5>
+                    <div class="filter-section">
+                        <div class="filter-row">
+                            <div class="filter-item">
+                                <label for="budget-year-filter">Tahun</label>
+                                <select id="budget-year-filter">
+                                    <!-- Options will be populated by JavaScript -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <button id="add-budget-btn" class="add-item-btn" style="display: none;">+ Tambah Data Anggaran Bulanan</button>
                     <div id="budget-form-container" style="display: none;" class="finance-form">
                         <h4>Form Input Anggaran Bulanan</h4>
@@ -748,18 +817,24 @@
                             <div>
                                 <label for="budget-month">Bulan</label>
                                 <select id="budget-month">
-                                    <option value="Januari">Januari</option>
-                                    <option value="Februari">Februari</option>
-                                    <option value="Maret">Maret</option>
-                                    <option value="April">April</option>
-                                    <option value="Mei">Mei</option>
-                                    <option value="Juni">Juni</option>
-                                    <option value="Juli">Juli</option>
-                                    <option value="Agustus">Agustus</option>
-                                    <option value="September">September</option>
-                                    <option value="Oktober">Oktober</option>
-                                    <option value="November">November</option>
-                                    <option value="Desember">Desember</option>
+                                    <option value="1">Januari</option>
+                                    <option value="2">Februari</option>
+                                    <option value="3">Maret</option>
+                                    <option value="4">April</option>
+                                    <option value="5">Mei</option>
+                                    <option value="6">Juni</option>
+                                    <option value="7">Juli</option>
+                                    <option value="8">Agustus</option>
+                                    <option value="9">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="budget-year">Tahun</label>
+                                <select id="budget-year">
+                                    <!-- Options will be populated by JavaScript -->
                                 </select>
                             </div>
                             <div>
@@ -780,6 +855,7 @@
                         <thead>
                             <tr>
                                 <th>Bulan</th>
+                                <th>Tahun</th>
                                 <th>Total Anggaran</th>
                                 <th>Telah Digunakan</th>
                                 <th>Sisa Anggaran</th>
@@ -926,6 +1002,36 @@
     </div>
 
     <script>
+        // Generate years for 2 years back and 5 years forward
+        function generateYears() {
+            const currentYear = new Date().getFullYear();
+            const years = [];
+            
+            // 2 years back
+            for (let i = 2; i >= 1; i--) {
+                years.push(currentYear - i);
+            }
+            
+            // Current year
+            years.push(currentYear);
+            
+            // 5 years forward
+            for (let i = 1; i <= 5; i++) {
+                years.push(currentYear + i);
+            }
+            
+            return years;
+        }
+        
+        // Get month name from month number
+        function getMonthName(monthNumber) {
+            const months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            return months[monthNumber - 1];
+        }
+        
         // Data klinik
         let clinics = [
             { 
@@ -934,14 +1040,7 @@
                 address: 'Jl. Teuku Umar No. 123, Bandar Lampung', 
                 phone: '0721-1234567', 
                 email: 'bandarlampung@fktpdenkesyah.com',
-                income: [
-                    { month: 'Januari 2024', amount: 150000000 },
-                    { month: 'Februari 2024', amount: 155000000 },
-                    { month: 'Maret 2024', amount: 160000000 },
-                    { month: 'April 2024', amount: 158000000 },
-                    { month: 'Mei 2024', amount: 162000000 },
-                    { month: 'Juni 2024', amount: 165000000 }
-                ],
+                income: [],
                 realization: {
                     honor: { medis: 30000000, paramedis: 15000000, pengelola: 10000000 },
                     operational: { atk: 25000000, obat: 55000000 },
@@ -960,14 +1059,7 @@
                         operational: { allocated: 82500000, spent: 80000000, remaining: 2500000 },
                         modal: { allocated: 33000000, spent: 25000000, remaining: 8000000 }
                     },
-                    monthlyRemaining: [
-                        { month: 'Januari', budget: 150000000, spent: 120000000, remaining: 30000000 },
-                        { month: 'Februari', budget: 155000000, spent: 130000000, remaining: 25000000 },
-                        { month: 'Maret', budget: 160000000, spent: 135000000, remaining: 25000000 },
-                        { month: 'April', budget: 158000000, spent: 132000000, remaining: 26000000 },
-                        { month: 'Mei', budget: 162000000, spent: 138000000, remaining: 24000000 },
-                        { month: 'Juni', budget: 165000000, spent: 140000000, remaining: 25000000 }
-                    ]
+                    monthlyRemaining: []
                 }
             },
             { 
@@ -976,14 +1068,7 @@
                 address: 'Jl. Jenderal Sudirman No. 45, Metro', 
                 phone: '0725-2345678', 
                 email: 'metro@fktpdenkesyah.com',
-                income: [
-                    { month: 'Januari 2024', amount: 145000000 },
-                    { month: 'Februari 2024', amount: 148000000 },
-                    { month: 'Maret 2024', amount: 152000000 },
-                    { month: 'April 2024', amount: 150000000 },
-                    { month: 'Mei 2024', amount: 155000000 },
-                    { month: 'Juni 2024', amount: 158000000 }
-                ],
+                income: [],
                 realization: {
                     honor: { medis: 28000000, paramedis: 14000000, pengelola: 9000000 },
                     operational: { atk: 24000000, obat: 53000000 },
@@ -1002,361 +1087,90 @@
                         operational: { allocated: 79000000, spent: 75000000, remaining: 4000000 },
                         modal: { allocated: 31600000, spent: 28000000, remaining: 3600000 }
                     },
-                    monthlyRemaining: [
-                        { month: 'Januari', budget: 145000000, spent: 115000000, remaining: 30000000 },
-                        { month: 'Februari', budget: 148000000, spent: 120000000, remaining: 28000000 },
-                        { month: 'Maret', budget: 152000000, spent: 125000000, remaining: 27000000 },
-                        { month: 'April', budget: 150000000, spent: 122000000, remaining: 28000000 },
-                        { month: 'Mei', budget: 155000000, spent: 128000000, remaining: 27000000 },
-                        { month: 'Juni', budget: 158000000, spent: 130000000, remaining: 28000000 }
-                    ]
-                }
-            },
-            { 
-                id: 3, 
-                name: 'FKTP Denkesyah 02.04.03 - Pringsewu', 
-                address: 'Jl. Raya Pringsewu No. 78, Pringsewu', 
-                phone: '0729-3456789', 
-                email: 'pringsewu@fktpdenkesyah.com',
-                income: [
-                    { month: 'Januari 2024', amount: 148000000 },
-                    { month: 'Februari 2024', amount: 151000000 },
-                    { month: 'Maret 2024', amount: 156000000 },
-                    { month: 'April 2024', amount: 154000000 },
-                    { month: 'Mei 2024', amount: 159000000 },
-                    { month: 'Juni 2024', amount: 162000000 }
-                ],
-                realization: {
-                    honor: { medis: 29000000, paramedis: 14500000, pengelola: 9500000 },
-                    operational: { atk: 24500000, obat: 54000000 },
-                    modal: [
-                        { id: 7, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 6, total: 3000000 },
-                        { id: 8, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 12, total: 3600000 },
-                        { id: 9, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 4, total: 3200000 }
-                    ]
-                },
-                budget: {
-                    totalBudget: 162000000,
-                    totalSpent: 118000000,
-                    remaining: 44000000,
-                    byCategory: {
-                        honor: { allocated: 48600000, spent: 44000000, remaining: 4600000 },
-                        operational: { allocated: 81000000, spent: 78000000, remaining: 3000000 },
-                        modal: { allocated: 32400000, spent: 26000000, remaining: 6400000 }
-                    },
-                    monthlyRemaining: [
-                        { month: 'Januari', budget: 148000000, spent: 118000000, remaining: 30000000 },
-                        { month: 'Februari', budget: 151000000, spent: 120000000, remaining: 31000000 },
-                        { month: 'Maret', budget: 156000000, spent: 125000000, remaining: 31000000 },
-                        { month: 'April', budget: 154000000, spent: 123000000, remaining: 31000000 },
-                        { month: 'Mei', budget: 159000000, spent: 128000000, remaining: 31000000 },
-                        { month: 'Juni', budget: 162000000, spent: 131000000, remaining: 31000000 }
-                    ]
-                }
-            },
-            { 
-                id: 4, 
-                name: 'FKTP Denkesyah 02.04.03 - Pesawaran', 
-                address: 'Jl. Raya Pesawaran No. 23, Pesawaran', 
-                phone: '0721-4567890', 
-                email: 'pesawaran@fktpdenkesyah.com',
-                income: [
-                    { month: 'Januari 2024', amount: 142000000 },
-                    { month: 'Februari 2024', amount: 146000000 },
-                    { month: 'Maret 2024', amount: 150000000 },
-                    { month: 'April 2024', amount: 148000000 },
-                    { month: 'Mei 2024', amount: 153000000 },
-                    { month: 'Juni 2024', amount: 156000000 }
-                ],
-                realization: {
-                    honor: { medis: 27000000, paramedis: 13500000, pengelola: 8500000 },
-                    operational: { atk: 23000000, obat: 51000000 },
-                    modal: [
-                        { id: 10, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 3, total: 1500000 },
-                        { id: 11, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 7, total: 2100000 },
-                        { id: 12, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 2, total: 1600000 }
-                    ]
-                },
-                budget: {
-                    totalBudget: 156000000,
-                    totalSpent: 112000000,
-                    remaining: 44000000,
-                    byCategory: {
-                        honor: { allocated: 46800000, spent: 41000000, remaining: 5800000 },
-                        operational: { allocated: 78000000, spent: 74000000, remaining: 4000000 },
-                        modal: { allocated: 31200000, spent: 27000000, remaining: 4200000 }
-                    },
-                    monthlyRemaining: [
-                        { month: 'Januari', budget: 142000000, spent: 112000000, remaining: 30000000 },
-                        { month: 'Februari', budget: 146000000, spent: 116000000, remaining: 30000000 },
-                        { month: 'Maret', budget: 150000000, spent: 120000000, remaining: 30000000 },
-                        { month: 'April', budget: 148000000, spent: 118000000, remaining: 30000000 },
-                        { month: 'Mei', budget: 153000000, spent: 123000000, remaining: 30000000 },
-                        { month: 'Juni', budget: 156000000, spent: 126000000, remaining: 30000000 }
-                    ]
-                }
-            },
-            { 
-                id: 5, 
-                name: 'FKTP Denkesyah 02.04.03 - Tanggamus', 
-                address: 'Jl. Raya Tanggamus No. 56, Tanggamus', 
-                phone: '0722-5678901', 
-                email: 'tanggamus@fktpdenkesyah.com',
-                income: [
-                    { month: 'Januari 2024', amount: 147000000 },
-                    { month: 'Februari 2024', amount: 150000000 },
-                    { month: 'Maret 2024', amount: 155000000 },
-                    { month: 'April 2024', amount: 153000000 },
-                    { month: 'Mei 2024', amount: 158000000 },
-                    { month: 'Juni 2024', amount: 161000000 }
-                ],
-                realization: {
-                    honor: { medis: 28500000, paramedis: 14200000, pengelola: 9300000 },
-                    operational: { atk: 24000000, obat: 53500000 },
-                    modal: [
-                        { id: 13, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 5, total: 2500000 },
-                        { id: 14, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 9, total: 2700000 },
-                        { id: 15, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 3, total: 2400000 }
-                    ]
-                },
-                budget: {
-                    totalBudget: 161000000,
-                    totalSpent: 116000000,
-                    remaining: 45000000,
-                    byCategory: {
-                        honor: { allocated: 48300000, spent: 43000000, remaining: 5300000 },
-                        operational: { allocated: 80500000, spent: 77000000, remaining: 3500000 },
-                        modal: { allocated: 32200000, spent: 26000000, remaining: 6200000 }
-                    },
-                    monthlyRemaining: [
-                        { month: 'Januari', budget: 147000000, spent: 116000000, remaining: 31000000 },
-                        { month: 'Februari', budget: 150000000, spent: 119000000, remaining: 31000000 },
-                        { month: 'Maret', budget: 155000000, spent: 124000000, remaining: 31000000 },
-                        { month: 'April', budget: 153000000, spent: 122000000, remaining: 31000000 },
-                        { month: 'Mei', budget: 158000000, spent: 127000000, remaining: 31000000 },
-                        { month: 'Juni', budget: 161000000, spent: 130000000, remaining: 31000000 }
-                    ]
-                }
-            },
-            { 
-                id: 6, 
-                name: 'FKTP Denkesyah 02.04.03 - Lampung Selatan', 
-                address: 'Jl. Raya Kalianda No. 89, Lampung Selatan', 
-                phone: '0727-6789012', 
-                email: 'lampungselatan@fktpdenkesyah.com',
-                income: [
-                    { month: 'Januari 2024', amount: 144000000 },
-                    { month: 'Februari 2024', amount: 148000000 },
-                    { month: 'Maret 2024', amount: 152000000 },
-                    { month: 'April 2024', amount: 150000000 },
-                    { month: 'Mei 2024', amount: 155000000 },
-                    { month: 'Juni 2024', amount: 158000000 }
-                ],
-                realization: {
-                    honor: { medis: 27500000, paramedis: 13800000, pengelola: 8700000 },
-                    operational: { atk: 23500000, obat: 52000000 },
-                    modal: [
-                        { id: 16, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 4, total: 2000000 },
-                        { id: 17, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 8, total: 2400000 },
-                        { id: 18, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 2, total: 1600000 }
-                    ]
-                },
-                budget: {
-                    totalBudget: 158000000,
-                    totalSpent: 114000000,
-                    remaining: 44000000,
-                    byCategory: {
-                        honor: { allocated: 47400000, spent: 42000000, remaining: 5400000 },
-                        operational: { allocated: 79000000, spent: 75000000, remaining: 4000000 },
-                        modal: { allocated: 31600000, spent: 27000000, remaining: 4600000 }
-                    },
-                    monthlyRemaining: [
-                        { month: 'Januari', budget: 144000000, spent: 114000000, remaining: 30000000 },
-                        { month: 'Februari', budget: 148000000, spent: 118000000, remaining: 30000000 },
-                        { month: 'Maret', budget: 152000000, spent: 122000000, remaining: 30000000 },
-                        { month: 'April', budget: 150000000, spent: 120000000, remaining: 30000000 },
-                        { month: 'Mei', budget: 155000000, spent: 125000000, remaining: 30000000 },
-                        { month: 'Juni', budget: 158000000, spent: 128000000, remaining: 30000000 }
-                    ]
-                }
-            },
-            { 
-                id: 7, 
-                name: 'FKTP Denkesyah 02.04.03 - Lampung Tengah', 
-                address: 'Jl. Raya Terbanggi Besar No. 34, Lampung Tengah', 
-                phone: '0721-7890123', 
-                email: 'lampungtengah@fktpdenkesyah.com',
-                income: [
-                    { month: 'Januari 2024', amount: 149000000 },
-                    { month: 'Februari 2024', amount: 152000000 },
-                    { month: 'Maret 2024', amount: 157000000 },
-                    { month: 'April 2024', amount: 155000000 },
-                    { month: 'Mei 2024', amount: 160000000 },
-                    { month: 'Juni 2024', amount: 163000000 }
-                ],
-                realization: {
-                    honor: { medis: 29500000, paramedis: 14700000, pengelola: 9800000 },
-                    operational: { atk: 25000000, obat: 55500000 },
-                    modal: [
-                        { id: 19, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 6, total: 3000000 },
-                        { id: 20, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 11, total: 3300000 },
-                        { id: 21, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 4, total: 3200000 }
-                    ]
-                },
-                budget: {
-                    totalBudget: 163000000,
-                    totalSpent: 118000000,
-                    remaining: 45000000,
-                    byCategory: {
-                        honor: { allocated: 48900000, spent: 44000000, remaining: 4900000 },
-                        operational: { allocated: 81500000, spent: 80000000, remaining: 1500000 },
-                        modal: { allocated: 32600000, spent: 28000000, remaining: 4600000 }
-                    },
-                    monthlyRemaining: [
-                        { month: 'Januari', budget: 149000000, spent: 118000000, remaining: 31000000 },
-                        { month: 'Februari', budget: 152000000, spent: 121000000, remaining: 31000000 },
-                        { month: 'Maret', budget: 157000000, spent: 126000000, remaining: 31000000 },
-                        { month: 'April', budget: 155000000, spent: 124000000, remaining: 31000000 },
-                        { month: 'Mei', budget: 160000000, spent: 129000000, remaining: 31000000 },
-                        { month: 'Juni', budget: 163000000, spent: 132000000, remaining: 31000000 }
-                    ]
-                }
-            },
-            { 
-                id: 8, 
-                name: 'FKTP Denkesyah 02.04.03 - Lampung Utara', 
-                address: 'Jl. Raya Kotabumi No. 67, Lampung Utara', 
-                phone: '0724-8901234', 
-                email: 'lampungutara@fktpdenkesyah.com',
-                income: [
-                    { month: 'Januari 2024', amount: 143000000 },
-                    { month: 'Februari 2024', amount: 147000000 },
-                    { month: 'Maret 2024', amount: 151000000 },
-                    { month: 'April 2024', amount: 149000000 },
-                    { month: 'Mei 2024', amount: 154000000 },
-                    { month: 'Juni 2024', amount: 157000000 }
-                ],
-                realization: {
-                    honor: { medis: 27000000, paramedis: 13500000, pengelola: 8500000 },
-                    operational: { atk: 23000000, obat: 51500000 },
-                    modal: [
-                        { id: 22, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 3, total: 1500000 },
-                        { id: 23, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 7, total: 2100000 },
-                        { id: 24, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 2, total: 1600000 }
-                    ]
-                },
-                budget: {
-                    totalBudget: 157000000,
-                    totalSpent: 113000000,
-                    remaining: 44000000,
-                    byCategory: {
-                        honor: { allocated: 47100000, spent: 41000000, remaining: 6100000 },
-                        operational: { allocated: 78500000, spent: 74000000, remaining: 4500000 },
-                        modal: { allocated: 31400000, spent: 28000000, remaining: 3400000 }
-                    },
-                    monthlyRemaining: [
-                        { month: 'Januari', budget: 143000000, spent: 113000000, remaining: 30000000 },
-                        { month: 'Februari', budget: 147000000, spent: 117000000, remaining: 30000000 },
-                        { month: 'Maret', budget: 151000000, spent: 121000000, remaining: 30000000 },
-                        { month: 'April', budget: 149000000, spent: 119000000, remaining: 30000000 },
-                        { month: 'Mei', budget: 154000000, spent: 124000000, remaining: 30000000 },
-                        { month: 'Juni', budget: 157000000, spent: 127000000, remaining: 30000000 }
-                    ]
-                }
-            },
-            { 
-                id: 9, 
-                name: 'FKTP Denkesyah 02.04.03 - Way Kanan', 
-                address: 'Jl. Raya Blambangan Umpu No. 12, Way Kanan', 
-                phone: '0728-9012345', 
-                email: 'waykanan@fktpdenkesyah.com',
-                income: [
-                    { month: 'Januari 2024', amount: 146000000 },
-                    { month: 'Februari 2024', amount: 149000000 },
-                    { month: 'Maret 2024', amount: 154000000 },
-                    { month: 'April 2024', amount: 152000000 },
-                    { month: 'Mei 2024', amount: 157000000 },
-                    { month: 'Juni 2024', amount: 160000000 }
-                ],
-                realization: {
-                    honor: { medis: 28000000, paramedis: 14000000, pengelola: 9000000 },
-                    operational: { atk: 24000000, obat: 53000000 },
-                    modal: [
-                        { id: 25, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 5, total: 2500000 },
-                        { id: 26, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 9, total: 2700000 },
-                        { id: 27, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 3, total: 2400000 }
-                    ]
-                },
-                budget: {
-                    totalBudget: 160000000,
-                    totalSpent: 115000000,
-                    remaining: 45000000,
-                    byCategory: {
-                        honor: { allocated: 48000000, spent: 43000000, remaining: 5000000 },
-                        operational: { allocated: 80000000, spent: 77000000, remaining: 3000000 },
-                        modal: { allocated: 32000000, spent: 28000000, remaining: 4000000 }
-                    },
-                    monthlyRemaining: [
-                        { month: 'Januari', budget: 146000000, spent: 115000000, remaining: 31000000 },
-                        { month: 'Februari', budget: 149000000, spent: 118000000, remaining: 31000000 },
-                        { month: 'Maret', budget: 154000000, spent: 123000000, remaining: 31000000 },
-                        { month: 'April', budget: 152000000, spent: 121000000, remaining: 31000000 },
-                        { month: 'Mei', budget: 157000000, spent: 126000000, remaining: 31000000 },
-                        { month: 'Juni', budget: 160000000, spent: 129000000, remaining: 31000000 }
-                    ]
-                }
-            },
-            { 
-                id: 10, 
-                name: 'FKTP Denkesyah 02.04.03 - Lampung Timur', 
-                address: 'Jl. Raya Sukadana No. 45, Lampung Timur', 
-                phone: '0725-0123456', 
-                email: 'lampungtimur@fktpdenkesyah.com',
-                income: [
-                    { month: 'Januari 2024', amount: 148000000 },
-                    { month: 'Februari 2024', amount: 151000000 },
-                    { month: 'Maret 2024', amount: 156000000 },
-                    { month: 'April 2024', amount: 154000000 },
-                    { month: 'Mei 2024', amount: 159000000 },
-                    { month: 'Juni 2024', amount: 162000000 }
-                ],
-                realization: {
-                    honor: { medis: 29000000, paramedis: 14500000, pengelola: 9500000 },
-                    operational: { atk: 24500000, obat: 54000000 },
-                    modal: [
-                        { id: 28, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 6, total: 3000000 },
-                        { id: 29, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 10, total: 3000000 },
-                        { id: 30, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 3, total: 2400000 }
-                    ]
-                },
-                budget: {
-                    totalBudget: 162000000,
-                    totalSpent: 117000000,
-                    remaining: 45000000,
-                    byCategory: {
-                        honor: { allocated: 48600000, spent: 44000000, remaining: 4600000 },
-                        operational: { allocated: 81000000, spent: 78000000, remaining: 3000000 },
-                        modal: { allocated: 32400000, spent: 29000000, remaining: 3400000 }
-                    },
-                    monthlyRemaining: [
-                        { month: 'Januari', budget: 148000000, spent: 117000000, remaining: 31000000 },
-                        { month: 'Februari', budget: 151000000, spent: 120000000, remaining: 31000000 },
-                        { month: 'Maret', budget: 156000000, spent: 125000000, remaining: 31000000 },
-                        { month: 'April', budget: 154000000, spent: 123000000, remaining: 31000000 },
-                        { month: 'Mei', budget: 159000000, spent: 128000000, remaining: 31000000 },
-                        { month: 'Juni', budget: 162000000, spent: 131000000, remaining: 31000000 }
-                    ]
+                    monthlyRemaining: []
                 }
             }
         ];
         
+        // Initialize income data for all clinics for 2 years back and 5 years forward
+        function initializeIncomeData() {
+            const years = generateYears();
+            
+            clinics.forEach(clinic => {
+                // Clear existing income data
+                clinic.income = [];
+                
+                // Generate sample data for each month of each year
+                years.forEach(year => {
+                    for (let month = 1; month <= 12; month++) {
+                        // Generate sample amount (between 140M and 170M)
+                        const baseAmount = 140000000;
+                        const randomVariance = Math.floor(Math.random() * 30000000);
+                        const amount = baseAmount + randomVariance;
+                        
+                        clinic.income.push({
+                            month: month,
+                            year: year,
+                            amount: amount
+                        });
+                    }
+                });
+            });
+        }
+        
+        // Initialize budget data for all clinics for 2 years back and 5 years forward
+        function initializeBudgetData() {
+            const years = generateYears();
+            
+            clinics.forEach(clinic => {
+                // Clear existing budget data
+                clinic.budget.monthlyRemaining = [];
+                
+                // Generate sample data for each month of each year
+                years.forEach(year => {
+                    for (let month = 1; month <= 12; month++) {
+                        // Generate sample budget data
+                        const baseBudget = 150000000;
+                        const randomVariance = Math.floor(Math.random() * 20000000);
+                        const budget = baseBudget + randomVariance;
+                        
+                        const spentPercentage = 0.75 + (Math.random() * 0.1); // 75% - 85%
+                        const spent = Math.floor(budget * spentPercentage);
+                        const remaining = budget - spent;
+                        
+                        clinic.budget.monthlyRemaining.push({
+                            month: month,
+                            year: year,
+                            budget: budget,
+                            spent: spent,
+                            remaining: remaining
+                        });
+                    }
+                });
+            });
+        }
+        
+        // Initialize data when page loads
+        initializeIncomeData();
+        initializeBudgetData();
+        
         // State aplikasi
         let currentUser = null;
         let currentClinic = null;
+        let currentIncomeFilters = {
+            year: new Date().getFullYear(),
+            month: 'all'
+        };
+        let currentBudgetFilters = {
+            year: new Date().getFullYear()
+        };
         
         // Tunggu hingga halaman sepenuhnya dimuat
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Halaman telah dimuat');
+            
+            // Populate year dropdowns
+            populateYearDropdowns();
             
             // Cek apakah user sudah login sebelumnya
             checkSavedLogin();
@@ -1389,7 +1203,75 @@
             
             // Setup finance forms
             setupFinanceForms();
+            
+            // Setup filters
+            setupFilters();
         });
+        
+        // Populate year dropdowns
+        function populateYearDropdowns() {
+            const years = generateYears();
+            
+            // Income year filter
+            const incomeYearFilter = document.getElementById('income-year-filter');
+            if (incomeYearFilter) {
+                incomeYearFilter.innerHTML = '';
+                years.forEach(year => {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    incomeYearFilter.appendChild(option);
+                });
+                
+                // Set default to current year
+                incomeYearFilter.value = new Date().getFullYear();
+            }
+            
+            // Income year in form
+            const incomeYearForm = document.getElementById('income-year');
+            if (incomeYearForm) {
+                incomeYearForm.innerHTML = '';
+                years.forEach(year => {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    incomeYearForm.appendChild(option);
+                });
+                
+                // Set default to current year
+                incomeYearForm.value = new Date().getFullYear();
+            }
+            
+            // Budget year filter
+            const budgetYearFilter = document.getElementById('budget-year-filter');
+            if (budgetYearFilter) {
+                budgetYearFilter.innerHTML = '';
+                years.forEach(year => {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    budgetYearFilter.appendChild(option);
+                });
+                
+                // Set default to current year
+                budgetYearFilter.value = new Date().getFullYear();
+            }
+            
+            // Budget year in form
+            const budgetYearForm = document.getElementById('budget-year');
+            if (budgetYearForm) {
+                budgetYearForm.innerHTML = '';
+                years.forEach(year => {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    budgetYearForm.appendChild(option);
+                });
+                
+                // Set default to current year
+                budgetYearForm.value = new Date().getFullYear();
+            }
+        }
         
         // Fungsi login
         function handleLogin() {
@@ -1702,6 +1584,42 @@
             }
         }
         
+        // Setup filters
+        function setupFilters() {
+            // Income year filter
+            const incomeYearFilter = document.getElementById('income-year-filter');
+            if (incomeYearFilter) {
+                incomeYearFilter.addEventListener('change', function() {
+                    currentIncomeFilters.year = parseInt(this.value);
+                    if (currentClinic) {
+                        loadClinicIncome(currentClinic);
+                    }
+                });
+            }
+            
+            // Income month filter
+            const incomeMonthFilter = document.getElementById('income-month-filter');
+            if (incomeMonthFilter) {
+                incomeMonthFilter.addEventListener('change', function() {
+                    currentIncomeFilters.month = this.value;
+                    if (currentClinic) {
+                        loadClinicIncome(currentClinic);
+                    }
+                });
+            }
+            
+            // Budget year filter
+            const budgetYearFilter = document.getElementById('budget-year-filter');
+            if (budgetYearFilter) {
+                budgetYearFilter.addEventListener('change', function() {
+                    currentBudgetFilters.year = parseInt(this.value);
+                    if (currentClinic) {
+                        loadClinicBudget(currentClinic);
+                    }
+                });
+            }
+        }
+        
         // Load daftar klinik
         function loadClinics() {
             const container = document.getElementById('clinics-container');
@@ -1998,24 +1916,39 @@
             }
         }
         
-        // Load data pendapatan klinik
+        // Load data pendapatan klinik dengan filter
         function loadClinicIncome(clinic) {
             const tbody = document.getElementById('income-table-body');
             if (!tbody) return;
             
             tbody.innerHTML = '';
             
+            // Filter data berdasarkan tahun dan bulan
+            let filteredIncome = clinic.income.filter(item => 
+                item.year === currentIncomeFilters.year
+            );
+            
+            if (currentIncomeFilters.month !== 'all') {
+                filteredIncome = filteredIncome.filter(item => 
+                    item.month === parseInt(currentIncomeFilters.month)
+                );
+            }
+            
+            // Sort by month
+            filteredIncome.sort((a, b) => a.month - b.month);
+            
             let total = 0;
-            clinic.income.forEach((report, index) => {
+            filteredIncome.forEach((report, index) => {
                 total += report.amount;
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${report.month}</td>
+                    <td>${getMonthName(report.month)}</td>
+                    <td>${report.year}</td>
                     <td>Rp ${report.amount.toLocaleString('id-ID')}</td>
                     <td>
                         ${currentUser && currentUser.type === 'minkes' ? `
-                        <button class="btn-warning edit-income-btn" data-index="${index}">Edit</button>
-                        <button class="btn-danger delete-income-btn" data-index="${index}">Hapus</button>
+                        <button class="btn-warning edit-income-btn" data-index="${clinic.income.findIndex(i => i.month === report.month && i.year === report.year)}">Edit</button>
+                        <button class="btn-danger delete-income-btn" data-index="${clinic.income.findIndex(i => i.month === report.month && i.year === report.year)}">Hapus</button>
                         ` : ''}
                     </td>
                 `;
@@ -2044,7 +1977,7 @@
             totalRow.style.fontWeight = 'bold';
             totalRow.style.backgroundColor = '#f8fafc';
             totalRow.innerHTML = `
-                <td><strong>TOTAL</strong></td>
+                <td colspan="2"><strong>TOTAL</strong></td>
                 <td><strong>Rp ${total.toLocaleString('id-ID')}</strong></td>
                 <td></td>
             `;
@@ -2057,6 +1990,7 @@
             
             const incomeData = currentClinic.income[index];
             document.getElementById('income-month').value = incomeData.month;
+            document.getElementById('income-year').value = incomeData.year;
             document.getElementById('income-amount').value = incomeData.amount;
             
             // Tampilkan form
@@ -2071,10 +2005,11 @@
         function saveIncomeData() {
             if (!currentClinic) return;
             
-            const month = document.getElementById('income-month').value;
+            const month = parseInt(document.getElementById('income-month').value);
+            const year = parseInt(document.getElementById('income-year').value);
             const amount = parseInt(document.getElementById('income-amount').value);
             
-            if (!month || isNaN(amount)) {
+            if (isNaN(month) || isNaN(year) || isNaN(amount)) {
                 alert('Mohon isi semua field dengan benar');
                 return;
             }
@@ -2083,11 +2018,19 @@
             
             if (editIndex !== null) {
                 // Update existing data
-                currentClinic.income[parseInt(editIndex)] = { month, amount };
+                currentClinic.income[parseInt(editIndex)] = { month, year, amount };
                 document.getElementById('income-form-container').removeAttribute('data-edit-index');
             } else {
                 // Add new data
-                currentClinic.income.push({ month, amount });
+                // Cek apakah data untuk bulan dan tahun ini sudah ada
+                const existingIndex = currentClinic.income.findIndex(i => i.month === month && i.year === year);
+                if (existingIndex !== -1) {
+                    // Jika sudah ada, update data yang ada
+                    currentClinic.income[existingIndex] = { month, year, amount };
+                } else {
+                    // Jika belum ada, tambahkan data baru
+                    currentClinic.income.push({ month, year, amount });
+                }
             }
             
             // Sembunyikan form dan tampilkan tombol add
@@ -2096,6 +2039,7 @@
             
             // Reset form
             document.getElementById('income-month').value = '';
+            document.getElementById('income-year').value = new Date().getFullYear();
             document.getElementById('income-amount').value = '';
             
             // Refresh table
@@ -2301,7 +2245,7 @@
             }
         }
         
-        // Load data sisa anggaran klinik
+        // Load data sisa anggaran klinik dengan filter
         function loadClinicBudget(clinic) {
             // Update total values
             document.getElementById('total-budget').textContent = `Rp ${clinic.budget.totalBudget.toLocaleString('id-ID')}`;
@@ -2322,22 +2266,31 @@
             document.getElementById('operational-progress').style.width = `${operationalPercentage}%`;
             document.getElementById('modal-progress').style.width = `${modalPercentage}%`;
             
-            // Update monthly budget table
+            // Update monthly budget table with filter
             const monthlyTbody = document.getElementById('monthly-budget-body');
             if (monthlyTbody) {
                 monthlyTbody.innerHTML = '';
                 
-                clinic.budget.monthlyRemaining.forEach((item, index) => {
+                // Filter data berdasarkan tahun
+                let filteredBudget = clinic.budget.monthlyRemaining.filter(item => 
+                    item.year === currentBudgetFilters.year
+                );
+                
+                // Sort by month
+                filteredBudget.sort((a, b) => a.month - b.month);
+                
+                filteredBudget.forEach((item, index) => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${item.month}</td>
+                        <td>${getMonthName(item.month)}</td>
+                        <td>${item.year}</td>
                         <td>Rp ${item.budget.toLocaleString('id-ID')}</td>
                         <td>Rp ${item.spent.toLocaleString('id-ID')}</td>
                         <td>Rp ${item.remaining.toLocaleString('id-ID')}</td>
                         <td>
                             ${currentUser && currentUser.type === 'minkes' ? `
-                            <button class="btn-warning edit-budget-btn" data-index="${index}">Edit</button>
-                            <button class="btn-danger delete-budget-btn" data-index="${index}">Hapus</button>
+                            <button class="btn-warning edit-budget-btn" data-index="${clinic.budget.monthlyRemaining.findIndex(b => b.month === item.month && b.year === item.year)}">Edit</button>
+                            <button class="btn-danger delete-budget-btn" data-index="${clinic.budget.monthlyRemaining.findIndex(b => b.month === item.month && b.year === item.year)}">Hapus</button>
                             ` : ''}
                         </td>
                     `;
@@ -2369,6 +2322,7 @@
             
             const budgetData = currentClinic.budget.monthlyRemaining[index];
             document.getElementById('budget-month').value = budgetData.month;
+            document.getElementById('budget-year').value = budgetData.year;
             document.getElementById('budget-amount').value = budgetData.budget;
             document.getElementById('budget-spent').value = budgetData.spent;
             
@@ -2384,11 +2338,12 @@
         function saveBudgetData() {
             if (!currentClinic) return;
             
-            const month = document.getElementById('budget-month').value;
+            const month = parseInt(document.getElementById('budget-month').value);
+            const year = parseInt(document.getElementById('budget-year').value);
             const budget = parseInt(document.getElementById('budget-amount').value);
             const spent = parseInt(document.getElementById('budget-spent').value);
             
-            if (!month || isNaN(budget) || isNaN(spent)) {
+            if (isNaN(month) || isNaN(year) || isNaN(budget) || isNaN(spent)) {
                 alert('Mohon isi semua field dengan benar');
                 return;
             }
@@ -2400,6 +2355,7 @@
                 // Update existing data
                 currentClinic.budget.monthlyRemaining[parseInt(editIndex)] = { 
                     month, 
+                    year, 
                     budget, 
                     spent, 
                     remaining 
@@ -2407,12 +2363,15 @@
                 document.getElementById('budget-form-container').removeAttribute('data-edit-index');
             } else {
                 // Add new data
-                currentClinic.budget.monthlyRemaining.push({ 
-                    month, 
-                    budget, 
-                    spent, 
-                    remaining 
-                });
+                // Cek apakah data untuk bulan dan tahun ini sudah ada
+                const existingIndex = currentClinic.budget.monthlyRemaining.findIndex(b => b.month === month && b.year === year);
+                if (existingIndex !== -1) {
+                    // Jika sudah ada, update data yang ada
+                    currentClinic.budget.monthlyRemaining[existingIndex] = { month, year, budget, spent, remaining };
+                } else {
+                    // Jika belum ada, tambahkan data baru
+                    currentClinic.budget.monthlyRemaining.push({ month, year, budget, spent, remaining });
+                }
             }
             
             // Sembunyikan form dan tampilkan tombol add
@@ -2421,6 +2380,7 @@
             
             // Reset form
             document.getElementById('budget-month').value = '';
+            document.getElementById('budget-year').value = new Date().getFullYear();
             document.getElementById('budget-amount').value = '';
             document.getElementById('budget-spent').value = '';
             
