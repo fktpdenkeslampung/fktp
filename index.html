@@ -272,9 +272,9 @@
                 
                 <div class="help-section">
                     <h3>Petunjuk Login:</h3>
-                    <p>• Username: admin, Password: admin123</p>
-                    <p>• Username: klinik, Password: klinik123</p>
-                    <p>• Username: user, Password: user123</p>
+                    <p>• Username: minkes, Password: minkes123 (untuk akses minkes)</p>
+                    <p>• Username: klinik, Password: klinik123 (untuk akses klinik)</p>
+                    <p>• Username: user, Password: user123 (untuk akses user biasa)</p>
                 </div>
                 
                 <div id="error-message" class="error" style="display: none;">
@@ -529,20 +529,20 @@
             { month: 'Juni 2024', amount: 165000000 }
         ];
         
-        // Login function
+        // Login function - DIPERBAIKI: Menggunakan minkes bukan admin
         document.getElementById('login-btn').addEventListener('click', function() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            // Validasi login
-            if ((username === 'admin' && password === 'admin123') || 
+            // Validasi login - DIPERBAIKI: Menggunakan minkes
+            if ((username === 'minkes' && password === 'minkes123') || 
                 (username === 'klinik' && password === 'klinik123') || 
                 (username === 'user' && password === 'user123')) {
                 
-                // Simpan user ke localStorage
+                // Simpan user ke localStorage - DIPERBAIKI: Menggunakan minkes
                 localStorage.setItem('fktpUser', JSON.stringify({
                     username: username,
-                    type: username === 'admin' ? 'admin' : 'klinik',
+                    type: username === 'minkes' ? 'minkes' : 'klinik',
                     isLoggedIn: true
                 }));
                 
