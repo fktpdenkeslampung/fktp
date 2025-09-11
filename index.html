@@ -64,7 +64,8 @@
         input[type="email"],
         input[type="number"],
         textarea,
-        select {
+        select,
+        input[type="file"] {
             width: 100%;
             padding: 12px;
             border: 1px solid #d1d5db;
@@ -127,6 +128,14 @@
         
         .btn-info:hover {
             background-color: #0e7490;
+        }
+        
+        .btn-export {
+            background-color: #7c3aed;
+        }
+        
+        .btn-export:hover {
+            background-color: #6d28d9;
         }
         
         .help-section {
@@ -422,6 +431,37 @@
             flex: 1;
             min-width: 200px;
         }
+        
+        /* Image Upload */
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .image-upload {
+            border: 2px dashed #d1d5db;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 15px 0;
+            cursor: pointer;
+        }
+        
+        .image-upload:hover {
+            border-color: #2563eb;
+            background-color: #f8fafc;
+        }
+        
+        /* Export Buttons */
+        .export-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            justify-content: flex-end;
+        }
     </style>
 </head>
 <body>
@@ -538,9 +578,7 @@
                         </div>
                         <div>
                             <h4>Gambar Klinik</h4>
-                            <div style="background: #f1f5f9; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                                <span>🏥 Gambar Klinik</span>
-                            </div>
+                            <img id="clinic-image" class="image-preview" src="" alt="Gambar Klinik">
                         </div>
                     </div>
                 </div>
@@ -954,6 +992,15 @@
                                 <input type="email" id="edit-clinic-email" required>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="edit-clinic-image">Upload Gambar Klinik</label>
+                            <div class="image-upload" id="image-upload-area">
+                                <p>Klik atau drag file gambar ke sini</p>
+                                <p>Format yang didukung: JPG, PNG, GIF</p>
+                            </div>
+                            <input type="file" id="edit-clinic-image" accept="image/*" style="display: none;">
+                            <img id="edit-clinic-image-preview" class="image-preview" src="" alt="Preview Gambar">
+                        </div>
                         <div style="display: flex; gap: 10px; margin-top: 20px;">
                             <button type="submit" class="btn-success">Simpan Perubahan</button>
                             <button type="button" id="cancel-edit" class="btn-secondary">Batal</button>
@@ -965,6 +1012,11 @@
             <!-- Total Recap Content -->
             <div id="recap-content" class="content" style="display: none;">
                 <h3>Rekap Total Semua Unit FKTP</h3>
+                
+                <div class="export-buttons">
+                    <button id="export-excel-btn" class="btn-export">Export ke Excel</button>
+                    <button id="export-powerpoint-btn" class="btn-export">Export ke PowerPoint</button>
+                </div>
                 
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -1032,14 +1084,29 @@
             return months[monthNumber - 1];
         }
         
-        // Data klinik
+        // Default clinic images
+        const defaultClinicImages = [
+            'https://placehold.co/600x400/1e3a8a/ffffff?text=Klinik+Gatam+Kedaton',
+            'https://placehold.co/600x400/059669/ffffff?text=Polkes+02.10.08+Metro',
+            'https://placehold.co/600x400/d97706/ffffff?text=Polkes+02.10.09+Kotabumi',
+            'https://placehold.co/600x400/7c3aed/ffffff?text=Polkes+02.10.15+Kalianda',
+            'https://placehold.co/600x400/dc2626/ffffff?text=Polkes+02.10.16+Liwa',
+            'https://placehold.co/600x400/0891b2/ffffff?text=Polkes+02.10.17+Tanggamus',
+            'https://placehold.co/600x400/6b7280/ffffff?text=Polkesdim+0426+Tulang+Bawang',
+            'https://placehold.co/600x400/059669/ffffff?text=Polkesdim+0427+Way+Kanan',
+            'https://placehold.co/600x400/7c3aed/ffffff?text=Polkesdim+0429+Lamtim',
+            'https://placehold.co/600x400/dc2626/ffffff?text=Klinik+Tonkes+Yonif+143/TWEJ'
+        ];
+        
+        // Data klinik dengan 10 klinik yang diminta
         let clinics = [
             { 
                 id: 1, 
-                name: 'FKTP Denkesyah 02.04.03 - Bandar Lampung', 
-                address: 'Jl. Teuku Umar No. 123, Bandar Lampung', 
+                name: 'Klinik Gatam Kedaton', 
+                address: 'Jl. Gatot Subroto No. 123, Kedaton, Bandar Lampung', 
                 phone: '0721-1234567', 
-                email: 'bandarlampung@fktpdenkesyah.com',
+                email: 'gatamkedaton@fktpdenkesyah.com',
+                image: defaultClinicImages[0],
                 income: [],
                 realization: {
                     honor: { medis: 30000000, paramedis: 15000000, pengelola: 10000000 },
@@ -1064,10 +1131,11 @@
             },
             { 
                 id: 2, 
-                name: 'FKTP Denkesyah 02.04.03 - Metro', 
+                name: 'Polkes 02.10.08 Metro', 
                 address: 'Jl. Jenderal Sudirman No. 45, Metro', 
                 phone: '0725-2345678', 
-                email: 'metro@fktpdenkesyah.com',
+                email: 'polkes021008@fktpdenkesyah.com',
+                image: defaultClinicImages[1],
                 income: [],
                 realization: {
                     honor: { medis: 28000000, paramedis: 14000000, pengelola: 9000000 },
@@ -1086,6 +1154,238 @@
                         honor: { allocated: 47400000, spent: 42000000, remaining: 5400000 },
                         operational: { allocated: 79000000, spent: 75000000, remaining: 4000000 },
                         modal: { allocated: 31600000, spent: 28000000, remaining: 3600000 }
+                    },
+                    monthlyRemaining: []
+                }
+            },
+            { 
+                id: 3, 
+                name: 'Polkes 02.10.09 Kotabumi', 
+                address: 'Jl. Raya Kotabumi No. 78, Kotabumi', 
+                phone: '0724-3456789', 
+                email: 'polkes021009@fktpdenkesyah.com',
+                image: defaultClinicImages[2],
+                income: [],
+                realization: {
+                    honor: { medis: 29000000, paramedis: 14500000, pengelola: 9500000 },
+                    operational: { atk: 24500000, obat: 54000000 },
+                    modal: [
+                        { id: 7, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 6, total: 3000000 },
+                        { id: 8, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 12, total: 3600000 },
+                        { id: 9, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 4, total: 3200000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 162000000,
+                    totalSpent: 118000000,
+                    remaining: 44000000,
+                    byCategory: {
+                        honor: { allocated: 48600000, spent: 44000000, remaining: 4600000 },
+                        operational: { allocated: 81000000, spent: 78000000, remaining: 3000000 },
+                        modal: { allocated: 32400000, spent: 26000000, remaining: 6400000 }
+                    },
+                    monthlyRemaining: []
+                }
+            },
+            { 
+                id: 4, 
+                name: 'Polkes 02.10.15 Kalianda', 
+                address: 'Jl. Raya Kalianda No. 23, Kalianda', 
+                phone: '0727-4567890', 
+                email: 'polkes021015@fktpdenkesyah.com',
+                image: defaultClinicImages[3],
+                income: [],
+                realization: {
+                    honor: { medis: 27000000, paramedis: 13500000, pengelola: 8500000 },
+                    operational: { atk: 23000000, obat: 51000000 },
+                    modal: [
+                        { id: 10, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 3, total: 1500000 },
+                        { id: 11, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 7, total: 2100000 },
+                        { id: 12, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 2, total: 1600000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 156000000,
+                    totalSpent: 112000000,
+                    remaining: 44000000,
+                    byCategory: {
+                        honor: { allocated: 46800000, spent: 41000000, remaining: 5800000 },
+                        operational: { allocated: 78000000, spent: 74000000, remaining: 4000000 },
+                        modal: { allocated: 31200000, spent: 27000000, remaining: 4200000 }
+                    },
+                    monthlyRemaining: []
+                }
+            },
+            { 
+                id: 5, 
+                name: 'Polkes 02.10.16 Liwa', 
+                address: 'Jl. Raya Liwa No. 56, Liwa', 
+                phone: '0728-5678901', 
+                email: 'polkes021016@fktpdenkesyah.com',
+                image: defaultClinicImages[4],
+                income: [],
+                realization: {
+                    honor: { medis: 28500000, paramedis: 14200000, pengelola: 9300000 },
+                    operational: { atk: 24000000, obat: 53500000 },
+                    modal: [
+                        { id: 13, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 5, total: 2500000 },
+                        { id: 14, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 9, total: 2700000 },
+                        { id: 15, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 3, total: 2400000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 161000000,
+                    totalSpent: 116000000,
+                    remaining: 45000000,
+                    byCategory: {
+                        honor: { allocated: 48300000, spent: 43000000, remaining: 5300000 },
+                        operational: { allocated: 80500000, spent: 77000000, remaining: 3500000 },
+                        modal: { allocated: 32200000, spent: 26000000, remaining: 6200000 }
+                    },
+                    monthlyRemaining: []
+                }
+            },
+            { 
+                id: 6, 
+                name: 'Polkes 02.10.17 Tanggamus', 
+                address: 'Jl. Raya Tanggamus No. 89, Tanggamus', 
+                phone: '0722-6789012', 
+                email: 'polkes021017@fktpdenkesyah.com',
+                image: defaultClinicImages[5],
+                income: [],
+                realization: {
+                    honor: { medis: 27500000, paramedis: 13800000, pengelola: 8700000 },
+                    operational: { atk: 23500000, obat: 52000000 },
+                    modal: [
+                        { id: 16, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 4, total: 2000000 },
+                        { id: 17, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 8, total: 2400000 },
+                        { id: 18, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 2, total: 1600000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 158000000,
+                    totalSpent: 114000000,
+                    remaining: 44000000,
+                    byCategory: {
+                        honor: { allocated: 47400000, spent: 42000000, remaining: 5400000 },
+                        operational: { allocated: 79000000, spent: 75000000, remaining: 4000000 },
+                        modal: { allocated: 31600000, spent: 27000000, remaining: 4600000 }
+                    },
+                    monthlyRemaining: []
+                }
+            },
+            { 
+                id: 7, 
+                name: 'Polkesdim 0426 Tulang Bawang', 
+                address: 'Jl. Raya Tulang Bawang No. 34, Tulang Bawang', 
+                phone: '0726-7890123', 
+                email: 'polkesdim0426@fktpdenkesyah.com',
+                image: defaultClinicImages[6],
+                income: [],
+                realization: {
+                    honor: { medis: 29500000, paramedis: 14700000, pengelola: 9800000 },
+                    operational: { atk: 25000000, obat: 55500000 },
+                    modal: [
+                        { id: 19, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 6, total: 3000000 },
+                        { id: 20, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 11, total: 3300000 },
+                        { id: 21, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 4, total: 3200000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 163000000,
+                    totalSpent: 118000000,
+                    remaining: 45000000,
+                    byCategory: {
+                        honor: { allocated: 48900000, spent: 44000000, remaining: 4900000 },
+                        operational: { allocated: 81500000, spent: 80000000, remaining: 1500000 },
+                        modal: { allocated: 32600000, spent: 28000000, remaining: 4600000 }
+                    },
+                    monthlyRemaining: []
+                }
+            },
+            { 
+                id: 8, 
+                name: 'Polkesdim 0427 Way Kanan', 
+                address: 'Jl. Raya Way Kanan No. 67, Way Kanan', 
+                phone: '0728-8901234', 
+                email: 'polkesdim0427@fktpdenkesyah.com',
+                image: defaultClinicImages[7],
+                income: [],
+                realization: {
+                    honor: { medis: 27000000, paramedis: 13500000, pengelola: 8500000 },
+                    operational: { atk: 23000000, obat: 51500000 },
+                    modal: [
+                        { id: 22, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 3, total: 1500000 },
+                        { id: 23, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 7, total: 2100000 },
+                        { id: 24, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 2, total: 1600000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 157000000,
+                    totalSpent: 113000000,
+                    remaining: 44000000,
+                    byCategory: {
+                        honor: { allocated: 47100000, spent: 41000000, remaining: 6100000 },
+                        operational: { allocated: 78500000, spent: 74000000, remaining: 4500000 },
+                        modal: { allocated: 31400000, spent: 28000000, remaining: 3400000 }
+                    },
+                    monthlyRemaining: []
+                }
+            },
+            { 
+                id: 9, 
+                name: 'Polkesdim 0429 Lamtim', 
+                address: 'Jl. Raya Lampung Timur No. 12, Lampung Timur', 
+                phone: '0725-9012345', 
+                email: 'polkesdim0429@fktpdenkesyah.com',
+                image: defaultClinicImages[8],
+                income: [],
+                realization: {
+                    honor: { medis: 28000000, paramedis: 14000000, pengelola: 9000000 },
+                    operational: { atk: 24000000, obat: 53000000 },
+                    modal: [
+                        { id: 25, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 5, total: 2500000 },
+                        { id: 26, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 9, total: 2700000 },
+                        { id: 27, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 3, total: 2400000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 160000000,
+                    totalSpent: 115000000,
+                    remaining: 45000000,
+                    byCategory: {
+                        honor: { allocated: 48000000, spent: 43000000, remaining: 5000000 },
+                        operational: { allocated: 80000000, spent: 77000000, remaining: 3000000 },
+                        modal: { allocated: 32000000, spent: 28000000, remaining: 4000000 }
+                    },
+                    monthlyRemaining: []
+                }
+            },
+            { 
+                id: 10, 
+                name: 'Klinik Tonkes Yonif 143/TWEJ', 
+                address: 'Jl. Raya Sukadana No. 45, Lampung Timur', 
+                phone: '0725-0123456', 
+                email: 'tonkesyonif143@fktpdenkesyah.com',
+                image: defaultClinicImages[9],
+                income: [],
+                realization: {
+                    honor: { medis: 29000000, paramedis: 14500000, pengelola: 9500000 },
+                    operational: { atk: 24500000, obat: 54000000 },
+                    modal: [
+                        { id: 28, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 6, total: 3000000 },
+                        { id: 29, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 10, total: 3000000 },
+                        { id: 30, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 3, total: 2400000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 162000000,
+                    totalSpent: 117000000,
+                    remaining: 45000000,
+                    byCategory: {
+                        honor: { allocated: 48600000, spent: 44000000, remaining: 4600000 },
+                        operational: { allocated: 81000000, spent: 78000000, remaining: 3000000 },
+                        modal: { allocated: 32400000, spent: 29000000, remaining: 3400000 }
                     },
                     monthlyRemaining: []
                 }
@@ -1206,6 +1506,12 @@
             
             // Setup filters
             setupFilters();
+            
+            // Setup export buttons
+            setupExportButtons();
+            
+            // Setup image upload
+            setupImageUpload();
         });
         
         // Populate year dropdowns
@@ -1620,6 +1926,107 @@
             }
         }
         
+        // Setup export buttons
+        function setupExportButtons() {
+            // Excel export button
+            const exportExcelBtn = document.getElementById('export-excel-btn');
+            if (exportExcelBtn) {
+                exportExcelBtn.addEventListener('click', function() {
+                    exportToExcel();
+                });
+            }
+            
+            // PowerPoint export button
+            const exportPowerPointBtn = document.getElementById('export-powerpoint-btn');
+            if (exportPowerPointBtn) {
+                exportPowerPointBtn.addEventListener('click', function() {
+                    exportToPowerPoint();
+                });
+            }
+        }
+        
+        // Setup image upload
+        function setupImageUpload() {
+            const imageUploadArea = document.getElementById('image-upload-area');
+            const imageInput = document.getElementById('edit-clinic-image');
+            const imagePreview = document.getElementById('edit-clinic-image-preview');
+            
+            if (imageUploadArea && imageInput) {
+                // Click to upload
+                imageUploadArea.addEventListener('click', function() {
+                    imageInput.click();
+                });
+                
+                // Drag and drop
+                imageUploadArea.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.borderColor = '#2563eb';
+                    this.style.backgroundColor = '#f0f7ff';
+                });
+                
+                imageUploadArea.addEventListener('dragleave', function(e) {
+                    e.preventDefault();
+                    this.style.borderColor = '#d1d5db';
+                    this.style.backgroundColor = '#f8fafc';
+                });
+                
+                imageUploadArea.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.borderColor = '#d1d5db';
+                    this.style.backgroundColor = '#f8fafc';
+                    
+                    if (e.dataTransfer.files.length > 0) {
+                        imageInput.files = e.dataTransfer.files;
+                        handleImageUpload();
+                    }
+                });
+                
+                // File selection
+                imageInput.addEventListener('change', function() {
+                    handleImageUpload();
+                });
+            }
+        }
+        
+        // Handle image upload
+        function handleImageUpload() {
+            const imageInput = document.getElementById('edit-clinic-image');
+            const imagePreview = document.getElementById('edit-clinic-image-preview');
+            
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                };
+                
+                reader.readAsDataURL(imageInput.files[0]);
+            }
+        }
+        
+        // Export to Excel
+        function exportToExcel() {
+            alert('Fitur export ke Excel akan mengunduh file Excel dengan data rekap total semua klinik.');
+            
+            // Simulasi proses export
+            console.log('Exporting data to Excel...');
+            
+            // Di versi produksi, ini akan membuat file Excel yang bisa diunduh
+            // dengan data dari semua klinik
+        }
+        
+        // Export to PowerPoint
+        function exportToPowerPoint() {
+            alert('Fitur export ke PowerPoint akan mengunduh file PowerPoint dengan presentasi data rekap total semua klinik.');
+            
+            // Simulasi proses export
+            console.log('Exporting data to PowerPoint...');
+            
+            // Di versi produksi, ini akan membuat file PowerPoint yang bisa diunduh
+            // dengan slide presentasi data dari semua klinik
+        }
+        
         // Load daftar klinik
         function loadClinics() {
             const container = document.getElementById('clinics-container');
@@ -1730,6 +2137,12 @@
             document.getElementById('clinic-phone').textContent = clinic.phone;
             document.getElementById('clinic-email').textContent = clinic.email;
             
+            // Update gambar klinik
+            const clinicImage = document.getElementById('clinic-image');
+            if (clinicImage) {
+                clinicImage.src = clinic.image;
+            }
+            
             // Tampilkan tombol edit hanya untuk minkes
             const editBtn = document.getElementById('btn-clinic-edit');
             if (editBtn) {
@@ -1771,6 +2184,13 @@
             document.getElementById('edit-clinic-phone').value = clinic.phone;
             document.getElementById('edit-clinic-email').value = clinic.email;
             
+            // Tampilkan preview gambar
+            const imagePreview = document.getElementById('edit-clinic-image-preview');
+            if (imagePreview) {
+                imagePreview.src = clinic.image;
+                imagePreview.style.display = 'block';
+            }
+            
             // Tampilkan edit section
             showClinicEdit();
         }
@@ -1790,21 +2210,42 @@
             clinics[clinicIndex].phone = document.getElementById('edit-clinic-phone').value;
             clinics[clinicIndex].email = document.getElementById('edit-clinic-email').value;
             
-            // Update currentClinic
-            currentClinic.name = clinics[clinicIndex].name;
-            currentClinic.address = clinics[clinicIndex].address;
-            currentClinic.phone = clinics[clinicIndex].phone;
-            currentClinic.email = clinics[clinicIndex].email;
-            
-            // Tampilkan pesan sukses
-            alert('Data klinik berhasil diperbarui!');
-            
-            // Kembali ke info klinik
-            showClinicInfo();
-            
-            // Refresh daftar klinik jika sedang di halaman klinik
-            if (document.getElementById('clinics-content').style.display === 'block') {
-                loadClinics();
+            // Update gambar jika ada file baru yang diupload
+            const imageInput = document.getElementById('edit-clinic-image');
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    clinics[clinicIndex].image = e.target.result;
+                    // Update currentClinic
+                    currentClinic.image = e.target.result;
+                    
+                    // Refresh daftar klinik jika sedang di halaman klinik
+                    if (document.getElementById('clinics-content').style.display === 'block') {
+                        loadClinics();
+                    }
+                    
+                    // Kembali ke info klinik
+                    showClinicInfo();
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                // Jika tidak ada gambar baru, langsung update
+                // Update currentClinic
+                currentClinic.name = clinics[clinicIndex].name;
+                currentClinic.address = clinics[clinicIndex].address;
+                currentClinic.phone = clinics[clinicIndex].phone;
+                currentClinic.email = clinics[clinicIndex].email;
+                
+                // Tampilkan pesan sukses
+                alert('Data klinik berhasil diperbarui!');
+                
+                // Kembali ke info klinik
+                showClinicInfo();
+                
+                // Refresh daftar klinik jika sedang di halaman klinik
+                if (document.getElementById('clinics-content').style.display === 'block') {
+                    loadClinics();
+                }
             }
         }
         
