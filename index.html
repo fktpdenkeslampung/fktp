@@ -1,40 +1,1710 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Test Login</title>
-</head>
-<body>
-    <h1>Test Login Sederhana</h1>
-    <div id="login-section">
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="testLogin()">Login</button>
-        <div id="error" style="color: red; display: none;">Login gagal</div>
-    </div>
-    <div id="dashboard" style="display: none;">
-        <h2>Login Berhasil!</h2>
-        <button onclick="logout()">Logout</button>
-    </div>
-
-    <script>
-        function testLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FKTP DENKESYAH 02.04.03</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1e3a8a;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #64748b;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #4b5563;
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            background-color: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .btn-secondary {
+            background-color: #6b7280;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+        
+        .btn-success {
+            background-color: #059669;
+        }
+        
+        .btn-success:hover {
+            background-color: #047857;
+        }
+        
+        .btn-danger {
+            background-color: #dc2626;
+        }
+        
+        .btn-danger:hover {
+            background-color: #b91c1c;
+        }
+        
+        .btn-warning {
+            background-color: #d97706;
+        }
+        
+        .btn-warning:hover {
+            background-color: #b45309;
+        }
+        
+        .help-section {
+            background-color: #dbeafe;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .error {
+            background-color: #fee2e2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            display: none;
+        }
+        
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+        }
+        
+        .dashboard-header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .clinic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .clinic-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .clinic-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #1e3a8a;
+        }
+        
+        .clinic-detail {
+            margin-bottom: 5px;
+            color: #4b5563;
+            font-size: 14px;
+        }
+        
+        .clinic-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        th {
+            background-color: #f8fafc;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+        
+        tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        /* Form Styles */
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
             
-            if (username === 'minkes' && password === 'minkes123') {
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-            } else {
-                document.getElementById('error').style.display = 'block';
+            .dashboard-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .nav-buttons {
+                justify-content: center;
             }
         }
         
-        function logout() {
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-top: 4px solid #2563eb;
+        }
+        
+        .stat-card.honor {
+            border-top-color: #059669;
+        }
+        
+        .stat-card.operational {
+            border-top-color: #d97706;
+        }
+        
+        .stat-card.modal {
+            border-top-color: #7c3aed;
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+        
+        .stat-value.honor {
+            color: #059669;
+        }
+        
+        .stat-value.operational {
+            color: #d97706;
+        }
+        
+        .stat-value.modal {
+            color: #7c3aed;
+        }
+        
+        /* Progress Bars */
+        .progress-container {
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            height: 10px;
+            margin: 10px 0;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            border-radius: 9999px;
+            background-color: #2563eb;
+        }
+        
+        .progress-honor {
+            background-color: #059669;
+        }
+        
+        .progress-operational {
+            background-color: #d97706;
+        }
+        
+        .progress-modal {
+            background-color: #7c3aed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div id="login-section" class="login-container">
+            <div class="header">
+                <h1>FKTP DENKESYAH 02.04.03</h1>
+                <p>www.FKTPDenkesyahLampung.com</p>
+            </div>
+            
+            <div class="help-section">
+                <h3>Petunjuk Login:</h3>
+                <p>• Username: minkes, Password: minkes123 (untuk akses minkes)</p>
+                <p>• Username: klinik, Password: klinik123 (untuk akses klinik)</p>
+                <p>• Username: user, Password: user123 (untuk akses user biasa)</p>
+            </div>
+            
+            <div id="error-message" class="error">
+                Username atau password salah
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Masukkan username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Masukkan password" required>
+                </div>
+                
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="dashboard">
+            <div class="dashboard-header">
+                <div>
+                    <h2>Dashboard FKTP DENKESYAH 02.04.03</h2>
+                    <p id="user-display">Halo, User</p>
+                </div>
+                <div class="nav-buttons">
+                    <button id="btn-dashboard">Dashboard</button>
+                    <button id="btn-clinics">Daftar Klinik</button>
+                    <button id="btn-recap">Rekap Total</button>
+                    <button id="logout-btn" class="btn-danger">Logout</button>
+                </div>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div id="dashboard-content" class="content" style="display: block;">
+                <h3>Selamat Datang di Sistem Manajemen FKTP</h3>
+                <p>Anda login sebagai: <strong id="user-type-display">-</strong></p>
+                <p>Silakan pilih menu di atas untuk mengakses fitur-fitur sistem.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Total Klinik</div>
+                        <div class="stat-value" id="total-clinics">10</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Total Pendapatan</div>
+                        <div class="stat-value">Rp 1.500.000.000</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Total Realisasi</div>
+                        <div class="stat-value">Rp 1.200.000.000</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Sisa Anggaran</div>
+                        <div class="stat-value">Rp 300.000.000</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Clinics Content -->
+            <div id="clinics-content" class="content" style="display: none;">
+                <h3>Daftar Unit FKTP</h3>
+                <p>Klik pada klinik untuk melihat detail, laporan, dan melakukan edit (jika memiliki akses).</p>
+                
+                <div class="clinic-grid" id="clinics-container">
+                    <!-- Daftar klinik akan muncul di sini -->
+                </div>
+            </div>
+            
+            <!-- Clinic Detail Content -->
+            <div id="clinic-detail-content" class="content" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 id="clinic-detail-title">Detail Klinik</h3>
+                    <button id="back-to-clinics" class="btn-secondary">← Kembali ke Daftar Klinik</button>
+                </div>
+                
+                <div class="nav-buttons" style="margin-bottom: 20px;">
+                    <button id="btn-clinic-info" class="btn-secondary">Informasi Klinik</button>
+                    <button id="btn-clinic-income" class="btn-secondary">Laporan Pendapatan</button>
+                    <button id="btn-clinic-realization" class="btn-secondary">Realisasi Pendapatan</button>
+                    <button id="btn-clinic-budget" class="btn-secondary">Sisa Anggaran</button>
+                    <button id="btn-clinic-edit" class="btn-warning" style="display: none;">Edit Klinik</button>
+                </div>
+                
+                <!-- Clinic Info Section -->
+                <div id="clinic-info-section">
+                    <div class="form-row">
+                        <div>
+                            <h4>Informasi Dasar</h4>
+                            <p><strong>Nama:</strong> <span id="clinic-name">-</span></p>
+                            <p><strong>Alamat:</strong> <span id="clinic-address">-</span></p>
+                            <p><strong>Telepon:</strong> <span id="clinic-phone">-</span></p>
+                            <p><strong>Email:</strong> <span id="clinic-email">-</span></p>
+                        </div>
+                        <div>
+                            <h4>Gambar Klinik</h4>
+                            <div style="background: #f1f5f9; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                <span>🏥 Gambar Klinik</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Income Report Section -->
+                <div id="clinic-income-section" style="display: none;">
+                    <h4>Laporan Pendapatan Kapitasi BPJS</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bulan</th>
+                                <th>Jumlah Pendapatan (Rp)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="income-table-body">
+                            <!-- Data pendapatan akan muncul di sini -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Realization Report Section -->
+                <div id="clinic-realization-section" style="display: none;">
+                    <h4>Realisasi Pendapatan</h4>
+                    
+                    <h5>Honor/Jasa (30%)</h5>
+                    <div class="stats-grid">
+                        <div class="stat-card honor">
+                            <div class="stat-title">Medis</div>
+                            <div class="stat-value honor" id="honor-medis">Rp 0</div>
+                        </div>
+                        <div class="stat-card honor">
+                            <div class="stat-title">Paramedis</div>
+                            <div class="stat-value honor" id="honor-paramedis">Rp 0</div>
+                        </div>
+                        <div class="stat-card honor">
+                            <div class="stat-title">Pengelola</div>
+                            <div class="stat-value honor" id="honor-pengelola">Rp 0</div>
+                        </div>
+                    </div>
+                    
+                    <h5>Operasional (50%)</h5>
+                    <div class="stats-grid">
+                        <div class="stat-card operational">
+                            <div class="stat-title">Belanja ATK</div>
+                            <div class="stat-value operational" id="operational-atk">Rp 0</div>
+                        </div>
+                        <div class="stat-card operational">
+                            <div class="stat-title">Belanja Obat</div>
+                            <div class="stat-value operational" id="operational-obat">Rp 0</div>
+                        </div>
+                    </div>
+                    
+                    <h5>Belanja Modal (20%)</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Barang</th>
+                                <th>Satuan</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modal-table-body">
+                            <!-- Data belanja modal akan muncul di sini -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Budget Remaining Section -->
+                <div id="clinic-budget-section" style="display: none;">
+                    <h4>Sisa Anggaran</h4>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-title">Total Anggaran</div>
+                            <div class="stat-value" id="total-budget">Rp 0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">Telah Digunakan</div>
+                            <div class="stat-value" id="total-spent">Rp 0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">Sisa Anggaran</div>
+                            <div class="stat-value" id="remaining-budget">Rp 0</div>
+                        </div>
+                    </div>
+                    
+                    <h5>Persentase Penggunaan per Kategori</h5>
+                    <div style="margin: 20px 0;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Honor/Jasa (30%)</span>
+                                <span id="honor-percentage">0%</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar progress-honor" id="honor-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Operasional (50%)</span>
+                                <span id="operational-percentage">0%</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar progress-operational" id="operational-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Belanja Modal (20%)</span>
+                                <span id="modal-percentage">0%</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar progress-modal" id="modal-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h5>Sisa Anggaran Bulanan</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bulan</th>
+                                <th>Total Anggaran</th>
+                                <th>Telah Digunakan</th>
+                                <th>Sisa Anggaran</th>
+                            </tr>
+                        </thead>
+                        <tbody id="monthly-budget-body">
+                            <!-- Data sisa anggaran bulanan akan muncul di sini -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Edit Clinic Form -->
+                <div id="clinic-edit-section" style="display: none;">
+                    <h4>Edit Informasi Klinik</h4>
+                    <form id="edit-clinic-form">
+                        <input type="hidden" id="edit-clinic-id">
+                        <div class="form-row">
+                            <div>
+                                <label for="edit-clinic-name">Nama Klinik</label>
+                                <input type="text" id="edit-clinic-name" required>
+                            </div>
+                            <div>
+                                <label for="edit-clinic-address">Alamat</label>
+                                <input type="text" id="edit-clinic-address" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label for="edit-clinic-phone">Telepon</label>
+                                <input type="text" id="edit-clinic-phone" required>
+                            </div>
+                            <div>
+                                <label for="edit-clinic-email">Email</label>
+                                <input type="email" id="edit-clinic-email" required>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="submit" class="btn-success">Simpan Perubahan</button>
+                            <button type="button" id="cancel-edit" class="btn-secondary">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Total Recap Content -->
+            <div id="recap-content" class="content" style="display: none;">
+                <h3>Rekap Total Semua Unit FKTP</h3>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Total Pendapatan</div>
+                        <div class="stat-value">Rp 1.500.000.000</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Total Realisasi</div>
+                        <div class="stat-value">Rp 1.200.000.000</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Sisa Pendapatan</div>
+                        <div class="stat-value">Rp 300.000.000</div>
+                    </div>
+                </div>
+                
+                <h4>Rekap per Unit FKTP</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Unit</th>
+                            <th>Total Pendapatan</th>
+                            <th>Total Realisasi</th>
+                            <th>Sisa</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recap-table-body">
+                        <!-- Data rekap akan muncul di sini -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data klinik
+        let clinics = [
+            { 
+                id: 1, 
+                name: 'FKTP Denkesyah 02.04.03 - Bandar Lampung', 
+                address: 'Jl. Teuku Umar No. 123, Bandar Lampung', 
+                phone: '0721-1234567', 
+                email: 'bandarlampung@fktpdenkesyah.com',
+                income: [
+                    { month: 'Januari 2024', amount: 150000000 },
+                    { month: 'Februari 2024', amount: 155000000 },
+                    { month: 'Maret 2024', amount: 160000000 },
+                    { month: 'April 2024', amount: 158000000 },
+                    { month: 'Mei 2024', amount: 162000000 },
+                    { month: 'Juni 2024', amount: 165000000 }
+                ],
+                realization: {
+                    honor: { medis: 30000000, paramedis: 15000000, pengelola: 10000000 },
+                    operational: { atk: 25000000, obat: 55000000 },
+                    modal: [
+                        { id: 1, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 5, total: 2500000 },
+                        { id: 2, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 10, total: 3000000 },
+                        { id: 3, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 3, total: 2400000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 165000000,
+                    totalSpent: 120000000,
+                    remaining: 45000000,
+                    byCategory: {
+                        honor: { allocated: 49500000, spent: 45000000, remaining: 4500000 },
+                        operational: { allocated: 82500000, spent: 80000000, remaining: 2500000 },
+                        modal: { allocated: 33000000, spent: 25000000, remaining: 8000000 }
+                    },
+                    monthlyRemaining: [
+                        { month: 'Januari', budget: 150000000, spent: 120000000, remaining: 30000000 },
+                        { month: 'Februari', budget: 155000000, spent: 130000000, remaining: 25000000 },
+                        { month: 'Maret', budget: 160000000, spent: 135000000, remaining: 25000000 },
+                        { month: 'April', budget: 158000000, spent: 132000000, remaining: 26000000 },
+                        { month: 'Mei', budget: 162000000, spent: 138000000, remaining: 24000000 },
+                        { month: 'Juni', budget: 165000000, spent: 140000000, remaining: 25000000 }
+                    ]
+                }
+            },
+            { 
+                id: 2, 
+                name: 'FKTP Denkesyah 02.04.03 - Metro', 
+                address: 'Jl. Jenderal Sudirman No. 45, Metro', 
+                phone: '0725-2345678', 
+                email: 'metro@fktpdenkesyah.com',
+                income: [
+                    { month: 'Januari 2024', amount: 145000000 },
+                    { month: 'Februari 2024', amount: 148000000 },
+                    { month: 'Maret 2024', amount: 152000000 },
+                    { month: 'April 2024', amount: 150000000 },
+                    { month: 'Mei 2024', amount: 155000000 },
+                    { month: 'Juni 2024', amount: 158000000 }
+                ],
+                realization: {
+                    honor: { medis: 28000000, paramedis: 14000000, pengelola: 9000000 },
+                    operational: { atk: 24000000, obat: 53000000 },
+                    modal: [
+                        { id: 4, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 4, total: 2000000 },
+                        { id: 5, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 8, total: 2400000 },
+                        { id: 6, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 2, total: 1600000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 158000000,
+                    totalSpent: 115000000,
+                    remaining: 43000000,
+                    byCategory: {
+                        honor: { allocated: 47400000, spent: 42000000, remaining: 5400000 },
+                        operational: { allocated: 79000000, spent: 75000000, remaining: 4000000 },
+                        modal: { allocated: 31600000, spent: 28000000, remaining: 3600000 }
+                    },
+                    monthlyRemaining: [
+                        { month: 'Januari', budget: 145000000, spent: 115000000, remaining: 30000000 },
+                        { month: 'Februari', budget: 148000000, spent: 120000000, remaining: 28000000 },
+                        { month: 'Maret', budget: 152000000, spent: 125000000, remaining: 27000000 },
+                        { month: 'April', budget: 150000000, spent: 122000000, remaining: 28000000 },
+                        { month: 'Mei', budget: 155000000, spent: 128000000, remaining: 27000000 },
+                        { month: 'Juni', budget: 158000000, spent: 130000000, remaining: 28000000 }
+                    ]
+                }
+            },
+            { 
+                id: 3, 
+                name: 'FKTP Denkesyah 02.04.03 - Pringsewu', 
+                address: 'Jl. Raya Pringsewu No. 78, Pringsewu', 
+                phone: '0729-3456789', 
+                email: 'pringsewu@fktpdenkesyah.com',
+                income: [
+                    { month: 'Januari 2024', amount: 148000000 },
+                    { month: 'Februari 2024', amount: 151000000 },
+                    { month: 'Maret 2024', amount: 156000000 },
+                    { month: 'April 2024', amount: 154000000 },
+                    { month: 'Mei 2024', amount: 159000000 },
+                    { month: 'Juni 2024', amount: 162000000 }
+                ],
+                realization: {
+                    honor: { medis: 29000000, paramedis: 14500000, pengelola: 9500000 },
+                    operational: { atk: 24500000, obat: 54000000 },
+                    modal: [
+                        { id: 7, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 6, total: 3000000 },
+                        { id: 8, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 12, total: 3600000 },
+                        { id: 9, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 4, total: 3200000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 162000000,
+                    totalSpent: 118000000,
+                    remaining: 44000000,
+                    byCategory: {
+                        honor: { allocated: 48600000, spent: 44000000, remaining: 4600000 },
+                        operational: { allocated: 81000000, spent: 78000000, remaining: 3000000 },
+                        modal: { allocated: 32400000, spent: 26000000, remaining: 6400000 }
+                    },
+                    monthlyRemaining: [
+                        { month: 'Januari', budget: 148000000, spent: 118000000, remaining: 30000000 },
+                        { month: 'Februari', budget: 151000000, spent: 123000000, remaining: 28000000 },
+                        { month: 'Maret', budget: 156000000, spent: 128000000, remaining: 28000000 },
+                        { month: 'April', budget: 154000000, spent: 126000000, remaining: 28000000 },
+                        { month: 'Mei', budget: 159000000, spent: 131000000, remaining: 28000000 },
+                        { month: 'Juni', budget: 162000000, spent: 134000000, remaining: 28000000 }
+                    ]
+                }
+            },
+            { 
+                id: 4, 
+                name: 'FKTP Denkesyah 02.04.03 - Pesawaran', 
+                address: 'Jl. Raya Pesawaran No. 23, Pesawaran', 
+                phone: '0721-4567890', 
+                email: 'pesawaran@fktpdenkesyah.com',
+                income: [
+                    { month: 'Januari 2024', amount: 142000000 },
+                    { month: 'Februari 2024', amount: 146000000 },
+                    { month: 'Maret 2024', amount: 150000000 },
+                    { month: 'April 2024', amount: 148000000 },
+                    { month: 'Mei 2024', amount: 153000000 },
+                    { month: 'Juni 2024', amount: 156000000 }
+                ],
+                realization: {
+                    honor: { medis: 27000000, paramedis: 13500000, pengelola: 8500000 },
+                    operational: { atk: 23000000, obat: 51000000 },
+                    modal: [
+                        { id: 10, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 3, total: 1500000 },
+                        { id: 11, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 7, total: 2100000 },
+                        { id: 12, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 2, total: 1600000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 156000000,
+                    totalSpent: 112000000,
+                    remaining: 44000000,
+                    byCategory: {
+                        honor: { allocated: 46800000, spent: 41000000, remaining: 5800000 },
+                        operational: { allocated: 78000000, spent: 74000000, remaining: 4000000 },
+                        modal: { allocated: 31200000, spent: 27000000, remaining: 4200000 }
+                    },
+                    monthlyRemaining: [
+                        { month: 'Januari', budget: 142000000, spent: 112000000, remaining: 30000000 },
+                        { month: 'Februari', budget: 146000000, spent: 116000000, remaining: 30000000 },
+                        { month: 'Maret', budget: 150000000, spent: 120000000, remaining: 30000000 },
+                        { month: 'April', budget: 148000000, spent: 118000000, remaining: 30000000 },
+                        { month: 'Mei', budget: 153000000, spent: 123000000, remaining: 30000000 },
+                        { month: 'Juni', budget: 156000000, spent: 126000000, remaining: 30000000 }
+                    ]
+                }
+            },
+            { 
+                id: 5, 
+                name: 'FKTP Denkesyah 02.04.03 - Tanggamus', 
+                address: 'Jl. Raya Tanggamus No. 56, Tanggamus', 
+                phone: '0722-5678901', 
+                email: 'tanggamus@fktpdenkesyah.com',
+                income: [
+                    { month: 'Januari 2024', amount: 147000000 },
+                    { month: 'Februari 2024', amount: 150000000 },
+                    { month: 'Maret 2024', amount: 155000000 },
+                    { month: 'April 2024', amount: 153000000 },
+                    { month: 'Mei 2024', amount: 158000000 },
+                    { month: 'Juni 2024', amount: 161000000 }
+                ],
+                realization: {
+                    honor: { medis: 28500000, paramedis: 14200000, pengelola: 9300000 },
+                    operational: { atk: 24000000, obat: 53500000 },
+                    modal: [
+                        { id: 13, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 5, total: 2500000 },
+                        { id: 14, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 9, total: 2700000 },
+                        { id: 15, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 3, total: 2400000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 161000000,
+                    totalSpent: 116000000,
+                    remaining: 45000000,
+                    byCategory: {
+                        honor: { allocated: 48300000, spent: 43000000, remaining: 5300000 },
+                        operational: { allocated: 80500000, spent: 77000000, remaining: 3500000 },
+                        modal: { allocated: 32200000, spent: 26000000, remaining: 6200000 }
+                    },
+                    monthlyRemaining: [
+                        { month: 'Januari', budget: 147000000, spent: 116000000, remaining: 31000000 },
+                        { month: 'Februari', budget: 150000000, spent: 119000000, remaining: 31000000 },
+                        { month: 'Maret', budget: 155000000, spent: 124000000, remaining: 31000000 },
+                        { month: 'April', budget: 153000000, spent: 122000000, remaining: 31000000 },
+                        { month: 'Mei', budget: 158000000, spent: 127000000, remaining: 31000000 },
+                        { month: 'Juni', budget: 161000000, spent: 130000000, remaining: 31000000 }
+                    ]
+                }
+            },
+            { 
+                id: 6, 
+                name: 'FKTP Denkesyah 02.04.03 - Lampung Selatan', 
+                address: 'Jl. Raya Kalianda No. 89, Lampung Selatan', 
+                phone: '0727-6789012', 
+                email: 'lampungselatan@fktpdenkesyah.com',
+                income: [
+                    { month: 'Januari 2024', amount: 144000000 },
+                    { month: 'Februari 2024', amount: 148000000 },
+                    { month: 'Maret 2024', amount: 152000000 },
+                    { month: 'April 2024', amount: 150000000 },
+                    { month: 'Mei 2024', amount: 155000000 },
+                    { month: 'Juni 2024', amount: 158000000 }
+                ],
+                realization: {
+                    honor: { medis: 27500000, paramedis: 13800000, pengelola: 8700000 },
+                    operational: { atk: 23500000, obat: 52000000 },
+                    modal: [
+                        { id: 16, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 4, total: 2000000 },
+                        { id: 17, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 8, total: 2400000 },
+                        { id: 18, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 2, total: 1600000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 158000000,
+                    totalSpent: 114000000,
+                    remaining: 44000000,
+                    byCategory: {
+                        honor: { allocated: 47400000, spent: 42000000, remaining: 5400000 },
+                        operational: { allocated: 79000000, spent: 75000000, remaining: 4000000 },
+                        modal: { allocated: 31600000, spent: 27000000, remaining: 4600000 }
+                    },
+                    monthlyRemaining: [
+                        { month: 'Januari', budget: 144000000, spent: 114000000, remaining: 30000000 },
+                        { month: 'Februari', budget: 148000000, spent: 118000000, remaining: 30000000 },
+                        { month: 'Maret', budget: 152000000, spent: 122000000, remaining: 30000000 },
+                        { month: 'April', budget: 150000000, spent: 120000000, remaining: 30000000 },
+                        { month: 'Mei', budget: 155000000, spent: 125000000, remaining: 30000000 },
+                        { month: 'Juni', budget: 158000000, spent: 128000000, remaining: 30000000 }
+                    ]
+                }
+            },
+            { 
+                id: 7, 
+                name: 'FKTP Denkesyah 02.04.03 - Lampung Tengah', 
+                address: 'Jl. Raya Terbanggi Besar No. 34, Lampung Tengah', 
+                phone: '0721-7890123', 
+                email: 'lampungtengah@fktpdenkesyah.com',
+                income: [
+                    { month: 'Januari 2024', amount: 149000000 },
+                    { month: 'Februari 2024', amount: 152000000 },
+                    { month: 'Maret 2024', amount: 157000000 },
+                    { month: 'April 2024', amount: 155000000 },
+                    { month: 'Mei 2024', amount: 160000000 },
+                    { month: 'Juni 2024', amount: 163000000 }
+                ],
+                realization: {
+                    honor: { medis: 29500000, paramedis: 14700000, pengelola: 9800000 },
+                    operational: { atk: 25000000, obat: 55500000 },
+                    modal: [
+                        { id: 19, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 6, total: 3000000 },
+                        { id: 20, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 11, total: 3300000 },
+                        { id: 21, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 4, total: 3200000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 163000000,
+                    totalSpent: 118000000,
+                    remaining: 45000000,
+                    byCategory: {
+                        honor: { allocated: 48900000, spent: 44000000, remaining: 4900000 },
+                        operational: { allocated: 81500000, spent: 80000000, remaining: 1500000 },
+                        modal: { allocated: 32600000, spent: 28000000, remaining: 4600000 }
+                    },
+                    monthlyRemaining: [
+                        { month: 'Januari', budget: 149000000, spent: 118000000, remaining: 31000000 },
+                        { month: 'Februari', budget: 152000000, spent: 121000000, remaining: 31000000 },
+                        { month: 'Maret', budget: 157000000, spent: 126000000, remaining: 31000000 },
+                        { month: 'April', budget: 155000000, spent: 124000000, remaining: 31000000 },
+                        { month: 'Mei', budget: 160000000, spent: 129000000, remaining: 31000000 },
+                        { month: 'Juni', budget: 163000000, spent: 132000000, remaining: 31000000 }
+                    ]
+                }
+            },
+            { 
+                id: 8, 
+                name: 'FKTP Denkesyah 02.04.03 - Lampung Utara', 
+                address: 'Jl. Raya Kotabumi No. 67, Lampung Utara', 
+                phone: '0724-8901234', 
+                email: 'lampungutara@fktpdenkesyah.com',
+                income: [
+                    { month: 'Januari 2024', amount: 143000000 },
+                    { month: 'Februari 2024', amount: 147000000 },
+                    { month: 'Maret 2024', amount: 151000000 },
+                    { month: 'April 2024', amount: 149000000 },
+                    { month: 'Mei 2024', amount: 154000000 },
+                    { month: 'Juni 2024', amount: 157000000 }
+                ],
+                realization: {
+                    honor: { medis: 27000000, paramedis: 13500000, pengelola: 8500000 },
+                    operational: { atk: 23000000, obat: 51500000 },
+                    modal: [
+                        { id: 22, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 3, total: 1500000 },
+                        { id: 23, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 7, total: 2100000 },
+                        { id: 24, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 2, total: 1600000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 157000000,
+                    totalSpent: 113000000,
+                    remaining: 44000000,
+                    byCategory: {
+                        honor: { allocated: 47100000, spent: 41000000, remaining: 6100000 },
+                        operational: { allocated: 78500000, spent: 74000000, remaining: 4500000 },
+                        modal: { allocated: 31400000, spent: 28000000, remaining: 3400000 }
+                    },
+                    monthlyRemaining: [
+                        { month: 'Januari', budget: 143000000, spent: 113000000, remaining: 30000000 },
+                        { month: 'Februari', budget: 147000000, spent: 117000000, remaining: 30000000 },
+                        { month: 'Maret', budget: 151000000, spent: 121000000, remaining: 30000000 },
+                        { month: 'April', budget: 149000000, spent: 119000000, remaining: 30000000 },
+                        { month: 'Mei', budget: 154000000, spent: 124000000, remaining: 30000000 },
+                        { month: 'Juni', budget: 157000000, spent: 127000000, remaining: 30000000 }
+                    ]
+                }
+            },
+            { 
+                id: 9, 
+                name: 'FKTP Denkesyah 02.04.03 - Way Kanan', 
+                address: 'Jl. Raya Blambangan Umpu No. 12, Way Kanan', 
+                phone: '0728-9012345', 
+                email: 'waykanan@fktpdenkesyah.com',
+                income: [
+                    { month: 'Januari 2024', amount: 146000000 },
+                    { month: 'Februari 2024', amount: 149000000 },
+                    { month: 'Maret 2024', amount: 154000000 },
+                    { month: 'April 2024', amount: 152000000 },
+                    { month: 'Mei 2024', amount: 157000000 },
+                    { month: 'Juni 2024', amount: 160000000 }
+                ],
+                realization: {
+                    honor: { medis: 28000000, paramedis: 14000000, pengelola: 9000000 },
+                    operational: { atk: 24000000, obat: 53000000 },
+                    modal: [
+                        { id: 25, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 5, total: 2500000 },
+                        { id: 26, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 9, total: 2700000 },
+                        { id: 27, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 3, total: 2400000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 160000000,
+                    totalSpent: 115000000,
+                    remaining: 45000000,
+                    byCategory: {
+                        honor: { allocated: 48000000, spent: 43000000, remaining: 5000000 },
+                        operational: { allocated: 80000000, spent: 77000000, remaining: 3000000 },
+                        modal: { allocated: 32000000, spent: 28000000, remaining: 4000000 }
+                    },
+                    monthlyRemaining: [
+                        { month: 'Januari', budget: 146000000, spent: 115000000, remaining: 31000000 },
+                        { month: 'Februari', budget: 149000000, spent: 118000000, remaining: 31000000 },
+                        { month: 'Maret', budget: 154000000, spent: 123000000, remaining: 31000000 },
+                        { month: 'April', budget: 152000000, spent: 121000000, remaining: 31000000 },
+                        { month: 'Mei', budget: 157000000, spent: 126000000, remaining: 31000000 },
+                        { month: 'Juni', budget: 160000000, spent: 129000000, remaining: 31000000 }
+                    ]
+                }
+            },
+            { 
+                id: 10, 
+                name: 'FKTP Denkesyah 02.04.03 - Lampung Timur', 
+                address: 'Jl. Raya Sukadana No. 45, Lampung Timur', 
+                phone: '0725-0123456', 
+                email: 'lampungtimur@fktpdenkesyah.com',
+                income: [
+                    { month: 'Januari 2024', amount: 148000000 },
+                    { month: 'Februari 2024', amount: 151000000 },
+                    { month: 'Maret 2024', amount: 156000000 },
+                    { month: 'April 2024', amount: 154000000 },
+                    { month: 'Mei 2024', amount: 159000000 },
+                    { month: 'Juni 2024', amount: 162000000 }
+                ],
+                realization: {
+                    honor: { medis: 29000000, paramedis: 14500000, pengelola: 9500000 },
+                    operational: { atk: 24500000, obat: 54000000 },
+                    modal: [
+                        { id: 28, nama: 'Stetoskop', satuan: 'Unit', harga: 500000, jumlah: 6, total: 3000000 },
+                        { id: 29, nama: 'Termometer Digital', satuan: 'Unit', harga: 300000, jumlah: 10, total: 3000000 },
+                        { id: 30, nama: 'Tensimeter', satuan: 'Unit', harga: 800000, jumlah: 3, total: 2400000 }
+                    ]
+                },
+                budget: {
+                    totalBudget: 162000000,
+                    totalSpent: 117000000,
+                    remaining: 45000000,
+                    byCategory: {
+                        honor: { allocated: 48600000, spent: 44000000, remaining: 4600000 },
+                        operational: { allocated: 81000000, spent: 78000000, remaining: 3000000 },
+                        modal: { allocated: 32400000, spent: 29000000, remaining: 3400000 }
+                    },
+                    monthlyRemaining: [
+                        { month: 'Januari', budget: 148000000, spent: 117000000, remaining: 31000000 },
+                        { month: 'Februari', budget: 151000000, spent: 120000000, remaining: 31000000 },
+                        { month: 'Maret', budget: 156000000, spent: 125000000, remaining: 31000000 },
+                        { month: 'April', budget: 154000000, spent: 123000000, remaining: 31000000 },
+                        { month: 'Mei', budget: 159000000, spent: 128000000, remaining: 31000000 },
+                        { month: 'Juni', budget: 162000000, spent: 131000000, remaining: 31000000 }
+                    ]
+                }
+            }
+        ];
+        
+        // State aplikasi
+        let currentUser = null;
+        let currentClinic = null;
+        
+        // Tunggu hingga halaman sepenuhnya dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Halaman telah dimuat');
+            
+            // Cek apakah user sudah login sebelumnya
+            checkSavedLogin();
+            
+            // Setup form login
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    handleLogin();
+                });
+            }
+            
+            // Setup logout button
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    handleLogout();
+                });
+            }
+            
+            // Setup navigation buttons
+            setupNavigation();
+            
+            // Setup clinic detail navigation
+            setupClinicDetailNavigation();
+            
+            // Setup edit form
+            setupEditForm();
+        });
+        
+        // Fungsi login
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Validasi login
+            if ((username === 'minkes' && password === 'minkes123') || 
+                (username === 'klinik' && password === 'klinik123') || 
+                (username === 'user' && password === 'user123')) {
+                
+                // Simpan user ke localStorage
+                try {
+                    localStorage.setItem('fktpUser', JSON.stringify({
+                        username: username,
+                        type: username === 'minkes' ? 'minkes' : 'klinik',
+                        isLoggedIn: true
+                    }));
+                } catch (e) {
+                    console.log('Gagal menyimpan ke localStorage:', e);
+                }
+                
+                // Set current user
+                currentUser = {
+                    username: username,
+                    type: username === 'minkes' ? 'minkes' : 'klinik'
+                };
+                
+                // Tampilkan dashboard
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                document.getElementById('user-display').textContent = `Halo, ${username}`;
+                document.getElementById('user-type-display').textContent = username === 'minkes' ? 'minkes' : 'klinik';
+                
+                // Load data klinik
+                loadClinics();
+                
+                // Tampilkan dashboard content
+                showDashboard();
+            } else {
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
+        
+        // Fungsi logout
+        function handleLogout() {
+            try {
+                localStorage.removeItem('fktpUser');
+            } catch (e) {
+                console.log('Gagal menghapus dari localStorage:', e);
+            }
+            
+            currentUser = null;
+            currentClinic = null;
+            
             document.getElementById('login-section').style.display = 'block';
-            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'none';
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
-            document.getElementById('error').style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
+        }
+        
+        // Cek login yang tersimpan
+        function checkSavedLogin() {
+            try {
+                const savedUser = localStorage.getItem('fktpUser');
+                if (savedUser) {
+                    const userData = JSON.parse(savedUser);
+                    if (userData.isLoggedIn) {
+                        currentUser = {
+                            username: userData.username,
+                            type: userData.type
+                        };
+                        
+                        document.getElementById('login-section').style.display = 'none';
+                        document.getElementById('dashboard-section').style.display = 'block';
+                        document.getElementById('user-display').textContent = `Halo, ${userData.username}`;
+                        document.getElementById('user-type-display').textContent = userData.type;
+                        
+                        loadClinics();
+                        showDashboard();
+                    }
+                }
+            } catch (e) {
+                console.log('Error saat mengecek login yang tersimpan:', e);
+            }
+        }
+        
+        // Setup navigation
+        function setupNavigation() {
+            // Dashboard button
+            const dashboardBtn = document.getElementById('btn-dashboard');
+            if (dashboardBtn) {
+                dashboardBtn.addEventListener('click', function() {
+                    showDashboard();
+                });
+            }
+            
+            // Clinics button
+            const clinicsBtn = document.getElementById('btn-clinics');
+            if (clinicsBtn) {
+                clinicsBtn.addEventListener('click', function() {
+                    showClinics();
+                });
+            }
+            
+            // Recap button
+            const recapBtn = document.getElementById('btn-recap');
+            if (recapBtn) {
+                recapBtn.addEventListener('click', function() {
+                    showRecap();
+                });
+            }
+            
+            // Back to clinics button
+            const backToClinicsBtn = document.getElementById('back-to-clinics');
+            if (backToClinicsBtn) {
+                backToClinicsBtn.addEventListener('click', function() {
+                    showClinics();
+                });
+            }
+        }
+        
+        // Setup clinic detail navigation
+        function setupClinicDetailNavigation() {
+            // Clinic info button
+            const clinicInfoBtn = document.getElementById('btn-clinic-info');
+            if (clinicInfoBtn) {
+                clinicInfoBtn.addEventListener('click', function() {
+                    showClinicInfo();
+                });
+            }
+            
+            // Clinic income button
+            const clinicIncomeBtn = document.getElementById('btn-clinic-income');
+            if (clinicIncomeBtn) {
+                clinicIncomeBtn.addEventListener('click', function() {
+                    showClinicIncome();
+                });
+            }
+            
+            // Clinic realization button
+            const clinicRealizationBtn = document.getElementById('btn-clinic-realization');
+            if (clinicRealizationBtn) {
+                clinicRealizationBtn.addEventListener('click', function() {
+                    showClinicRealization();
+                });
+            }
+            
+            // Clinic budget button
+            const clinicBudgetBtn = document.getElementById('btn-clinic-budget');
+            if (clinicBudgetBtn) {
+                clinicBudgetBtn.addEventListener('click', function() {
+                    showClinicBudget();
+                });
+            }
+            
+            // Clinic edit button
+            const clinicEditBtn = document.getElementById('btn-clinic-edit');
+            if (clinicEditBtn) {
+                clinicEditBtn.addEventListener('click', function() {
+                    showClinicEdit();
+                });
+            }
+            
+            // Cancel edit button
+            const cancelEditBtn = document.getElementById('cancel-edit');
+            if (cancelEditBtn) {
+                cancelEditBtn.addEventListener('click', function() {
+                    showClinicInfo();
+                });
+            }
+        }
+        
+        // Setup edit form
+        function setupEditForm() {
+            const editForm = document.getElementById('edit-clinic-form');
+            if (editForm) {
+                editForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    saveClinicEdit();
+                });
+            }
+        }
+        
+        // Load daftar klinik
+        function loadClinics() {
+            const container = document.getElementById('clinics-container');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            clinics.forEach(clinic => {
+                const clinicCard = document.createElement('div');
+                clinicCard.className = 'clinic-card';
+                clinicCard.innerHTML = `
+                    <div class="clinic-name">${clinic.name}</div>
+                    <div class="clinic-detail">Alamat: ${clinic.address}</div>
+                    <div class="clinic-detail">Telepon: ${clinic.phone}</div>
+                    <div class="clinic-detail">Email: ${clinic.email}</div>
+                    <div class="clinic-actions">
+                        <button class="btn-success view-clinic-btn" data-id="${clinic.id}">Lihat Detail</button>
+                        ${currentUser && currentUser.type === 'minkes' ? `<button class="btn-warning edit-clinic-btn" data-id="${clinic.id}">Edit</button>` : ''}
+                    </div>
+                `;
+                container.appendChild(clinicCard);
+            });
+            
+            // Setup event listeners untuk tombol view dan edit
+            document.querySelectorAll('.view-clinic-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const clinicId = parseInt(this.getAttribute('data-id'));
+                    viewClinic(clinicId);
+                });
+            });
+            
+            if (currentUser && currentUser.type === 'minkes') {
+                document.querySelectorAll('.edit-clinic-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const clinicId = parseInt(this.getAttribute('data-id'));
+                        editClinic(clinicId);
+                    });
+                });
+            }
+            
+            // Update total clinics display
+            document.getElementById('total-clinics').textContent = clinics.length;
+        }
+        
+        // Tampilkan dashboard
+        function showDashboard() {
+            hideAllContent();
+            document.getElementById('dashboard-content').style.display = 'block';
+            
+            // Update active button
+            setActiveButton('btn-dashboard');
+        }
+        
+        // Tampilkan daftar klinik
+        function showClinics() {
+            hideAllContent();
+            document.getElementById('clinics-content').style.display = 'block';
+            
+            // Update active button
+            setActiveButton('btn-clinics');
+        }
+        
+        // Tampilkan rekap total
+        function showRecap() {
+            hideAllContent();
+            document.getElementById('recap-content').style.display = 'block';
+            
+            // Load data rekap
+            loadRecapData();
+            
+            // Update active button
+            setActiveButton('btn-recap');
+        }
+        
+        // Sembunyikan semua konten
+        function hideAllContent() {
+            document.getElementById('dashboard-content').style.display = 'none';
+            document.getElementById('clinics-content').style.display = 'none';
+            document.getElementById('clinic-detail-content').style.display = 'none';
+            document.getElementById('recap-content').style.display = 'none';
+        }
+        
+        // Set active button
+        function setActiveButton(buttonId) {
+            document.querySelectorAll('.nav-buttons button').forEach(btn => {
+                btn.style.backgroundColor = '#4f46e5';
+            });
+            
+            const activeBtn = document.getElementById(buttonId);
+            if (activeBtn) {
+                activeBtn.style.backgroundColor = '#2563eb';
+            }
+        }
+        
+        // Lihat detail klinik
+        function viewClinic(clinicId) {
+            const clinic = clinics.find(c => c.id === clinicId);
+            if (!clinic) return;
+            
+            currentClinic = clinic;
+            
+            // Update title
+            document.getElementById('clinic-detail-title').textContent = `Detail Klinik: ${clinic.name}`;
+            
+            // Update info klinik
+            document.getElementById('clinic-name').textContent = clinic.name;
+            document.getElementById('clinic-address').textContent = clinic.address;
+            document.getElementById('clinic-phone').textContent = clinic.phone;
+            document.getElementById('clinic-email').textContent = clinic.email;
+            
+            // Tampilkan tombol edit hanya untuk minkes
+            const editBtn = document.getElementById('btn-clinic-edit');
+            if (editBtn) {
+                if (currentUser && currentUser.type === 'minkes') {
+                    editBtn.style.display = 'block';
+                } else {
+                    editBtn.style.display = 'none';
+                }
+            }
+            
+            // Load data laporan
+            loadClinicIncome(clinic);
+            loadClinicRealization(clinic);
+            loadClinicBudget(clinic);
+            
+            // Tampilkan clinic detail content
+            hideAllContent();
+            document.getElementById('clinic-detail-content').style.display = 'block';
+            
+            // Tampilkan info section by default
+            showClinicInfo();
+        }
+        
+        // Edit klinik
+        function editClinic(clinicId) {
+            const clinic = clinics.find(c => c.id === clinicId);
+            if (!clinic) return;
+            
+            currentClinic = clinic;
+            
+            // Isi form dengan data klinik
+            document.getElementById('edit-clinic-id').value = clinic.id;
+            document.getElementById('edit-clinic-name').value = clinic.name;
+            document.getElementById('edit-clinic-address').value = clinic.address;
+            document.getElementById('edit-clinic-phone').value = clinic.phone;
+            document.getElementById('edit-clinic-email').value = clinic.email;
+            
+            // Tampilkan edit section
+            showClinicEdit();
+        }
+        
+        // Simpan edit klinik
+        function saveClinicEdit() {
+            if (!currentClinic) return;
+            
+            const clinicId = parseInt(document.getElementById('edit-clinic-id').value);
+            const clinicIndex = clinics.findIndex(c => c.id === clinicId);
+            
+            if (clinicIndex === -1) return;
+            
+            // Update data klinik
+            clinics[clinicIndex].name = document.getElementById('edit-clinic-name').value;
+            clinics[clinicIndex].address = document.getElementById('edit-clinic-address').value;
+            clinics[clinicIndex].phone = document.getElementById('edit-clinic-phone').value;
+            clinics[clinicIndex].email = document.getElementById('edit-clinic-email').value;
+            
+            // Update currentClinic
+            currentClinic.name = clinics[clinicIndex].name;
+            currentClinic.address = clinics[clinicIndex].address;
+            currentClinic.phone = clinics[clinicIndex].phone;
+            currentClinic.email = clinics[clinicIndex].email;
+            
+            // Tampilkan pesan sukses
+            alert('Data klinik berhasil diperbarui!');
+            
+            // Kembali ke info klinik
+            showClinicInfo();
+            
+            // Refresh daftar klinik jika sedang di halaman klinik
+            if (document.getElementById('clinics-content').style.display === 'block') {
+                loadClinics();
+            }
+        }
+        
+        // Tampilkan info klinik
+        function showClinicInfo() {
+            document.getElementById('clinic-info-section').style.display = 'block';
+            document.getElementById('clinic-income-section').style.display = 'none';
+            document.getElementById('clinic-realization-section').style.display = 'none';
+            document.getElementById('clinic-budget-section').style.display = 'none';
+            document.getElementById('clinic-edit-section').style.display = 'none';
+            
+            // Update active button
+            setActiveClinicButton('btn-clinic-info');
+        }
+        
+        // Tampilkan laporan pendapatan
+        function showClinicIncome() {
+            document.getElementById('clinic-info-section').style.display = 'none';
+            document.getElementById('clinic-income-section').style.display = 'block';
+            document.getElementById('clinic-realization-section').style.display = 'none';
+            document.getElementById('clinic-budget-section').style.display = 'none';
+            document.getElementById('clinic-edit-section').style.display = 'none';
+            
+            // Update active button
+            setActiveClinicButton('btn-clinic-income');
+        }
+        
+        // Tampilkan realisasi pendapatan
+        function showClinicRealization() {
+            document.getElementById('clinic-info-section').style.display = 'none';
+            document.getElementById('clinic-income-section').style.display = 'none';
+            document.getElementById('clinic-realization-section').style.display = 'block';
+            document.getElementById('clinic-budget-section').style.display = 'none';
+            document.getElementById('clinic-edit-section').style.display = 'none';
+            
+            // Update active button
+            setActiveClinicButton('btn-clinic-realization');
+        }
+        
+        // Tampilkan sisa anggaran
+        function showClinicBudget() {
+            document.getElementById('clinic-info-section').style.display = 'none';
+            document.getElementById('clinic-income-section').style.display = 'none';
+            document.getElementById('clinic-realization-section').style.display = 'none';
+            document.getElementById('clinic-budget-section').style.display = 'block';
+            document.getElementById('clinic-edit-section').style.display = 'none';
+            
+            // Update active button
+            setActiveClinicButton('btn-clinic-budget');
+        }
+        
+        // Tampilkan form edit
+        function showClinicEdit() {
+            document.getElementById('clinic-info-section').style.display = 'none';
+            document.getElementById('clinic-income-section').style.display = 'none';
+            document.getElementById('clinic-realization-section').style.display = 'none';
+            document.getElementById('clinic-budget-section').style.display = 'none';
+            document.getElementById('clinic-edit-section').style.display = 'block';
+            
+            // Update active button
+            setActiveClinicButton('btn-clinic-edit');
+        }
+        
+        // Set active clinic button
+        function setActiveClinicButton(buttonId) {
+            document.querySelectorAll('#btn-clinic-info, #btn-clinic-income, #btn-clinic-realization, #btn-clinic-budget, #btn-clinic-edit').forEach(btn => {
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-secondary');
+            });
+            
+            const activeBtn = document.getElementById(buttonId);
+            if (activeBtn) {
+                activeBtn.classList.remove('btn-secondary');
+                activeBtn.classList.add('btn-success');
+            }
+        }
+        
+        // Load data pendapatan klinik
+        function loadClinicIncome(clinic) {
+            const tbody = document.getElementById('income-table-body');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            let total = 0;
+            clinic.income.forEach(report => {
+                total += report.amount;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${report.month}</td>
+                    <td>Rp ${report.amount.toLocaleString('id-ID')}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            // Add total row
+            const totalRow = document.createElement('tr');
+            totalRow.style.fontWeight = 'bold';
+            totalRow.style.backgroundColor = '#f8fafc';
+            totalRow.innerHTML = `
+                <td><strong>TOTAL</strong></td>
+                <td><strong>Rp ${total.toLocaleString('id-ID')}</strong></td>
+            `;
+            tbody.appendChild(totalRow);
+        }
+        
+        // Load data realisasi klinik
+        function loadClinicRealization(clinic) {
+            // Update honor values
+            document.getElementById('honor-medis').textContent = `Rp ${clinic.realization.honor.medis.toLocaleString('id-ID')}`;
+            document.getElementById('honor-paramedis').textContent = `Rp ${clinic.realization.honor.paramedis.toLocaleString('id-ID')}`;
+            document.getElementById('honor-pengelola').textContent = `Rp ${clinic.realization.honor.pengelola.toLocaleString('id-ID')}`;
+            
+            // Update operational values
+            document.getElementById('operational-atk').textContent = `Rp ${clinic.realization.operational.atk.toLocaleString('id-ID')}`;
+            document.getElementById('operational-obat').textContent = `Rp ${clinic.realization.operational.obat.toLocaleString('id-ID')}`;
+            
+            // Update modal table
+            const modalTbody = document.getElementById('modal-table-body');
+            if (modalTbody) {
+                modalTbody.innerHTML = '';
+                
+                clinic.realization.modal.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.nama}</td>
+                        <td>${item.satuan}</td>
+                        <td>Rp ${item.harga.toLocaleString('id-ID')}</td>
+                        <td>${item.jumlah}</td>
+                        <td>Rp ${item.total.toLocaleString('id-ID')}</td>
+                    `;
+                    modalTbody.appendChild(row);
+                });
+            }
+        }
+        
+        // Load data sisa anggaran klinik
+        function loadClinicBudget(clinic) {
+            // Update total values
+            document.getElementById('total-budget').textContent = `Rp ${clinic.budget.totalBudget.toLocaleString('id-ID')}`;
+            document.getElementById('total-spent').textContent = `Rp ${clinic.budget.totalSpent.toLocaleString('id-ID')}`;
+            document.getElementById('remaining-budget').textContent = `Rp ${clinic.budget.remaining.toLocaleString('id-ID')}`;
+            
+            // Update percentage values
+            const honorPercentage = Math.round((clinic.budget.byCategory.honor.spent / clinic.budget.byCategory.honor.allocated) * 100);
+            const operationalPercentage = Math.round((clinic.budget.byCategory.operational.spent / clinic.budget.byCategory.operational.allocated) * 100);
+            const modalPercentage = Math.round((clinic.budget.byCategory.modal.spent / clinic.budget.byCategory.modal.allocated) * 100);
+            
+            document.getElementById('honor-percentage').textContent = `${honorPercentage}%`;
+            document.getElementById('operational-percentage').textContent = `${operationalPercentage}%`;
+            document.getElementById('modal-percentage').textContent = `${modalPercentage}%`;
+            
+            // Update progress bars
+            document.getElementById('honor-progress').style.width = `${honorPercentage}%`;
+            document.getElementById('operational-progress').style.width = `${operationalPercentage}%`;
+            document.getElementById('modal-progress').style.width = `${modalPercentage}%`;
+            
+            // Update monthly budget table
+            const monthlyTbody = document.getElementById('monthly-budget-body');
+            if (monthlyTbody) {
+                monthlyTbody.innerHTML = '';
+                
+                clinic.budget.monthlyRemaining.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.month}</td>
+                        <td>Rp ${item.budget.toLocaleString('id-ID')}</td>
+                        <td>Rp ${item.spent.toLocaleString('id-ID')}</td>
+                        <td>Rp ${item.remaining.toLocaleString('id-ID')}</td>
+                    `;
+                    monthlyTbody.appendChild(row);
+                });
+            }
+        }
+        
+        // Load data rekap
+        function loadRecapData() {
+            const tbody = document.getElementById('recap-table-body');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            const totalIncome = 1500000000;
+            const totalRealization = 1200000000;
+            const remaining = 300000000;
+            
+            clinics.forEach((clinic, index) => {
+                const avgIncome = totalIncome / clinics.length;
+                const avgRealization = totalRealization / clinics.length;
+                const avgRemaining = remaining / clinics.length;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${clinic.name}</td>
+                    <td>Rp ${Math.round(avgIncome).toLocaleString('id-ID')}</td>
+                    <td>Rp ${Math.round(avgRealization).toLocaleString('id-ID')}</td>
+                    <td>Rp ${Math.round(avgRemaining).toLocaleString('id-ID')}</td>
+                    <td>
+                        <button class="btn-success view-recap-btn" data-id="${clinic.id}">Detail</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            // Setup event listeners untuk tombol detail
+            document.querySelectorAll('.view-recap-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const clinicId = parseInt(this.getAttribute('data-id'));
+                    viewClinic(clinicId);
+                });
+            });
         }
     </script>
 </body>
