@@ -454,7 +454,7 @@
         
         .image-upload:hover {
             border-color: #2563eb;
-            background-color: #f8fafc;
+            background-color: #f0f7ff;
         }
         
         /* Export Buttons */
@@ -505,6 +505,41 @@
         .download-section h4 {
             margin-bottom: 20px;
             color: #1e3a8a;
+        }
+        
+        /* Monthly Report Tabs */
+        .monthly-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+        
+        .monthly-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            background: none;
+            font-weight: 500;
+        }
+        
+        .monthly-tab.active {
+            border-color: #e5e7eb;
+            border-bottom-color: white;
+            background: white;
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .monthly-tab:hover:not(.active) {
+            background: #f8fafc;
+        }
+        
+        .monthly-content {
+            display: none;
+        }
+        
+        .monthly-content.active {
+            display: block;
         }
     </style>
 </head>
@@ -709,6 +744,44 @@
                         </div>
                     </div>
                     
+                    <div class="monthly-tabs">
+                        <div class="monthly-tab active" data-tab="monthly">Per Bulan</div>
+                        <div class="monthly-tab" data-tab="yearly">Per Tahun</div>
+                    </div>
+                    
+                    <div id="income-monthly-content" class="monthly-content active">
+                        <h5>Laporan Pendapatan Per Bulan</h5>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Bulan</th>
+                                    <th>Tahun</th>
+                                    <th>Jumlah Pendapatan (Rp)</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="income-table-body">
+                                <!-- Data pendapatan per bulan akan muncul di sini -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="income-yearly-content" class="monthly-content">
+                        <h5>Laporan Pendapatan Per Tahun</h5>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tahun</th>
+                                    <th>Total Pendapatan (Rp)</th>
+                                    <th>Rata-rata Per Bulan (Rp)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="income-yearly-table-body">
+                                <!-- Data pendapatan per tahun akan muncul di sini -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     <button id="add-income-btn" class="add-item-btn" style="display: none;">+ Tambah Data Pendapatan</button>
                     <div id="income-form-container" style="display: none;" class="finance-form">
                         <h4>Form Input Pendapatan</h4>
@@ -746,190 +819,183 @@
                             <button type="button" id="save-income-btn" class="btn-success">Simpan</button>
                         </div>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Bulan</th>
-                                <th>Tahun</th>
-                                <th>Jumlah Pendapatan (Rp)</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="income-table-body">
-                            <!-- Data pendapatan akan muncul di sini -->
-                        </tbody>
-                    </table>
                 </div>
                 
                 <!-- Realization Report Section -->
                 <div id="clinic-realization-section" style="display: none;">
                     <h4>Realisasi Pendapatan</h4>
                     
-                    <div class="finance-form">
-                        <h4>Honor/Jasa (30%)</h4>
-                        <div class="form-row">
-                            <div>
-                                <label for="honor-medis">Medis (Rp)</label>
-                                <input type="number" id="honor-medis-input" min="0" placeholder="Masukkan jumlah">
+                    <div class="filter-section">
+                        <div class="filter-row">
+                            <div class="filter-item">
+                                <label for="realization-year-filter">Tahun</label>
+                                <select id="realization-year-filter">
+                                    <!-- Options will be populated by JavaScript -->
+                                </select>
                             </div>
-                            <div>
-                                <label for="honor-paramedis">Paramedis (Rp)</label>
-                                <input type="number" id="honor-paramedis-input" min="0" placeholder="Masukkan jumlah">
+                            <div class="filter-item">
+                                <label for="realization-month-filter">Bulan</label>
+                                <select id="realization-month-filter">
+                                    <option value="all">Semua Bulan</option>
+                                    <option value="1">Januari</option>
+                                    <option value="2">Februari</option>
+                                    <option value="3">Maret</option>
+                                    <option value="4">April</option>
+                                    <option value="5">Mei</option>
+                                    <option value="6">Juni</option>
+                                    <option value="7">Juli</option>
+                                    <option value="8">Agustus</option>
+                                    <option value="9">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
                             </div>
-                            <div>
-                                <label for="honor-pengelola">Pengelola (Rp)</label>
-                                <input type="number" id="honor-pengelola-input" min="0" placeholder="Masukkan jumlah">
-                            </div>
-                        </div>
-                        <div class="finance-actions">
-                            <button type="button" id="save-honor-btn" class="btn-success">Update Honor</button>
                         </div>
                     </div>
                     
-                    <div class="stats-grid">
-                        <div class="stat-card honor">
-                            <div class="stat-title">Medis</div>
-                            <div class="stat-value honor" id="honor-medis-display">Rp 0</div>
-                        </div>
-                        <div class="stat-card honor">
-                            <div class="stat-title">Paramedis</div>
-                            <div class="stat-value honor" id="honor-paramedis-display">Rp 0</div>
-                        </div>
-                        <div class="stat-card honor">
-                            <div class="stat-title">Pengelola</div>
-                            <div class="stat-value honor" id="honor-pengelola-display">Rp 0</div>
-                        </div>
+                    <div class="monthly-tabs">
+                        <div class="monthly-tab active" data-tab="monthly">Per Bulan</div>
+                        <div class="monthly-tab" data-tab="yearly">Per Tahun</div>
                     </div>
                     
-                    <div class="finance-form">
-                        <h4>Operasional (50%)</h4>
-                        <div class="form-row">
-                            <div>
-                                <label for="operational-atk">Belanja ATK (Rp)</label>
-                                <input type="number" id="operational-atk-input" min="0" placeholder="Masukkan jumlah">
-                            </div>
-                            <div>
-                                <label for="operational-obat">Belanja Obat (Rp)</label>
-                                <input type="number" id="operational-obat-input" min="0" placeholder="Masukkan jumlah">
-                            </div>
-                        </div>
-                        <div class="finance-actions">
-                            <button type="button" id="save-operational-btn" class="btn-success">Update Operasional</button>
-                        </div>
-                    </div>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card operational">
-                            <div class="stat-title">Belanja ATK</div>
-                            <div class="stat-value operational" id="operational-atk-display">Rp 0</div>
-                        </div>
-                        <div class="stat-card operational">
-                            <div class="stat-title">Belanja Obat</div>
-                            <div class="stat-value operational" id="operational-obat-display">Rp 0</div>
-                        </div>
-                    </div>
-                    
-                    <div class="finance-form">
-                        <h4>Belanja Modal (20%)</h4>
-                        <button id="add-modal-item-btn" class="add-item-btn">+ Tambah Item Belanja Modal</button>
-                        <div id="modal-form-container" style="display: none;" class="finance-form">
-                            <h4>Form Input Item Belanja Modal</h4>
+                    <div id="realization-monthly-content" class="monthly-content active">
+                        <h5>Realisasi Pendapatan Per Bulan</h5>
+                        <div class="finance-form">
+                            <h4>Honor/Jasa (30%)</h4>
                             <div class="form-row">
                                 <div>
-                                    <label for="modal-item-name">Nama Barang</label>
-                                    <input type="text" id="modal-item-name" placeholder="Masukkan nama barang">
+                                    <label for="honor-medis">Medis (Rp)</label>
+                                    <input type="number" id="honor-medis-input" min="0" placeholder="Masukkan jumlah">
                                 </div>
                                 <div>
-                                    <label for="modal-item-unit">Satuan</label>
-                                    <input type="text" id="modal-item-unit" placeholder="Masukkan satuan">
+                                    <label for="honor-paramedis">Paramedis (Rp)</label>
+                                    <input type="number" id="honor-paramedis-input" min="0" placeholder="Masukkan jumlah">
                                 </div>
                                 <div>
-                                    <label for="modal-item-price">Harga (Rp)</label>
-                                    <input type="number" id="modal-item-price" min="0" placeholder="Masukkan harga">
-                                </div>
-                                <div>
-                                    <label for="modal-item-quantity">Jumlah</label>
-                                    <input type="number" id="modal-item-quantity" min="1" placeholder="Masukkan jumlah">
+                                    <label for="honor-pengelola">Pengelola (Rp)</label>
+                                    <input type="number" id="honor-pengelola-input" min="0" placeholder="Masukkan jumlah">
                                 </div>
                             </div>
                             <div class="finance-actions">
-                                <button type="button" id="cancel-modal-btn" class="btn-secondary">Batal</button>
-                                <button type="button" id="save-modal-btn" class="btn-success">Simpan Item</button>
+                                <button type="button" id="save-honor-btn" class="btn-success">Update Honor</button>
                             </div>
                         </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card honor">
+                                <div class="stat-title">Medis</div>
+                                <div class="stat-value honor" id="honor-medis-display">Rp 0</div>
+                            </div>
+                            <div class="stat-card honor">
+                                <div class="stat-title">Paramedis</div>
+                                <div class="stat-value honor" id="honor-paramedis-display">Rp 0</div>
+                            </div>
+                            <div class="stat-card honor">
+                                <div class="stat-title">Pengelola</div>
+                                <div class="stat-value honor" id="honor-pengelola-display">Rp 0</div>
+                            </div>
+                        </div>
+                        
+                        <div class="finance-form">
+                            <h4>Operasional (50%)</h4>
+                            <div class="form-row">
+                                <div>
+                                    <label for="operational-atk">Belanja ATK (Rp)</label>
+                                    <input type="number" id="operational-atk-input" min="0" placeholder="Masukkan jumlah">
+                                </div>
+                                <div>
+                                    <label for="operational-obat">Belanja Obat (Rp)</label>
+                                    <input type="number" id="operational-obat-input" min="0" placeholder="Masukkan jumlah">
+                                </div>
+                            </div>
+                            <div class="finance-actions">
+                                <button type="button" id="save-operational-btn" class="btn-success">Update Operasional</button>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card operational">
+                                <div class="stat-title">Belanja ATK</div>
+                                <div class="stat-value operational" id="operational-atk-display">Rp 0</div>
+                            </div>
+                            <div class="stat-card operational">
+                                <div class="stat-title">Belanja Obat</div>
+                                <div class="stat-value operational" id="operational-obat-display">Rp 0</div>
+                            </div>
+                        </div>
+                        
+                        <div class="finance-form">
+                            <h4>Belanja Modal (20%)</h4>
+                            <button id="add-modal-item-btn" class="add-item-btn">+ Tambah Item Belanja Modal</button>
+                            <div id="modal-form-container" style="display: none;" class="finance-form">
+                                <h4>Form Input Item Belanja Modal</h4>
+                                <div class="form-row">
+                                    <div>
+                                        <label for="modal-item-name">Nama Barang</label>
+                                        <input type="text" id="modal-item-name" placeholder="Masukkan nama barang">
+                                    </div>
+                                    <div>
+                                        <label for="modal-item-unit">Satuan</label>
+                                        <input type="text" id="modal-item-unit" placeholder="Masukkan satuan">
+                                    </div>
+                                    <div>
+                                        <label for="modal-item-price">Harga (Rp)</label>
+                                        <input type="number" id="modal-item-price" min="0" placeholder="Masukkan harga">
+                                    </div>
+                                    <div>
+                                        <label for="modal-item-quantity">Jumlah</label>
+                                        <input type="number" id="modal-item-quantity" min="1" placeholder="Masukkan jumlah">
+                                    </div>
+                                </div>
+                                <div class="finance-actions">
+                                    <button type="button" id="cancel-modal-btn" class="btn-secondary">Batal</button>
+                                    <button type="button" id="save-modal-btn" class="btn-success">Simpan Item</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Barang</th>
+                                    <th>Satuan</th>
+                                    <th>Harga</th>
+                                    <th>Jumlah</th>
+                                    <th>Total</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modal-table-body">
+                                <!-- Data belanja modal akan muncul di sini -->
+                            </tbody>
+                        </table>
                     </div>
                     
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Barang</th>
-                                <th>Satuan</th>
-                                <th>Harga</th>
-                                <th>Jumlah</th>
-                                <th>Total</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="modal-table-body">
-                            <!-- Data belanja modal akan muncul di sini -->
-                        </tbody>
-                    </table>
+                    <div id="realization-yearly-content" class="monthly-content">
+                        <h5>Realisasi Pendapatan Per Tahun</h5>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tahun</th>
+                                    <th>Honor/Jasa (Rp)</th>
+                                    <th>Operasional (Rp)</th>
+                                    <th>Belanja Modal (Rp)</th>
+                                    <th>Total Realisasi (Rp)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="realization-yearly-table-body">
+                                <!-- Data realisasi per tahun akan muncul di sini -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 
                 <!-- Budget Remaining Section -->
                 <div id="clinic-budget-section" style="display: none;">
                     <h4>Sisa Anggaran</h4>
                     
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-title">Total Anggaran</div>
-                            <div class="stat-value" id="total-budget">Rp 0</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-title">Telah Digunakan</div>
-                            <div class="stat-value" id="total-spent">Rp 0</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-title">Sisa Anggaran</div>
-                            <div class="stat-value" id="remaining-budget">Rp 0</div>
-                        </div>
-                    </div>
-                    
-                    <h5>Persentase Penggunaan per Kategori</h5>
-                    <div style="margin: 20px 0;">
-                        <div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                <span>Honor/Jasa (30%)</span>
-                                <span id="honor-percentage">0%</span>
-                            </div>
-                            <div class="progress-container">
-                                <div class="progress-bar progress-honor" id="honor-progress" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        
-                        <div style="margin: 15px 0;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                <span>Operasional (50%)</span>
-                                <span id="operational-percentage">0%</span>
-                            </div>
-                            <div class="progress-container">
-                                <div class="progress-bar progress-operational" id="operational-progress" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                <span>Belanja Modal (20%)</span>
-                                <span id="modal-percentage">0%</span>
-                            </div>
-                            <div class="progress-container">
-                                <div class="progress-bar progress-modal" id="modal-progress" style="width: 0%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <h5>Sisa Anggaran Bulanan</h5>
                     <div class="filter-section">
                         <div class="filter-row">
                             <div class="filter-item">
@@ -938,7 +1004,115 @@
                                     <!-- Options will be populated by JavaScript -->
                                 </select>
                             </div>
+                            <div class="filter-item">
+                                <label for="budget-month-filter">Bulan</label>
+                                <select id="budget-month-filter">
+                                    <option value="all">Semua Bulan</option>
+                                    <option value="1">Januari</option>
+                                    <option value="2">Februari</option>
+                                    <option value="3">Maret</option>
+                                    <option value="4">April</option>
+                                    <option value="5">Mei</option>
+                                    <option value="6">Juni</option>
+                                    <option value="7">Juli</option>
+                                    <option value="8">Agustus</option>
+                                    <option value="9">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
+                            </div>
                         </div>
+                    </div>
+                    
+                    <div class="monthly-tabs">
+                        <div class="monthly-tab active" data-tab="monthly">Per Bulan</div>
+                        <div class="monthly-tab" data-tab="yearly">Per Tahun</div>
+                    </div>
+                    
+                    <div id="budget-monthly-content" class="monthly-content active">
+                        <h5>Sisa Anggaran Per Bulan</h5>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-title">Total Anggaran</div>
+                                <div class="stat-value" id="total-budget">Rp 0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-title">Telah Digunakan</div>
+                                <div class="stat-value" id="total-spent">Rp 0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-title">Sisa Anggaran</div>
+                                <div class="stat-value" id="remaining-budget">Rp 0</div>
+                            </div>
+                        </div>
+                        
+                        <h5>Persentase Penggunaan per Kategori</h5>
+                        <div style="margin: 20px 0;">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span>Honor/Jasa (30%)</span>
+                                    <span id="honor-percentage">0%</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar progress-honor" id="honor-progress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin: 15px 0;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span>Operasional (50%)</span>
+                                    <span id="operational-percentage">0%</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar progress-operational" id="operational-progress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span>Belanja Modal (20%)</span>
+                                    <span id="modal-percentage">0%</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar progress-modal" id="modal-progress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                                                    </div>
+                        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Bulan</th>
+                                    <th>Tahun</th>
+                                    <th>Total Anggaran</th>
+                                    <th>Telah Digunakan</th>
+                                    <th>Sisa Anggaran</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monthly-budget-body">
+                                <!-- Data sisa anggaran bulanan akan muncul di sini -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="budget-yearly-content" class="monthly-content">
+                        <h5>Sisa Anggaran Per Tahun</h5>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tahun</th>
+                                    <th>Total Anggaran (Rp)</th>
+                                    <th>Total Realisasi (Rp)</th>
+                                    <th>Sisa Anggaran (Rp)</th>
+                                    <th>Persentase Realisasi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="budget-yearly-table-body">
+                                <!-- Data sisa anggaran per tahun akan muncul di sini -->
+                            </tbody>
+                        </table>
                     </div>
                     
                     <button id="add-budget-btn" class="add-item-btn" style="display: none;">+ Tambah Data Anggaran Bulanan</button>
@@ -982,21 +1156,6 @@
                             <button type="button" id="save-budget-btn" class="btn-success">Simpan</button>
                         </div>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Bulan</th>
-                                <th>Tahun</th>
-                                <th>Total Anggaran</th>
-                                <th>Telah Digunakan</th>
-                                <th>Sisa Anggaran</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="monthly-budget-body">
-                            <!-- Data sisa anggaran bulanan akan muncul di sini -->
-                        </tbody>
-                    </table>
                 </div>
                 
                 <!-- Finance Input/Update Section -->
@@ -1581,8 +1740,13 @@
                 year: new Date().getFullYear(),
                 month: 'all'
             };
+            let currentRealizationFilters = {
+                year: new Date().getFullYear(),
+                month: 'all'
+            };
             let currentBudgetFilters = {
-                year: new Date().getFullYear()
+                year: new Date().getFullYear(),
+                month: 'all'
             };
             let currentRecapFilters = {
                 year: new Date().getFullYear(),
@@ -1641,6 +1805,9 @@
                 // Setup image upload
                 setupImageUpload();
                 
+                // Setup monthly tabs
+                setupMonthlyTabs();
+                
                 // Initialize charts
                 initializeCharts();
             });
@@ -1692,6 +1859,21 @@
                     
                     // Set default to current year
                     incomeYearForm.value = new Date().getFullYear();
+                }
+                
+                // Realization year filter
+                const realizationYearFilter = document.getElementById('realization-year-filter');
+                if (realizationYearFilter) {
+                    realizationYearFilter.innerHTML = '';
+                    years.forEach(year => {
+                        const option = document.createElement('option');
+                        option.value = year;
+                        option.textContent = year;
+                        realizationYearFilter.appendChild(option);
+                    });
+                    
+                    // Set default to current year
+                    realizationYearFilter.value = new Date().getFullYear();
                 }
                 
                 // Budget year filter
@@ -2093,11 +2275,42 @@
                     });
                 }
                 
+                // Realization filters
+                const realizationYearFilter = document.getElementById('realization-year-filter');
+                if (realizationYearFilter) {
+                    realizationYearFilter.addEventListener('change', function() {
+                        currentRealizationFilters.year = parseInt(this.value);
+                        if (currentClinic) {
+                            loadClinicRealization(currentClinic);
+                        }
+                    });
+                }
+                
+                const realizationMonthFilter = document.getElementById('realization-month-filter');
+                if (realizationMonthFilter) {
+                    realizationMonthFilter.addEventListener('change', function() {
+                        currentRealizationFilters.month = this.value;
+                        if (currentClinic) {
+                            loadClinicRealization(currentClinic);
+                        }
+                    });
+                }
+                
                 // Budget filters
                 const budgetYearFilter = document.getElementById('budget-year-filter');
                 if (budgetYearFilter) {
                     budgetYearFilter.addEventListener('change', function() {
                         currentBudgetFilters.year = parseInt(this.value);
+                        if (currentClinic) {
+                            loadClinicBudget(currentClinic);
+                        }
+                    });
+                }
+                
+                const budgetMonthFilter = document.getElementById('budget-month-filter');
+                if (budgetMonthFilter) {
+                    budgetMonthFilter.addEventListener('change', function() {
+                        currentBudgetFilters.month = this.value;
                         if (currentClinic) {
                             loadClinicBudget(currentClinic);
                         }
@@ -2205,6 +2418,96 @@
                 }
             }
             
+            // Setup monthly tabs
+            function setupMonthlyTabs() {
+                // Income tabs
+                const incomeTabs = document.querySelectorAll('#clinic-income-section .monthly-tab');
+                incomeTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        // Remove active class from all tabs
+                        incomeTabs.forEach(t => t.classList.remove('active'));
+                        // Add active class to clicked tab
+                        this.classList.add('active');
+                        
+                        // Hide all content
+                        document.querySelectorAll('#clinic-income-section .monthly-content').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        
+                        // Show selected content
+                        const tabId = this.getAttribute('data-tab');
+                        document.getElementById(`income-${tabId}-content`).classList.add('active');
+                        
+                        // Reload data if needed
+                        if (currentClinic) {
+                            if (tabId === 'monthly') {
+                                loadClinicIncome(currentClinic);
+                            } else {
+                                loadIncomeYearlyData(currentClinic);
+                            }
+                        }
+                    });
+                });
+                
+                // Realization tabs
+                const realizationTabs = document.querySelectorAll('#clinic-realization-section .monthly-tab');
+                realizationTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        // Remove active class from all tabs
+                        realizationTabs.forEach(t => t.classList.remove('active'));
+                        // Add active class to clicked tab
+                        this.classList.add('active');
+                        
+                        // Hide all content
+                        document.querySelectorAll('#clinic-realization-section .monthly-content').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        
+                        // Show selected content
+                        const tabId = this.getAttribute('data-tab');
+                        document.getElementById(`realization-${tabId}-content`).classList.add('active');
+                        
+                        // Reload data if needed
+                        if (currentClinic) {
+                            if (tabId === 'monthly') {
+                                loadClinicRealization(currentClinic);
+                            } else {
+                                loadRealizationYearlyData(currentClinic);
+                            }
+                        }
+                    });
+                });
+                
+                // Budget tabs
+                const budgetTabs = document.querySelectorAll('#clinic-budget-section .monthly-tab');
+                budgetTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        // Remove active class from all tabs
+                        budgetTabs.forEach(t => t.classList.remove('active'));
+                        // Add active class to clicked tab
+                        this.classList.add('active');
+                        
+                        // Hide all content
+                        document.querySelectorAll('#clinic-budget-section .monthly-content').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        
+                        // Show selected content
+                        const tabId = this.getAttribute('data-tab');
+                        document.getElementById(`budget-${tabId}-content`).classList.add('active');
+                        
+                        // Reload data if needed
+                        if (currentClinic) {
+                            if (tabId === 'monthly') {
+                                loadClinicBudget(currentClinic);
+                            } else {
+                                loadBudgetYearlyData(currentClinic);
+                            }
+                        }
+                    });
+                });
+            }
+            
             // Initialize charts
             function initializeCharts() {
                 // Initialize budget chart
@@ -2262,10 +2565,10 @@
                 if (recapChartCtx) {
                     recapChart = new Chart(recapChartCtx, {
                         type: 'pie',
-                        data: {
+                         {
                             labels: [],
                             datasets: [{
-                                data: [],
+                                 [],
                                 backgroundColor: [
                                     '#3b82f6', '#10b981', '#f59e0b', '#ef4444', 
                                     '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16',
@@ -2445,7 +2748,7 @@
                 const year = currentRecapFilters.year;
                 const monthFilter = currentRecapFilters.month;
                 
-                let csvContent = "data:text/csv;charset=utf-8,";
+                let csvContent = "text/csv;charset=utf-8,";
                 csvContent += "LAPORAN REKAPITULASI ANGGARAN FKTP DENKESYAH 02.04.03\n\n";
                 csvContent += `Tahun: ${year}\n`;
                 csvContent += `Bulan: ${monthFilter === 'all' ? 'Semua Bulan' : getMonthName(parseInt(monthFilter))}\n\n`;
@@ -2763,6 +3066,11 @@
                 
                 // Update active button
                 setActiveClinicButton('btn-clinic-income');
+                
+                // Load data
+                if (currentClinic) {
+                    loadClinicIncome(currentClinic);
+                }
             }
             
             // Tampilkan realisasi pendapatan
@@ -2776,6 +3084,11 @@
                 
                 // Update active button
                 setActiveClinicButton('btn-clinic-realization');
+                
+                // Load data
+                if (currentClinic) {
+                    loadClinicRealization(currentClinic);
+                }
             }
             
             // Tampilkan sisa anggaran
@@ -2789,6 +3102,11 @@
                 
                 // Update active button
                 setActiveClinicButton('btn-clinic-budget');
+                
+                // Load data
+                if (currentClinic) {
+                    loadClinicBudget(currentClinic);
+                }
             }
             
             // Tampilkan form keuangan
@@ -2913,6 +3231,38 @@
                     <td></td>
                 `;
                 tbody.appendChild(totalRow);
+                
+                // Load yearly data if monthly tab is active
+                const activeTab = document.querySelector('#clinic-income-section .monthly-tab.active');
+                if (activeTab && activeTab.getAttribute('data-tab') === 'yearly') {
+                    loadIncomeYearlyData(clinic);
+                }
+            }
+            
+            // Load data pendapatan per tahun
+            function loadIncomeYearlyData(clinic) {
+                const tbody = document.getElementById('income-yearly-table-body');
+                if (!tbody) return;
+                
+                tbody.innerHTML = '';
+                
+                // Get unique years
+                const years = [...new Set(clinic.income.map(item => item.year))].sort((a, b) => a - b);
+                
+                years.forEach(year => {
+                    // Calculate total for the year
+                    const yearlyData = clinic.income.filter(item => item.year === year);
+                    const totalAmount = yearlyData.reduce((sum, item) => sum + item.amount, 0);
+                    const averageAmount = Math.round(totalAmount / yearlyData.length);
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${year}</td>
+                        <td>Rp ${totalAmount.toLocaleString('id-ID')}</td>
+                        <td>Rp ${averageAmount.toLocaleString('id-ID')}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
             }
             
             // Edit data pendapatan
@@ -2921,8 +3271,8 @@
                 
                 const incomeData = currentClinic.income[index];
                 document.getElementById('income-month').value = incomeData.month;
-                document.getElementById('income-year').value = incomeData.year
-                                document.getElementById('income-amount').value = incomeData.amount;
+                document.getElementById('income-year').value = incomeData.year;
+                document.getElementById('income-amount').value = incomeData.amount;
                 
                 // Tampilkan form
                 document.getElementById('income-form-container').style.display = 'block';
@@ -2990,7 +3340,7 @@
                 }
             }
             
-            // Load data realisasi klinik
+            // Load data realisasi klinik dengan filter
             function loadClinicRealization(clinic) {
                 // Update honor values di form input
                 document.getElementById('honor-medis-input').value = clinic.realization.honor.medis;
@@ -3051,6 +3401,44 @@
                         });
                     }
                 }
+                
+                // Load yearly data if yearly tab is active
+                const activeTab = document.querySelector('#clinic-realization-section .monthly-tab.active');
+                if (activeTab && activeTab.getAttribute('data-tab') === 'yearly') {
+                    loadRealizationYearlyData(clinic);
+                }
+            }
+            
+            // Load data realisasi per tahun
+            function loadRealizationYearlyData(clinic) {
+                const tbody = document.getElementById('realization-yearly-table-body');
+                if (!tbody) return;
+                
+                tbody.innerHTML = '';
+                
+                // Get unique years from budget data
+                const years = [...new Set(clinic.budget.monthlyRemaining.map(item => item.year))].sort((a, b) => a - b);
+                
+                years.forEach(year => {
+                    // Calculate totals for the year
+                    const yearlyData = clinic.budget.monthlyRemaining.filter(item => item.year === year);
+                    const totalSpent = yearlyData.reduce((sum, item) => sum + item.spent, 0);
+                    
+                    // Calculate category totals (simplified - in real app, you'd need to track category spending per month)
+                    const honorSpent = Math.round(totalSpent * 0.3);
+                    const operationalSpent = Math.round(totalSpent * 0.5);
+                    const modalSpent = totalSpent - honorSpent - operationalSpent;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${year}</td>
+                        <td>Rp ${honorSpent.toLocaleString('id-ID')}</td>
+                        <td>Rp ${operationalSpent.toLocaleString('id-ID')}</td>
+                        <td>Rp ${modalSpent.toLocaleString('id-ID')}</td>
+                        <td>Rp ${totalSpent.toLocaleString('id-ID')}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
             }
             
             // Simpan data honor
@@ -3202,10 +3590,16 @@
                 if (monthlyTbody) {
                     monthlyTbody.innerHTML = '';
                     
-                    // Filter data berdasarkan tahun
+                    // Filter data berdasarkan tahun dan bulan
                     let filteredBudget = clinic.budget.monthlyRemaining.filter(item => 
                         item.year === currentBudgetFilters.year
                     );
+                    
+                    if (currentBudgetFilters.month !== 'all') {
+                        filteredBudget = filteredBudget.filter(item => 
+                            item.month == currentBudgetFilters.month
+                        );
+                    }
                     
                     // Sort by month
                     filteredBudget.sort((a, b) => a.month - b.month);
@@ -3245,6 +3639,42 @@
                         });
                     }
                 }
+                
+                // Load yearly data if yearly tab is active
+                const activeTab = document.querySelector('#clinic-budget-section .monthly-tab.active');
+                if (activeTab && activeTab.getAttribute('data-tab') === 'yearly') {
+                    loadBudgetYearlyData(clinic);
+                }
+            }
+            
+            // Load data sisa anggaran per tahun
+            function loadBudgetYearlyData(clinic) {
+                const tbody = document.getElementById('budget-yearly-table-body');
+                if (!tbody) return;
+                
+                tbody.innerHTML = '';
+                
+                // Get unique years
+                const years = [...new Set(clinic.budget.monthlyRemaining.map(item => item.year))].sort((a, b) => a - b);
+                
+                years.forEach(year => {
+                    // Calculate totals for the year
+                    const yearlyData = clinic.budget.monthlyRemaining.filter(item => item.year === year);
+                    const totalBudget = yearlyData.reduce((sum, item) => sum + item.budget, 0);
+                    const totalSpent = yearlyData.reduce((sum, item) => sum + item.spent, 0);
+                    const remaining = totalBudget - totalSpent;
+                    const percentage = totalBudget > 0 ? Math.round((totalSpent / totalBudget) * 100) : 0;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${year}</td>
+                        <td>Rp ${totalBudget.toLocaleString('id-ID')}</td>
+                        <td>Rp ${totalSpent.toLocaleString('id-ID')}</td>
+                        <td>Rp ${remaining.toLocaleString('id-ID')}</td>
+                        <td>${percentage}%</td>
+                    `;
+                    tbody.appendChild(row);
+                });
             }
             
             // Edit data anggaran bulanan
