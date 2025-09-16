@@ -6,6 +6,8 @@
     <title>FKTP DENKESYAH 02.04.03 - Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
         :root {
             --primary: #1e3a8a;
@@ -594,6 +596,22 @@
             display: block;
         }
         
+        /* Form Styles */
+        .form-section {
+            background: var(--gray-100);
+            padding: 25px;
+            border-radius: 16px;
+            margin: 20px 0;
+        }
+        
+        /* Export Buttons */
+        .export-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            justify-content: flex-end;
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .dashboard-header-content {
@@ -652,6 +670,24 @@
         
         .badge-danger {
             background-color: #dc2626;
+        }
+        
+        /* Editable Cells */
+        .editable-cell {
+            padding: 8px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .editable-cell:hover {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+        }
+        
+        .editable-cell.editing {
+            background-color: white;
+            border: 1px solid var(--primary);
         }
     </style>
 </head>
@@ -1310,7 +1346,7 @@
                         <div class="monthly-tabs">
                             <button class="monthly-tab active" data-tab="info">Informasi Klinik</button>
                             <button class="monthly-tab" data-tab="income">Laporan Pendapatan</button>
-                            <button class="monthly-tab" data-tab="realization">Realisasi Pendapatan</button>
+                            <button class="monthly-tab" data-tab="realization">Laporan Realisasi</button>
                             <button class="monthly-tab" data-tab="budget">Sisa Anggaran</button>
                             <button class="monthly-tab" data-tab="edit">Edit Klinik</button>
                         </div>
@@ -1456,7 +1492,7 @@
                         
                         <!-- Realization Report Section -->
                         <div id="realization-content" class="monthly-content">
-                            <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 25px;">Realisasi Pendapatan</h4>
+                            <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 25px;">Laporan Realisasi Pendapatan</h4>
                             
                             <div class="filter-section">
                                 <div class="filter-grid">
@@ -1588,7 +1624,7 @@
                         
                         <!-- Budget Remaining Section -->
                         <div id="budget-content" class="monthly-content">
-                            <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 25px;">Sisa Anggaran</h4>
+                            <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 25px;">Laporan Sisa Anggaran Per Bulan</h4>
                             
                             <div class="filter-section">
                                 <div class="filter-grid">
@@ -1890,6 +1926,175 @@
                 
                 // Setup chart period selectors
                 setupChartPeriodSelectors();
+                
+                // Setup export functionality
+                setupExportFunctionality();
+            }
+            
+            // Setup export functionality
+            function setupExportFunctionality() {
+                // Excel download button
+                const downloadExcelBtn = document.getElementById('download-excel');
+                if (downloadExcelBtn) {
+                    downloadExcelBtn.addEventListener('click', function() {
+                        exportToExcel();
+                    });
+                }
+            }
+            
+            // Export to Excel function
+            function exportToExcel() {
+                try {
+                    // Create a new workbook
+                    const wb = XLSX.utils.book_new();
+                    
+                    // Get current filters
+                    const year = document.getElementById('recap-year-filter').value;
+                    const monthFilter = document.getElementById('recap-month-filter').value;
+                    
+                    // Create data for the worksheet
+                    const data = [];
+                    
+                    // Add header row
+                    data.push([
+                        "LAPORAN REKAPITULASI ANGGARAN FKTP DENKESYAH 02.04.03",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    ]);
+                    
+                    data.push([
+                        "Tahun",
+                        year,
+                        "",
+                        "",
+                        "",
+                        ""
+                    ]);
+                    
+                    data.push([
+                        "Bulan",
+                        monthFilter === 'all' ? 'Semua Bulan' : getMonthName(parseInt(monthFilter)),
+                        "",
+                        "",
+                        "",
+                        ""
+                    ]);
+                    
+                    data.push([
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    ]);
+                    
+                    // Add table headers
+                    data.push([
+                        "No",
+                        "Nama Unit",
+                        "Total Pendapatan",
+                        "Total Realisasi",
+                        "Sisa",
+                        "Persentase Realisasi"
+                    ]);
+                    
+                    // Add data rows
+                    clinics.forEach((clinic, index) => {
+                        let totalBudget = 0;
+                        let totalRealization = 0;
+                        
+                        if (monthFilter === 'all') {
+                            // Sum all months for the year
+                            clinic.budget.monthlyRemaining.forEach(item => {
+                                if (item.year.toString() === year) {
+                                    totalBudget += item.budget;
+                                    totalRealization += item.spent;
+                                }
+                            });
+                        } else {
+                            // Get specific month
+                            const budgetData = clinic.budget.monthlyRemaining.find(item => 
+                                item.year.toString() === year && item.month.toString() === monthFilter
+                            );
+                            
+                            if (budgetData) {
+                                totalBudget = budgetData.budget;
+                                totalRealization = budgetData.spent;
+                            }
+                        }
+                        
+                        const remaining = totalBudget - totalRealization;
+                        const percentage = totalBudget > 0 ? Math.round((totalRealization / totalBudget) * 100) : 0;
+                        
+                        data.push([
+                            index + 1,
+                            clinic.name,
+                            totalBudget,
+                            totalRealization,
+                            remaining,
+                            percentage + "%"
+                        ]);
+                    });
+                    
+                    // Create worksheet from data
+                    const ws = XLSX.utils.aoa_to_sheet(data);
+                    
+                    // Set column widths
+                    ws['!cols'] = [
+                        { wch: 5 },   // No
+                        { wch: 30 },  // Nama Unit
+                        { wch: 15 },  // Total Pendapatan
+                        { wch: 15 },  // Total Realisasi
+                        { wch: 15 },  // Sisa
+                        { wch: 15 }   // Persentase Realisasi
+                    ];
+                    
+                    // Format currency for numeric columns
+                    const range = XLSX.utils.decode_range(ws['!ref']);
+                    for (let R = 2; R <= range.e.r; ++R) {
+                        for (let C = 2; C <= 4; ++C) { // Columns C, D, E (Total Pendapatan, Total Realisasi, Sisa)
+                            const cell_ref = XLSX.utils.encode_cell({c: C, r: R});
+                            if (!ws[cell_ref]) continue;
+                            ws[cell_ref].z = '#,##0';
+                        }
+                    }
+                    
+                    // Add worksheet to workbook
+                    XLSX.utils.book_append_sheet(wb, ws, "Rekap Anggaran");
+                    
+                    // Generate Excel file
+                    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                    
+                    // Create blob and download
+                    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                    const filename = `Rekap_Anggaran_FKTP_${year}_${monthFilter === 'all' ? 'SemuaBulan' : getMonthName(parseInt(monthFilter))}.xlsx`;
+                    
+                    // Save file
+                    saveAs(blob, filename);
+                    
+                    alert('Laporan Excel berhasil diunduh!');
+                } catch (error) {
+                    console.error('Error exporting to Excel:', error);
+                    alert('Terjadi kesalahan saat mengunduh laporan Excel. Silakan coba lagi.');
+                }
+            }
+            
+            // Download PowerPoint report (simulated)
+            function downloadPowerPointReport() {
+                alert('Fitur export ke PowerPoint akan tersedia di versi berikutnya.\n\nUntuk saat ini, Anda dapat menggunakan laporan Excel yang telah diunduh.');
+            }
+            
+            // Get month name from month number
+            function getMonthName(monthNumber) {
+                const months = [
+                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                ];
+                return months[monthNumber - 1];
             }
             
             // Setup navigation
@@ -2191,7 +2396,7 @@
                 
                 if (downloadExcelBtn) {
                     downloadExcelBtn.addEventListener('click', function() {
-                        downloadExcelReport();
+                        exportToExcel();
                     });
                 }
                 
@@ -2345,10 +2550,10 @@
                 if (realizationChartCtx) {
                     realizationChart = new Chart(realizationChartCtx, {
                         type: 'doughnut',
-                        data: {
+                         {
                             labels: ['Honor/Jasa', 'Operasional', 'Belanja Modal'],
                             datasets: [{
-                                data: [0, 0, 0],
+                                 [0, 0, 0],
                                 backgroundColor: [
                                     '#1e3a8a',
                                     '#059669',
@@ -2391,7 +2596,7 @@
                 if (recapChartCtx) {
                     recapChart = new Chart(recapChartCtx, {
                         type: 'bar',
-                        data: {
+                         {
                             labels: [],
                             datasets: [{
                                 label: 'Total Realisasi',
@@ -2458,10 +2663,10 @@
                 if (budgetCategoryChartCtx) {
                     budgetCategoryChart = new Chart(budgetCategoryChartCtx, {
                         type: 'pie',
-                        data: {
+                         {
                             labels: ['Honor/Jasa', 'Operasional', 'Belanja Modal'],
                             datasets: [{
-                                data: [0, 0, 0],
+                                 [0, 0, 0],
                                 backgroundColor: [
                                     '#1e3a8a',
                                     '#059669',
@@ -2764,74 +2969,6 @@
                 budgetCategoryChart.update();
             }
             
-            // Download Excel report
-            function downloadExcelReport() {
-                const year = document.getElementById('recap-year-filter').value;
-                const monthFilter = document.getElementById('recap-month-filter').value;
-                
-                let csvContent = "text/csv;charset=utf-8,";
-                csvContent += "LAPORAN REKAPITULASI ANGGARAN FKTP DENKESYAH 02.04.03\n\n";
-                csvContent += `Tahun: ${year}\n`;
-                csvContent += `Bulan: ${monthFilter === 'all' ? 'Semua Bulan' : getMonthName(parseInt(monthFilter))}\n\n`;
-                
-                // Headers
-                csvContent += "No,Nama Klinik,Total Anggaran,Total Realisasi,Sisa Anggaran,Persentase Realisasi\n";
-                
-                // Data
-                clinics.forEach((clinic, index) => {
-                    let totalBudget = 0;
-                    let totalRealization = 0;
-                    
-                    if (monthFilter === 'all') {
-                        clinic.budget.monthlyRemaining.forEach(item => {
-                            if (item.year.toString() === year) {
-                                totalBudget += item.budget;
-                                totalRealization += item.spent;
-                            }
-                        });
-                    } else {
-                        const budgetData = clinic.budget.monthlyRemaining.find(item => 
-                            item.year.toString() === year && item.month.toString() === monthFilter
-                        );
-                        
-                        if (budgetData) {
-                            totalBudget = budgetData.budget;
-                            totalRealization = budgetData.spent;
-                        }
-                    }
-                    
-                    const remaining = totalBudget - totalRealization;
-                    const percentage = totalBudget > 0 ? Math.round((totalRealization / totalBudget) * 100) : 0;
-                    
-                    csvContent += `${index + 1},${clinic.name},${totalBudget},${totalRealization},${remaining},${percentage}%\n`;
-                });
-                
-                // Create download link
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", `Rekap_Anggaran_FKTP_${year}_${monthFilter === 'all' ? 'SemuaBulan' : getMonthName(parseInt(monthFilter))}.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                alert('Laporan Excel berhasil diunduh!');
-            }
-            
-            // Download PowerPoint report (simulated)
-            function downloadPowerPointReport() {
-                alert('Fitur export ke PowerPoint akan tersedia di versi berikutnya.\n\nUntuk saat ini, Anda dapat menggunakan laporan Excel yang telah diunduh.');
-            }
-            
-            // Get month name from month number
-            function getMonthName(monthNumber) {
-                const months = [
-                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-                ];
-                return months[monthNumber - 1];
-            }
-            
             // Tampilkan dashboard
             function showDashboard() {
                 hideAllContent();
@@ -3062,7 +3199,7 @@
                         <td>${report.year}</td>
                         <td>Rp ${report.amount.toLocaleString('id-ID')}</td>
                         <td>
-                            ${currentUser && currentUser.type === 'minkes' ? `
+                            ${currentUser && (currentUser.type === 'minkes' || currentUser.type === 'klinik') ? `
                             <button class="btn-warning edit-income-btn" data-index="${index}">Edit</button>
                             <button class="btn-danger delete-income-btn" data-index="${index}">Hapus</button>
                             ` : ''}
@@ -3072,7 +3209,7 @@
                 });
                 
                 // Setup event listeners untuk tombol edit dan delete
-                if (currentUser && currentUser.type === 'minkes') {
+                if (currentUser && (currentUser.type === 'minkes' || currentUser.type === 'klinik')) {
                     document.querySelectorAll('.edit-income-btn').forEach(button => {
                         button.addEventListener('click', function() {
                             const index = parseInt(this.getAttribute('data-index'));
@@ -3241,7 +3378,7 @@
                             <td>${item.jumlah}</td>
                             <td>Rp ${item.total.toLocaleString('id-ID')}</td>
                             <td>
-                                ${currentUser && currentUser.type === 'minkes' ? `
+                                ${currentUser && (currentUser.type === 'minkes' || currentUser.type === 'klinik') ? `
                                 <button class="btn-warning edit-modal-btn" data-index="${index}">Edit</button>
                                 <button class="btn-danger delete-modal-btn" data-index="${index}">Hapus</button>
                                 ` : ''}
@@ -3251,7 +3388,7 @@
                     });
                     
                     // Setup event listeners untuk tombol edit dan delete
-                    if (currentUser && currentUser.type === 'minkes') {
+                    if (currentUser && (currentUser.type === 'minkes' || currentUser.type === 'klinik')) {
                         document.querySelectorAll('.edit-modal-btn').forEach(button => {
                             button.addEventListener('click', function() {
                                 const index = parseInt(this.getAttribute('data-index'));
@@ -3420,7 +3557,7 @@
                         <td>Rp ${item.spent.toLocaleString('id-ID')}</td>
                         <td>Rp ${item.remaining.toLocaleString('id-ID')}</td>
                         <td>
-                            ${currentUser && currentUser.type === 'minkes' ? `
+                            ${currentUser && (currentUser.type === 'minkes' || currentUser.type === 'klinik') ? `
                             <button class="btn-warning edit-budget-btn" data-index="${index}">Edit</button>
                             <button class="btn-danger delete-budget-btn" data-index="${index}">Hapus</button>
                             ` : ''}
@@ -3430,7 +3567,7 @@
                 });
                 
                 // Setup event listeners untuk tombol edit dan delete
-                if (currentUser && currentUser.type === 'minkes') {
+                if (currentUser && (currentUser.type === 'minkes' || currentUser.type === 'klinik')) {
                     document.querySelectorAll('.edit-budget-btn').forEach(button => {
                         button.addEventListener('click', function() {
                             const index = parseInt(this.getAttribute('data-index'));
