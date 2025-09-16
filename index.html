@@ -1059,57 +1059,93 @@
             
             // Fungsi login yang diperbaiki
             function handleLogin() {
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
-                
-                console.log('Attempting login with:', username, password);
-                
-                // Validasi login - sekarang lebih fleksibel dengan spasi
-                if ((username.toLowerCase() === 'minkes' && password === 'minkes123') || 
-                    (username.toLowerCase() === 'klinik' && password === 'klinik123') || 
-                    (username.toLowerCase() === 'user' && password === 'user123')) {
+                try {
+                    // Ambil nilai username dan password
+                    const usernameInput = document.getElementById('username');
+                    const passwordInput = document.getElementById('password');
                     
-                    console.log('Login successful');
-                    
-                    // Simpan user ke localStorage
-                    try {
-                        localStorage.setItem('fktpUser', JSON.stringify({
-                            username: username,
-                            type: username.toLowerCase() === 'minkes' ? 'minkes' : 'klinik',
-                            isLoggedIn: true
-                        }));
-                    } catch (e) {
-                        console.log('Gagal menyimpan ke localStorage:', e);
+                    if (!usernameInput || !passwordInput) {
+                        console.error('Form login tidak ditemukan');
+                        return;
                     }
                     
-                    // Set current user
-                    currentUser = {
-                        username: username,
-                        type: username.toLowerCase() === 'minkes' ? 'minkes' : 'klinik'
-                    };
+                    const username = usernameInput.value.trim().toLowerCase();
+                    const password = passwordInput.value.trim();
                     
-                    // Sembunyikan login section dan tampilkan dashboard
-                    document.getElementById('login-section').style.display = 'none';
+                    console.log('Login attempt - Username:', username, 'Password:', password);
                     
-                    // Buat dan tampilkan dashboard
-                    createDashboard();
-                    
-                    // Load data klinik
-                    loadClinics();
-                    
-                    // Tampilkan dashboard content
-                    showDashboard();
-                    
-                    // Initialize charts
-                    setTimeout(() => {
-                        initializeCharts();
-                        updateDashboardCharts();
-                        loadDashboardBudgetTable();
-                    }, 100);
-                    
-                } else {
-                    console.log('Login failed');
-                    document.getElementById('error-message').style.display = 'block';
+                    // Validasi login
+                    if ((username === 'minkes' && password === 'minkes123') || 
+                        (username === 'klinik' && password === 'klinik123') || 
+                        (username === 'user' && password === 'user123')) {
+                        
+                        console.log('Login successful');
+                        
+                        // Simpan user ke localStorage
+                        try {
+                            localStorage.setItem('fktpUser', JSON.stringify({
+                                username: username,
+                                type: username === 'minkes' ? 'minkes' : username === 'klinik' ? 'klinik' : 'user',
+                                isLoggedIn: true
+                            }));
+                        } catch (e) {
+                            console.log('Gagal menyimpan ke localStorage:', e);
+                        }
+                        
+                        // Set current user
+                        currentUser = {
+                            username: username,
+                            type: username === 'minkes' ? 'minkes' : username === 'klinik' ? 'klinik' : 'user'
+                        };
+                        
+                        // Sembunyikan login section dan tampilkan dashboard
+                        const loginSection = document.getElementById('login-section');
+                        const dashboardSection = document.getElementById('dashboard-section');
+                        
+                        if (loginSection) {
+                            loginSection.style.display = 'none';
+                        }
+                        
+                        if (dashboardSection) {
+                            dashboardSection.style.display = 'block';
+                        }
+                        
+                        // Buat dan tampilkan dashboard
+                        createDashboard();
+                        
+                        // Load data klinik
+                        loadClinics();
+                        
+                        // Tampilkan dashboard content
+                        showDashboard();
+                        
+                        // Initialize charts
+                        setTimeout(() => {
+                            initializeCharts();
+                            updateDashboardCharts();
+                            loadDashboardBudgetTable();
+                        }, 100);
+                        
+                        // Sembunyikan pesan error jika ada
+                        const errorMessage = document.getElementById('error-message');
+                        if (errorMessage) {
+                            errorMessage.style.display = 'none';
+                        }
+                        
+                    } else {
+                        console.log('Login failed');
+                        // Tampilkan pesan error
+                        const errorMessage = document.getElementById('error-message');
+                        if (errorMessage) {
+                            errorMessage.style.display = 'block';
+                        }
+                        
+                        // Tampilkan alert
+                        alert('Username atau password salah. Silakan coba lagi.');
+                    }
+                } catch (error) {
+                    console.error('Error during login:', error);
+                    alert('Terjadi kesalahan saat login. Silakan coba lagi.');
                 }
             }
             
@@ -1132,10 +1168,25 @@
                 }
                 
                 // Tampilkan kembali login section
-                document.getElementById('login-section').style.display = 'block';
-                document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
-                document.getElementById('error-message').style.display = 'none';
+                const loginSection = document.getElementById('login-section');
+                if (loginSection) {
+                    loginSection.style.display = 'block';
+                }
+                
+                // Reset form
+                const usernameInput = document.getElementById('username');
+                const passwordInput = document.getElementById('password');
+                if (usernameInput) usernameInput.value = '';
+                if (passwordInput) passwordInput.value = '';
+                
+                // Sembunyikan pesan error
+                const errorMessage = document.getElementById('error-message');
+                if (errorMessage) {
+                    errorMessage.style.display = 'none';
+                }
+                
+                // Tampilkan pesan
+                alert('Anda telah logout.');
             }
             
             // Cek login yang tersimpan
@@ -1151,7 +1202,16 @@
                             };
                             
                             // Sembunyikan login section dan tampilkan dashboard
-                            document.getElementById('login-section').style.display = 'none';
+                            const loginSection = document.getElementById('login-section');
+                            const dashboardSection = document.getElementById('dashboard-section');
+                            
+                            if (loginSection) {
+                                loginSection.style.display = 'none';
+                            }
+                            
+                            if (dashboardSection) {
+                                dashboardSection.style.display = 'block';
+                            }
                             
                             // Buat dan tampilkan dashboard
                             createDashboard();
@@ -1168,6 +1228,8 @@
                                 updateDashboardCharts();
                                 loadDashboardBudgetTable();
                             }, 100);
+                            
+                            console.log('Auto-login successful');
                         }
                     }
                 } catch (e) {
@@ -2055,7 +2117,7 @@
                     
                     // Format currency for numeric columns
                     const range = XLSX.utils.decode_range(ws['!ref']);
-                    for (let R = 2; R <= range.e.r; ++R) {
+                    for (let R = 4; R <= range.e.r; ++R) {
                         for (let C = 2; C <= 4; ++C) { // Columns C, D, E (Total Pendapatan, Total Realisasi, Sisa)
                             const cell_ref = XLSX.utils.encode_cell({c: C, r: R});
                             if (!ws[cell_ref]) continue;
@@ -2074,7 +2136,19 @@
                     const filename = `Rekap_Anggaran_FKTP_${year}_${monthFilter === 'all' ? 'SemuaBulan' : getMonthName(parseInt(monthFilter))}.xlsx`;
                     
                     // Save file
-                    saveAs(blob, filename);
+                    if (window.saveAs) {
+                        saveAs(blob, filename);
+                    } else {
+                        // Fallback for browsers that don't support FileSaver.js
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }
                     
                     alert('Laporan Excel berhasil diunduh!');
                 } catch (error) {
@@ -2466,7 +2540,7 @@
                 if (budgetChartCtx) {
                     budgetChart = new Chart(budgetChartCtx, {
                         type: 'line',
-                        data: {
+                         {
                             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
                             datasets: [
                                 {
@@ -2483,7 +2557,7 @@
                                 },
                                 {
                                     label: 'Total Realisasi',
-                                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                     backgroundColor: 'rgba(5, 150, 105, 0.2)',
                                     borderColor: '#059669',
                                     borderWidth: 3,
@@ -2600,7 +2674,7 @@
                             labels: [],
                             datasets: [{
                                 label: 'Total Realisasi',
-                                data: [],
+                                 [],
                                 backgroundColor: '#1e3a8a',
                                 borderColor: '#1e40af',
                                 borderWidth: 1,
