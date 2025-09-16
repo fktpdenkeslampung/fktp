@@ -628,6 +628,31 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+        }
+        
+        .badge-success {
+            background-color: #10b981;
+        }
+        
+        .badge-info {
+            background-color: #0891b2;
+        }
+        
+        .badge-warning {
+            background-color: #f59e0b;
+        }
+        
+        .badge-danger {
+            background-color: #dc2626;
+        }
     </style>
 </head>
 <body>
@@ -667,710 +692,7 @@
         
         <!-- Dashboard Section -->
         <div id="dashboard-section" class="dashboard">
-            <div class="dashboard-header">
-                <div class="dashboard-header-content">
-                    <div class="dashboard-title">
-                        <h2>Dashboard FKTP DENKESYAH 02.04.03</h2>
-                    </div>
-                    <div class="user-info">
-                        <div class="user-avatar" id="user-avatar">U</div>
-                        <div>
-                            <div id="user-display">Halo, User</div>
-                            <div id="user-type-display" style="font-size: 14px; color: var(--gray-600);">-</div>
-                        </div>
-                        <button id="logout-btn" class="btn-danger">Logout</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="nav-buttons">
-                <button id="btn-dashboard" class="nav-btn active">Dashboard</button>
-                <button id="btn-clinics" class="nav-btn">Daftar Klinik</button>
-                <button id="btn-recap" class="nav-btn">Rekap Total</button>
-            </div>
-            
-            <!-- Dashboard Content -->
-            <div id="dashboard-content" class="content">
-                <div class="content-header">
-                    <h3 class="content-title">Overview Sistem</h3>
-                    <div class="filter-section">
-                        <div class="filter-grid">
-                            <div>
-                                <label for="dashboard-year-filter">Tahun</label>
-                                <select id="dashboard-year-filter" style="width: 100%;">
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024" selected>2024</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2026">2026</option>
-                                    <option value="2027">2027</option>
-                                    <option value="2028">2028</option>
-                                    <option value="2029">2029</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="dashboard-month-filter">Bulan</label>
-                                <select id="dashboard-month-filter" style="width: 100%;">
-                                    <option value="all">Semua Bulan</option>
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <option value="5">Mei</option>
-                                    <option value="6">Juni</option>
-                                    <option value="7">Juli</option>
-                                    <option value="8">Agustus</option>
-                                    <option value="9">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Stats Cards -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">🏥</div>
-                        <div class="stat-title">TOTAL KLINIK</div>
-                        <div class="stat-value" id="total-clinics">10</div>
-                        <div class="stat-trend trend-up">
-                            <span>↑ 2.5%</span> dari bulan lalu
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card honor">
-                        <div class="stat-icon">💰</div>
-                        <div class="stat-title">TOTAL PENDAPATAN</div>
-                        <div class="stat-value" id="total-income">Rp 1.500.000.000</div>
-                        <div class="stat-trend trend-up">
-                            <span>↑ 5.2%</span> dari bulan lalu
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card operational">
-                        <div class="stat-icon">📊</div>
-                        <div class="stat-title">TOTAL REALISASI</div>
-                        <div class="stat-value" id="total-realization">Rp 1.200.000.000</div>
-                        <div class="stat-trend trend-up">
-                            <span>↑ 3.8%</span> dari bulan lalu
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card modal">
-                        <div class="stat-icon">📈</div>
-                        <div class="stat-title">SISA ANGGARAN</div>
-                        <div class="stat-value" id="total-remaining">Rp 300.000.000</div>
-                        <div class="stat-trend trend-down">
-                            <span>↓ 1.2%</span> dari bulan lalu
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Chart Container -->
-                <div class="chart-container">
-                    <div class="chart-header">
-                        <h3 class="chart-title">Rekapan Anggaran Per Bulan</h3>
-                        <div class="chart-controls">
-                            <div class="period-selector">
-                                <button class="period-btn active" data-period="1">1 Bulan</button>
-                                <button class="period-btn" data-period="3">3 Bulan</button>
-                                <button class="period-btn" data-period="6">6 Bulan</button>
-                                <button class="period-btn" data-period="12">12 Bulan</button>
-                                <button class="period-btn" data-period="all">Semua</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-wrapper">
-                        <canvas id="budget-chart"></canvas>
-                    </div>
-                </div>
-                
-                <!-- Monthly Data Table -->
-                <div class="table-container">
-                    <h3 style="margin-bottom: 20px; color: var(--primary); font-weight: 700;">Data Anggaran Per Bulan</h3>
-                    <table id="dashboard-budget-table">
-                        <thead>
-                            <tr>
-                                <th>Bulan</th>
-                                <th>Total Anggaran</th>
-                                <th>Total Realisasi</th>
-                                <th>Sisa Anggaran</th>
-                                <th>Persentase Realisasi</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dashboard-budget-table-body">
-                            <!-- Data akan diisi oleh JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <!-- Clinics Content -->
-            <div id="clinics-content" class="content" style="display: none;">
-                <div class="content-header">
-                    <h3 class="content-title">Daftar Unit FKTP</h3>
-                    <p style="color: var(--gray-600);">Klik pada klinik untuk melihat detail, laporan, dan melakukan edit (jika memiliki akses).</p>
-                </div>
-                
-                <div class="clinic-grid" id="clinics-container">
-                    <!-- Daftar klinik akan muncul di sini -->
-                </div>
-            </div>
-            
-            <!-- Clinic Detail Content -->
-            <div id="clinic-detail-content" class="content" style="display: none;">
-                <div class="content-header">
-                    <h3 id="clinic-detail-title" class="content-title">Detail Klinik</h3>
-                    <button id="back-to-clinics" class="btn-secondary">← Kembali ke Daftar Klinik</button>
-                </div>
-                
-                <div class="monthly-tabs">
-                    <button class="monthly-tab active" data-tab="info">Informasi Klinik</button>
-                    <button class="monthly-tab" data-tab="income">Laporan Pendapatan</button>
-                    <button class="monthly-tab" data-tab="realization">Realisasi Pendapatan</button>
-                    <button class="monthly-tab" data-tab="budget">Sisa Anggaran</button>
-                    <button class="monthly-tab" data-tab="edit">Edit Klinik</button>
-                </div>
-                
-                <!-- Clinic Info Section -->
-                <div id="info-content" class="monthly-content active">
-                    <div class="clinic-header">
-                        <div class="clinic-icon" id="clinic-icon">K</div>
-                        <div>
-                            <h4 id="clinic-name" class="clinic-name">-</h4>
-                            <p id="clinic-address" style="color: var(--gray-600); margin: 5px 0;">-</p>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
-                        <div>
-                            <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 15px;">Informasi Kontak</h5>
-                            <div class="clinic-detail">
-                                <strong>📞 Telepon:</strong> <span id="clinic-phone">-</span>
-                            </div>
-                            <div class="clinic-detail">
-                                <strong>✉️ Email:</strong> <span id="clinic-email">-</span>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 15px;">Statistik Klinik</h5>
-                            <div class="clinic-detail">
-                                <strong>📊 Total Pendapatan:</strong> <span id="clinic-total-income">Rp 0</span>
-                            </div>
-                            <div class="clinic-detail">
-                                <strong>📈 Realisasi:</strong> <span id="clinic-total-realization">Rp 0</span>
-                            </div>
-                            <div class="clinic-detail">
-                                <strong>💰 Sisa Anggaran:</strong> <span id="clinic-remaining-budget">Rp 0</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Income Report Section -->
-                <div id="income-content" class="monthly-content">
-                    <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 25px;">Laporan Pendapatan Kapitasi BPJS</h4>
-                    
-                    <div class="filter-section">
-                        <div class="filter-grid">
-                            <div>
-                                <label for="income-year-filter">Tahun</label>
-                                <select id="income-year-filter" style="width: 100%;">
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024" selected>2024</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2026">2026</option>
-                                    <option value="2027">2027</option>
-                                    <option value="2028">2028</option>
-                                    <option value="2029">2029</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="income-month-filter">Bulan</label>
-                                <select id="income-month-filter" style="width: 100%;">
-                                    <option value="all">Semua Bulan</option>
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <option value="5">Mei</option>
-                                    <option value="6">Juni</option>
-                                    <option value="7">Juli</option>
-                                    <option value="8">Agustus</option>
-                                    <option value="9">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button id="add-income-btn" class="btn-success" style="display: none; margin: 20px 0;">+ Tambah Data Pendapatan</button>
-                    
-                    <div id="income-form" style="display: none; margin: 30px 0; padding: 25px; background: var(--gray-100); border-radius: 16px;">
-                        <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 20px;">Form Input Pendapatan</h5>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 25px;">
-                            <div>
-                                <label for="income-month">Bulan</label>
-                                <select id="income-month" style="width: 100%;">
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <option value="5">Mei</option>
-                                    <option value="6">Juni</option>
-                                    <option value="7">Juli</option>
-                                    <option value="8">Agustus</option>
-                                    <option value="9">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="income-year">Tahun</label>
-                                <select id="income-year" style="width: 100%;">
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024" selected>2024</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2026">2026</option>
-                                    <option value="2027">2027</option>
-                                    <option value="2028">2028</option>
-                                    <option value="2029">2029</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="income-amount">Jumlah Pendapatan (Rp)</label>
-                                <input type="number" id="income-amount" min="0" placeholder="Masukkan jumlah pendapatan" style="width: 100%;">
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 15px; justify-content: flex-end;">
-                            <button type="button" id="save-income-btn" class="btn-success">Simpan</button>
-                            <button type="button" id="cancel-income-btn" class="btn-secondary">Batal</button>
-                        </div>
-                    </div>
-                    
-                    <div class="table-container">
-                        <table id="income-table">
-                            <thead>
-                                <tr>
-                                    <th>Bulan</th>
-                                    <th>Tahun</th>
-                                    <th>Jumlah Pendapatan (Rp)</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="income-table-body">
-                                <!-- Data pendapatan akan muncul di sini -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Realization Report Section -->
-                <div id="realization-content" class="monthly-content">
-                    <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 25px;">Realisasi Pendapatan</h4>
-                    
-                    <div class="filter-section">
-                        <div class="filter-grid">
-                            <div>
-                                <label for="realization-year-filter">Tahun</label>
-                                <select id="realization-year-filter" style="width: 100%;">
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024" selected>2024</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2026">2026</option>
-                                    <option value="2027">2027</option>
-                                    <option value="2028">2028</option>
-                                    <option value="2029">2029</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="realization-month-filter">Bulan</label>
-                                <select id="realization-month-filter" style="width: 100%;">
-                                    <option value="all">Semua Bulan</option>
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <option value="5">Mei</option>
-                                    <option value="6">Juni</option>
-                                    <option value="7">Juli</option>
-                                    <option value="8">Agustus</option>
-                                    <option value="9">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
-                        <div class="chart-container">
-                            <div class="chart-header">
-                                <h5 class="chart-title">Distribusi Realisasi per Kategori</h5>
-                            </div>
-                            <div class="chart-wrapper">
-                                <canvas id="realization-chart"></canvas>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 20px;">Honor/Jasa (30%)</h5>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                                <div>
-                                    <label for="honor-medis">Medis (Rp)</label>
-                                    <input type="number" id="honor-medis" min="0" value="30000000" style="width: 100%;">
-                                </div>
-                                <div>
-                                    <label for="honor-paramedis">Paramedis (Rp)</label>
-                                    <input type="number" id="honor-paramedis" min="0" value="15000000" style="width: 100%;">
-                                </div>
-                                <div>
-                                    <label for="honor-pengelola">Pengelola (Rp)</label>
-                                    <input type="number" id="honor-pengelola" min="0" value="10000000" style="width: 100%;">
-                                </div>
-                            </div>
-                            <button id="save-honor-btn" class="btn-success" style="width: 100%;">Update Honor</button>
-                            
-                            <h5 style="color: var(--primary); font-weight: 600; margin: 30px 0 20px 0;">Operasional (50%)</h5>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                                <div>
-                                    <label for="operational-atk">Belanja ATK (Rp)</label>
-                                    <input type="number" id="operational-atk" min="0" value="25000000" style="width: 100%;">
-                                </div>
-                                <div>
-                                    <label for="operational-obat">Belanja Obat (Rp)</label>
-                                    <input type="number" id="operational-obat" min="0" value="55000000" style="width: 100%;">
-                                </div>
-                            </div>
-                            <button id="save-operational-btn" class="btn-success" style="width: 100%;">Update Operasional</button>
-                        </div>
-                    </div>
-                    
-                    <h5 style="color: var(--primary); font-weight: 600; margin: 40px 0 20px 0;">Belanja Modal (20%)</h5>
-                    <button id="add-modal-btn" class="btn-success" style="margin-bottom: 20px;">+ Tambah Item Belanja Modal</button>
-                    
-                    <div id="modal-form" style="display: none; margin: 30px 0; padding: 25px; background: var(--gray-100); border-radius: 16px;">
-                        <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 20px;">Form Input Item Belanja Modal</h5>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; margin-bottom: 25px;">
-                            <div>
-                                <label for="modal-name">Nama Barang</label>
-                                <input type="text" id="modal-name" placeholder="Masukkan nama barang" style="width: 100%;">
-                            </div>
-                            <div>
-                                <label for="modal-unit">Satuan</label>
-                                <input type="text" id="modal-unit" placeholder="Masukkan satuan" style="width: 100%;">
-                            </div>
-                            <div>
-                                <label for="modal-price">Harga (Rp)</label>
-                                <input type="number" id="modal-price" min="0" placeholder="Masukkan harga" style="width: 100%;">
-                            </div>
-                            <div>
-                                <label for="modal-quantity">Jumlah</label>
-                                <input type="number" id="modal-quantity" min="1" placeholder="Masukkan jumlah" style="width: 100%;">
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 15px; justify-content: flex-end;">
-                            <button type="button" id="save-modal-btn" class="btn-success">Simpan Item</button>
-                            <button type="button" id="cancel-modal-btn" class="btn-secondary">Batal</button>
-                        </div>
-                    </div>
-                    
-                    <div class="table-container">
-                        <table id="modal-table">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Barang</th>
-                                    <th>Satuan</th>
-                                    <th>Harga</th>
-                                    <th>Jumlah</th>
-                                    <th>Total</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="modal-table-body">
-                                <!-- Data belanja modal akan muncul di sini -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Budget Remaining Section -->
-                <div id="budget-content" class="monthly-content">
-                    <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 25px;">Sisa Anggaran</h4>
-                    
-                    <div class="filter-section">
-                        <div class="filter-grid">
-                            <div>
-                                <label for="budget-year-filter">Tahun</label>
-                                <select id="budget-year-filter" style="width: 100%;">
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024" selected>2024</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2026">2026</option>
-                                    <option value="2027">2027</option>
-                                    <option value="2028">2028</option>
-                                    <option value="2029">2029</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="budget-month-filter">Bulan</label>
-                                <select id="budget-month-filter" style="width: 100%;">
-                                    <option value="all">Semua Bulan</option>
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <option value="5">Mei</option>
-                                    <option value="6">Juni</option>
-                                    <option value="7">Juli</option>
-                                    <option value="8">Agustus</option>
-                                    <option value="9">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="stats-grid" style="margin-bottom: 40px;">
-                        <div class="stat-card">
-                            <div class="stat-icon">💼</div>
-                            <div class="stat-title">TOTAL ANGGARAN</div>
-                            <div class="stat-value" id="total-budget">Rp 165.000.000</div>
-                            <div class="stat-trend trend-up">
-                                <span>↑ 2.1%</span> dari bulan lalu
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card honor">
-                            <div class="stat-icon">💸</div>
-                            <div class="stat-title">TELAH DIGUNAKAN</div>
-                            <div class="stat-value" id="total-spent">Rp 120.000.000</div>
-                            <div class="stat-trend trend-up">
-                                <span>↑ 3.5%</span> dari bulan lalu
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card operational">
-                            <div class="stat-icon">💰</div>
-                            <div class="stat-title">SISA ANGGARAN</div>
-                            <div class="stat-value" id="remaining-budget">Rp 45.000.000</div>
-                            <div class="stat-trend trend-down">
-                                <span>↓ 4.2%</span> dari bulan lalu
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="chart-container" style="margin-bottom: 40px;">
-                        <div class="chart-header">
-                            <h5 class="chart-title">Penggunaan Anggaran per Kategori</h5>
-                        </div>
-                        <div class="chart-wrapper">
-                            <canvas id="budget-category-chart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <button id="add-budget-btn" class="btn-success" style="display: none; margin: 20px 0;">+ Tambah Data Anggaran Bulanan</button>
-                    
-                    <div id="budget-form" style="display: none; margin: 30px 0; padding: 25px; background: var(--gray-100); border-radius: 16px;">
-                        <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 20px;">Form Input Anggaran Bulanan</h5>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; margin-bottom: 25px;">
-                            <div>
-                                <label for="budget-month">Bulan</label>
-                                <select id="budget-month" style="width: 100%;">
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <option value="5">Mei</option>
-                                    <option value="6">Juni</option>
-                                    <option value="7">Juli</option>
-                                    <option value="8">Agustus</option>
-                                    <option value="9">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="budget-year">Tahun</label>
-                                <select id="budget-year" style="width: 100%;">
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024" selected>2024</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2026">2026</option>
-                                    <option value="2027">2027</option>
-                                    <option value="2028">2028</option>
-                                    <option value="2029">2029</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="budget-amount">Total Anggaran (Rp)</label>
-                                <input type="number" id="budget-amount" min="0" placeholder="Masukkan total anggaran" style="width: 100%;">
-                            </div>
-                            <div>
-                                <label for="budget-spent">Telah Digunakan (Rp)</label>
-                                <input type="number" id="budget-spent" min="0" placeholder="Masukkan yang telah digunakan" style="width: 100%;">
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 15px; justify-content: flex-end;">
-                            <button type="button" id="save-budget-btn" class="btn-success">Simpan</button>
-                            <button type="button" id="cancel-budget-btn" class="btn-secondary">Batal</button>
-                        </div>
-                    </div>
-                    
-                    <div class="table-container">
-                        <table id="budget-table">
-                            <thead>
-                                <tr>
-                                    <th>Bulan</th>
-                                    <th>Tahun</th>
-                                    <th>Total Anggaran</th>
-                                    <th>Telah Digunakan</th>
-                                    <th>Sisa Anggaran</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="budget-table-body">
-                                <!-- Data sisa anggaran bulanan akan muncul di sini -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Edit Clinic Form -->
-                <div id="edit-content" class="monthly-content">
-                    <h4 style="color: var(--primary); font-weight: 600; margin-bottom: 25px;">Edit Informasi Klinik</h4>
-                    
-                    <form id="edit-clinic-form">
-                        <input type="hidden" id="edit-clinic-id">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
-                            <div>
-                                <label for="edit-clinic-name">Nama Klinik</label>
-                                <input type="text" id="edit-clinic-name" required style="width: 100%;">
-                            </div>
-                            <div>
-                                <label for="edit-clinic-address">Alamat</label>
-                                <input type="text" id="edit-clinic-address" required style="width: 100%;">
-                            </div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
-                            <div>
-                                <label for="edit-clinic-phone">Telepon</label>
-                                <input type="text" id="edit-clinic-phone" required style="width: 100%;">
-                            </div>
-                            <div>
-                                <label for="edit-clinic-email">Email</label>
-                                <input type="email" id="edit-clinic-email" required style="width: 100%;">
-                            </div>
-                        </div>
-                        <div style="margin-bottom: 30px;">
-                            <label for="edit-clinic-image">Upload Gambar Klinik</label>
-                            <div class="image-upload" id="image-upload-area" style="border: 2px dashed var(--gray-300); padding: 30px; text-align: center; border-radius: 12px; margin: 15px 0; cursor: pointer; transition: all 0.3s;">
-                                <p style="margin: 0; font-size: 16px; color: var(--gray-600);">Klik atau drag file gambar ke sini</p>
-                                <p style="margin: 10px 0 0 0; font-size: 14px; color: var(--gray-500);">Format yang didukung: JPG, PNG, GIF</p>
-                            </div>
-                            <input type="file" id="edit-clinic-image" accept="image/*" style="display: none;">
-                            <img id="edit-clinic-image-preview" class="image-preview" src="" alt="Preview Gambar" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px; margin: 20px 0; border: 1px solid var(--gray-200);">
-                        </div>
-                        <div style="display: flex; gap: 15px; justify-content: flex-end;">
-                            <button type="submit" class="btn-success">Simpan Perubahan</button>
-                            <button type="button" id="cancel-edit-btn" class="btn-secondary">Batal</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-            <!-- Total Recap Content -->
-            <div id="recap-content" class="content" style="display: none;">
-                <div class="content-header">
-                    <h3 class="content-title">Rekap Total Semua Unit FKTP</h3>
-                    <div style="display: flex; gap: 15px;">
-                        <button id="download-excel" class="btn-info">Download Excel</button>
-                        <button id="download-powerpoint" class="btn-info">Download PowerPoint</button>
-                    </div>
-                </div>
-                
-                <div class="filter-section">
-                    <div class="filter-grid">
-                        <div>
-                            <label for="recap-year-filter">Tahun</label>
-                            <select id="recap-year-filter" style="width: 100%;">
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
-                                <option value="2024" selected>2024</option>
-                                <option value="2025">2025</option>
-                                <option value="2026">2026</option>
-                                <option value="2027">2027</option>
-                                <option value="2028">2028</option>
-                                <option value="2029">2029</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="recap-month-filter">Bulan</label>
-                            <select id="recap-month-filter" style="width: 100%;">
-                                <option value="all">Semua Bulan</option>
-                                <option value="1">Januari</option>
-                                <option value="2">Februari</option>
-                                <option value="3">Maret</option>
-                                <option value="4">April</option>
-                                <option value="5">Mei</option>
-                                <option value="6">Juni</option>
-                                <option value="7">Juli</option>
-                                <option value="8">Agustus</option>
-                                <option value="9">September</option>
-                                <option value="10">Oktober</option>
-                                <option value="11">November</option>
-                                <option value="12">Desember</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="chart-container" style="margin-bottom: 40px;">
-                    <div class="chart-header">
-                        <h5 class="chart-title">Distribusi Anggaran per Klinik</h5>
-                    </div>
-                    <div class="chart-wrapper">
-                        <canvas id="recap-chart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="table-container">
-                    <table id="recap-table">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Unit</th>
-                                <th>Total Pendapatan</th>
-                                <th>Total Realisasi</th>
-                                <th>Sisa</th>
-                                <th>Persentase Realisasi</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recap-table-body">
-                            <!-- Data rekap akan muncul di sini -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <!-- Konten dashboard akan dimuat di sini -->
         </div>
 
         <script>
@@ -1695,6 +1017,851 @@
                     });
                 }
                 
+                // Cek apakah user sudah login sebelumnya
+                checkSavedLogin();
+            });
+            
+            // Fungsi login yang diperbaiki
+            function handleLogin() {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                
+                console.log('Attempting login with:', username, password);
+                
+                // Validasi login - sekarang lebih fleksibel dengan spasi
+                if ((username.toLowerCase() === 'minkes' && password === 'minkes123') || 
+                    (username.toLowerCase() === 'klinik' && password === 'klinik123') || 
+                    (username.toLowerCase() === 'user' && password === 'user123')) {
+                    
+                    console.log('Login successful');
+                    
+                    // Simpan user ke localStorage
+                    try {
+                        localStorage.setItem('fktpUser', JSON.stringify({
+                            username: username,
+                            type: username.toLowerCase() === 'minkes' ? 'minkes' : 'klinik',
+                            isLoggedIn: true
+                        }));
+                    } catch (e) {
+                        console.log('Gagal menyimpan ke localStorage:', e);
+                    }
+                    
+                    // Set current user
+                    currentUser = {
+                        username: username,
+                        type: username.toLowerCase() === 'minkes' ? 'minkes' : 'klinik'
+                    };
+                    
+                    // Sembunyikan login section dan tampilkan dashboard
+                    document.getElementById('login-section').style.display = 'none';
+                    
+                    // Buat dan tampilkan dashboard
+                    createDashboard();
+                    
+                    // Load data klinik
+                    loadClinics();
+                    
+                    // Tampilkan dashboard content
+                    showDashboard();
+                    
+                    // Initialize charts
+                    setTimeout(() => {
+                        initializeCharts();
+                        updateDashboardCharts();
+                        loadDashboardBudgetTable();
+                    }, 100);
+                    
+                } else {
+                    console.log('Login failed');
+                    document.getElementById('error-message').style.display = 'block';
+                }
+            }
+            
+            // Fungsi logout
+            function handleLogout() {
+                try {
+                    localStorage.removeItem('fktpUser');
+                } catch (e) {
+                    console.log('Gagal menghapus dari localStorage:', e);
+                }
+                
+                currentUser = null;
+                currentClinic = null;
+                
+                // Hapus semua konten dashboard
+                const dashboardSection = document.getElementById('dashboard-section');
+                if (dashboardSection) {
+                    dashboardSection.innerHTML = '';
+                    dashboardSection.style.display = 'none';
+                }
+                
+                // Tampilkan kembali login section
+                document.getElementById('login-section').style.display = 'block';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('error-message').style.display = 'none';
+            }
+            
+            // Cek login yang tersimpan
+            function checkSavedLogin() {
+                try {
+                    const savedUser = localStorage.getItem('fktpUser');
+                    if (savedUser) {
+                        const userData = JSON.parse(savedUser);
+                        if (userData.isLoggedIn) {
+                            currentUser = {
+                                username: userData.username,
+                                type: userData.type
+                            };
+                            
+                            // Sembunyikan login section dan tampilkan dashboard
+                            document.getElementById('login-section').style.display = 'none';
+                            
+                            // Buat dan tampilkan dashboard
+                            createDashboard();
+                            
+                            // Load data klinik
+                            loadClinics();
+                            
+                            // Tampilkan dashboard content
+                            showDashboard();
+                            
+                            // Initialize charts
+                            setTimeout(() => {
+                                initializeCharts();
+                                updateDashboardCharts();
+                                loadDashboardBudgetTable();
+                            }, 100);
+                        }
+                    }
+                } catch (e) {
+                    console.log('Error saat mengecek login yang tersimpan:', e);
+                }
+            }
+            
+            // Buat dashboard
+            function createDashboard() {
+                const dashboardSection = document.getElementById('dashboard-section');
+                if (!dashboardSection) return;
+                
+                dashboardSection.style.display = 'block';
+                dashboardSection.innerHTML = `
+                    <div class="dashboard-header">
+                        <div class="dashboard-header-content">
+                            <div class="dashboard-title">
+                                <h2>Dashboard FKTP DENKESYAH 02.04.03</h2>
+                            </div>
+                            <div class="user-info">
+                                <div class="user-avatar" id="user-avatar">U</div>
+                                <div>
+                                    <div id="user-display">Halo, User</div>
+                                    <div id="user-type-display" style="font-size: 14px; color: var(--gray-600);">-</div>
+                                </div>
+                                <button id="logout-btn" class="btn-danger">Logout</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-buttons">
+                        <button id="btn-dashboard" class="nav-btn active">Dashboard</button>
+                        <button id="btn-clinics" class="nav-btn">Daftar Klinik</button>
+                        <button id="btn-recap" class="nav-btn">Rekap Total</button>
+                    </div>
+                    
+                    <!-- Dashboard Content -->
+                    <div id="dashboard-content" class="content">
+                        <div class="content-header">
+                            <h3 class="content-title">Overview Sistem</h3>
+                            <div class="filter-section">
+                                <div class="filter-grid">
+                                    <div>
+                                        <label for="dashboard-year-filter">Tahun</label>
+                                        <select id="dashboard-year-filter" style="width: 100%;">
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024" selected>2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                            <option value="2028">2028</option>
+                                            <option value="2029">2029</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="dashboard-month-filter">Bulan</label>
+                                        <select id="dashboard-month-filter" style="width: 100%;">
+                                            <option value="all">Semua Bulan</option>
+                                            <option value="1">Januari</option>
+                                            <option value="2">Februari</option>
+                                            <option value="3">Maret</option>
+                                            <option value="4">April</option>
+                                            <option value="5">Mei</option>
+                                            <option value="6">Juni</option>
+                                            <option value="7">Juli</option>
+                                            <option value="8">Agustus</option>
+                                            <option value="9">September</option>
+                                            <option value="10">Oktober</option>
+                                            <option value="11">November</option>
+                                            <option value="12">Desember</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Stats Cards -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">🏥</div>
+                                <div class="stat-title">TOTAL KLINIK</div>
+                                <div class="stat-value" id="total-clinics">10</div>
+                                <div class="stat-trend trend-up">
+                                    <span>↑ 2.5%</span> dari bulan lalu
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card honor">
+                                <div class="stat-icon">💰</div>
+                                <div class="stat-title">TOTAL PENDAPATAN</div>
+                                <div class="stat-value" id="total-income">Rp 1.500.000.000</div>
+                                <div class="stat-trend trend-up">
+                                    <span>↑ 5.2%</span> dari bulan lalu
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card operational">
+                                <div class="stat-icon">📊</div>
+                                <div class="stat-title">TOTAL REALISASI</div>
+                                <div class="stat-value" id="total-realization">Rp 1.200.000.000</div>
+                                <div class="stat-trend trend-up">
+                                    <span>↑ 3.8%</span> dari bulan lalu
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card modal">
+                                <div class="stat-icon">📈</div>
+                                <div class="stat-title">SISA ANGGARAN</div>
+                                <div class="stat-value" id="total-remaining">Rp 300.000.000</div>
+                                <div class="stat-trend trend-down">
+                                    <span>↓ 1.2%</span> dari bulan lalu
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Chart Container -->
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Rekapan Anggaran Per Bulan</h3>
+                                <div class="chart-controls">
+                                    <div class="period-selector">
+                                        <button class="period-btn active" data-period="1">1 Bulan</button>
+                                        <button class="period-btn" data-period="3">3 Bulan</button>
+                                        <button class="period-btn" data-period="6">6 Bulan</button>
+                                        <button class="period-btn" data-period="12">12 Bulan</button>
+                                        <button class="period-btn" data-period="all">Semua</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="budget-chart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Monthly Data Table -->
+                        <div class="table-container">
+                            <h3 style="margin-bottom: 20px; color: var(--primary); font-weight: 700;">Data Anggaran Per Bulan</h3>
+                            <table id="dashboard-budget-table">
+                                <thead>
+                                    <tr>
+                                        <th>Bulan</th>
+                                        <th>Total Anggaran</th>
+                                        <th>Total Realisasi</th>
+                                        <th>Sisa Anggaran</th>
+                                        <th>Persentase Realisasi</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboard-budget-table-body">
+                                    <!-- Data akan diisi oleh JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Clinics Content -->
+                    <div id="clinics-content" class="content" style="display: none;">
+                        <div class="content-header">
+                            <h3 class="content-title">Daftar Unit FKTP</h3>
+                            <p style="color: var(--gray-600);">Klik pada klinik untuk melihat detail, laporan, dan melakukan edit (jika memiliki akses).</p>
+                        </div>
+                        
+                        <div class="clinic-grid" id="clinics-container">
+                            <!-- Daftar klinik akan muncul di sini -->
+                        </div>
+                    </div>
+                    
+                    <!-- Clinic Detail Content -->
+                    <div id="clinic-detail-content" class="content" style="display: none;">
+                        <div class="content-header">
+                            <h3 id="clinic-detail-title" class="content-title">Detail Klinik</h3>
+                            <button id="back-to-clinics" class="btn-secondary">← Kembali ke Daftar Klinik</button>
+                        </div>
+                        
+                        <div class="monthly-tabs">
+                            <button class="monthly-tab active" data-tab="info">Informasi Klinik</button>
+                            <button class="monthly-tab" data-tab="income">Laporan Pendapatan</button>
+                            <button class="monthly-tab" data-tab="realization">Realisasi Pendapatan</button>
+                            <button class="monthly-tab" data-tab="budget">Sisa Anggaran</button>
+                            <button class="monthly-tab" data-tab="edit">Edit Klinik</button>
+                        </div>
+                        
+                        <!-- Clinic Info Section -->
+                        <div id="info-content" class="monthly-content active">
+                            <div class="clinic-header">
+                                <div class="clinic-icon" id="clinic-icon">K</div>
+                                <div>
+                                    <h4 id="clinic-name" class="clinic-name">-</h4>
+                                    <p id="clinic-address" style="color: var(--gray-600); margin: 5px 0;">-</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+                                <div>
+                                    <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 15px;">Informasi Kontak</h5>
+                                    <div class="clinic-detail">
+                                        <strong>📞 Telepon:</strong> <span id="clinic-phone">-</span>
+                                    </div>
+                                    <div class="clinic-detail">
+                                        <strong>✉️ Email:</strong> <span id="clinic-email">-</span>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 15px;">Statistik Klinik</h5>
+                                    <div class="clinic-detail">
+                                        <strong>📊 Total Pendapatan:</strong> <span id="clinic-total-income">Rp 0</span>
+                                    </div>
+                                    <div class="clinic-detail">
+                                        <strong>📈 Realisasi:</strong> <span id="clinic-total-realization">Rp 0</span>
+                                    </div>
+                                    <div class="clinic-detail">
+                                        <strong>💰 Sisa Anggaran:</strong> <span id="clinic-remaining-budget">Rp 0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Income Report Section -->
+                        <div id="income-content" class="monthly-content">
+                            <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 25px;">Laporan Pendapatan Kapitasi BPJS</h4>
+                            
+                            <div class="filter-section">
+                                <div class="filter-grid">
+                                    <div>
+                                        <label for="income-year-filter">Tahun</label>
+                                        <select id="income-year-filter" style="width: 100%;">
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024" selected>2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                            <option value="2028">2028</option>
+                                            <option value="2029">2029</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="income-month-filter">Bulan</label>
+                                        <select id="income-month-filter" style="width: 100%;">
+                                            <option value="all">Semua Bulan</option>
+                                            <option value="1">Januari</option>
+                                            <option value="2">Februari</option>
+                                            <option value="3">Maret</option>
+                                            <option value="4">April</option>
+                                            <option value="5">Mei</option>
+                                            <option value="6">Juni</option>
+                                            <option value="7">Juli</option>
+                                            <option value="8">Agustus</option>
+                                            <option value="9">September</option>
+                                            <option value="10">Oktober</option>
+                                            <option value="11">November</option>
+                                            <option value="12">Desember</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button id="add-income-btn" class="btn-success" style="display: none; margin: 20px 0;">+ Tambah Data Pendapatan</button>
+                            
+                            <div id="income-form" style="display: none; margin: 30px 0; padding: 25px; background: var(--gray-100); border-radius: 16px;">
+                                <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 20px;">Form Input Pendapatan</h5>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                                    <div>
+                                        <label for="income-month">Bulan</label>
+                                        <select id="income-month" style="width: 100%;">
+                                            <option value="1">Januari</option>
+                                            <option value="2">Februari</option>
+                                            <option value="3">Maret</option>
+                                            <option value="4">April</option>
+                                            <option value="5">Mei</option>
+                                            <option value="6">Juni</option>
+                                            <option value="7">Juli</option>
+                                            <option value="8">Agustus</option>
+                                            <option value="9">September</option>
+                                            <option value="10">Oktober</option>
+                                            <option value="11">November</option>
+                                            <option value="12">Desember</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="income-year">Tahun</label>
+                                        <select id="income-year" style="width: 100%;">
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024" selected>2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                            <option value="2028">2028</option>
+                                            <option value="2029">2029</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="income-amount">Jumlah Pendapatan (Rp)</label>
+                                        <input type="number" id="income-amount" min="0" placeholder="Masukkan jumlah pendapatan" style="width: 100%;">
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                                    <button type="button" id="save-income-btn" class="btn-success">Simpan</button>
+                                    <button type="button" id="cancel-income-btn" class="btn-secondary">Batal</button>
+                                </div>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table id="income-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Bulan</th>
+                                            <th>Tahun</th>
+                                            <th>Jumlah Pendapatan (Rp)</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="income-table-body">
+                                        <!-- Data pendapatan akan muncul di sini -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Realization Report Section -->
+                        <div id="realization-content" class="monthly-content">
+                            <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 25px;">Realisasi Pendapatan</h4>
+                            
+                            <div class="filter-section">
+                                <div class="filter-grid">
+                                    <div>
+                                        <label for="realization-year-filter">Tahun</label>
+                                        <select id="realization-year-filter" style="width: 100%;">
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024" selected>2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                            <option value="2028">2028</option>
+                                            <option value="2029">2029</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="realization-month-filter">Bulan</label>
+                                        <select id="realization-month-filter" style="width: 100%;">
+                                            <option value="all">Semua Bulan</option>
+                                            <option value="1">Januari</option>
+                                            <option value="2">Februari</option>
+                                            <option value="3">Maret</option>
+                                            <option value="4">April</option>
+                                            <option value="5">Mei</option>
+                                            <option value="6">Juni</option>
+                                            <option value="7">Juli</option>
+                                            <option value="8">Agustus</option>
+                                            <option value="9">September</option>
+                                            <option value="10">Oktober</option>
+                                            <option value="11">November</option>
+                                            <option value="12">Desember</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <h5 class="chart-title">Distribusi Realisasi per Kategori</h5>
+                                    </div>
+                                    <div class="chart-wrapper">
+                                        <canvas id="realization-chart"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 20px;">Honor/Jasa (30%)</h5>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                                        <div>
+                                            <label for="honor-medis">Medis (Rp)</label>
+                                            <input type="number" id="honor-medis" min="0" value="30000000" style="width: 100%;">
+                                        </div>
+                                        <div>
+                                            <label for="honor-paramedis">Paramedis (Rp)</label>
+                                            <input type="number" id="honor-paramedis" min="0" value="15000000" style="width: 100%;">
+                                        </div>
+                                        <div>
+                                            <label for="honor-pengelola">Pengelola (Rp)</label>
+                                            <input type="number" id="honor-pengelola" min="0" value="10000000" style="width: 100%;">
+                                        </div>
+                                    </div>
+                                    <button id="save-honor-btn" class="btn-success" style="width: 100%;">Update Honor</button>
+                                    
+                                    <h5 style="color: var(--primary); font-weight: 600; margin: 30px 0 20px 0;">Operasional (50%)</h5>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                                        <div>
+                                            <label for="operational-atk">Belanja ATK (Rp)</label>
+                                            <input type="number" id="operational-atk" min="0" value="25000000" style="width: 100%;">
+                                        </div>
+                                        <div>
+                                            <label for="operational-obat">Belanja Obat (Rp)</label>
+                                            <input type="number" id="operational-obat" min="0" value="55000000" style="width: 100%;">
+                                        </div>
+                                    </div>
+                                    <button id="save-operational-btn" class="btn-success" style="width: 100%;">Update Operasional</button>
+                                </div>
+                            </div>
+                            
+                            <h5 style="color: var(--primary); font-weight: 600; margin: 40px 0 20px 0;">Belanja Modal (20%)</h5>
+                            <button id="add-modal-btn" class="btn-success" style="margin-bottom: 20px;">+ Tambah Item Belanja Modal</button>
+                            
+                            <div id="modal-form" style="display: none; margin: 30px 0; padding: 25px; background: var(--gray-100); border-radius: 16px;">
+                                <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 20px;">Form Input Item Belanja Modal</h5>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                                    <div>
+                                        <label for="modal-name">Nama Barang</label>
+                                        <input type="text" id="modal-name" placeholder="Masukkan nama barang" style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        <label for="modal-unit">Satuan</label>
+                                        <input type="text" id="modal-unit" placeholder="Masukkan satuan" style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        <label for="modal-price">Harga (Rp)</label>
+                                        <input type="number" id="modal-price" min="0" placeholder="Masukkan harga" style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        <label for="modal-quantity">Jumlah</label>
+                                        <input type="number" id="modal-quantity" min="1" placeholder="Masukkan jumlah" style="width: 100%;">
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                                    <button type="button" id="save-modal-btn" class="btn-success">Simpan Item</button>
+                                    <button type="button" id="cancel-modal-btn" class="btn-secondary">Batal</button>
+                                </div>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table id="modal-table">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Barang</th>
+                                            <th>Satuan</th>
+                                            <th>Harga</th>
+                                            <th>Jumlah</th>
+                                            <th>Total</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="modal-table-body">
+                                        <!-- Data belanja modal akan muncul di sini -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Budget Remaining Section -->
+                        <div id="budget-content" class="monthly-content">
+                            <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 25px;">Sisa Anggaran</h4>
+                            
+                            <div class="filter-section">
+                                <div class="filter-grid">
+                                    <div>
+                                        <label for="budget-year-filter">Tahun</label>
+                                        <select id="budget-year-filter" style="width: 100%;">
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024" selected>2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                            <option value="2028">2028</option>
+                                            <option value="2029">2029</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="budget-month-filter">Bulan</label>
+                                        <select id="budget-month-filter" style="width: 100%;">
+                                            <option value="all">Semua Bulan</option>
+                                            <option value="1">Januari</option>
+                                            <option value="2">Februari</option>
+                                            <option value="3">Maret</option>
+                                            <option value="4">April</option>
+                                            <option value="5">Mei</option>
+                                            <option value="6">Juni</option>
+                                            <option value="7">Juli</option>
+                                            <option value="8">Agustus</option>
+                                            <option value="9">September</option>
+                                            <option value="10">Oktober</option>
+                                            <option value="11">November</option>
+                                            <option value="12">Desember</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stats-grid" style="margin-bottom: 40px;">
+                                <div class="stat-card">
+                                    <div class="stat-icon">💼</div>
+                                    <div class="stat-title">TOTAL ANGGARAN</div>
+                                    <div class="stat-value" id="total-budget">Rp 165.000.000</div>
+                                    <div class="stat-trend trend-up">
+                                        <span>↑ 2.1%</span> dari bulan lalu
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card honor">
+                                    <div class="stat-icon">💸</div>
+                                    <div class="stat-title">TELAH DIGUNAKAN</div>
+                                    <div class="stat-value" id="total-spent">Rp 120.000.000</div>
+                                    <div class="stat-trend trend-up">
+                                        <span>↑ 3.5%</span> dari bulan lalu
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card operational">
+                                    <div class="stat-icon">💰</div>
+                                    <div class="stat-title">SISA ANGGARAN</div>
+                                    <div class="stat-value" id="remaining-budget">Rp 45.000.000</div>
+                                    <div class="stat-trend trend-down">
+                                        <span>↓ 4.2%</span> dari bulan lalu
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-container" style="margin-bottom: 40px;">
+                                <div class="chart-header">
+                                    <h5 class="chart-title">Penggunaan Anggaran per Kategori</h5>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="budget-category-chart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <button id="add-budget-btn" class="btn-success" style="display: none; margin: 20px 0;">+ Tambah Data Anggaran Bulanan</button>
+                            
+                            <div id="budget-form" style="display: none; margin: 30px 0; padding: 25px; background: var(--gray-100); border-radius: 16px;">
+                                <h5 style="color: var(--primary); font-weight: 600; margin-bottom: 20px;">Form Input Anggaran Bulanan</h5>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                                    <div>
+                                        <label for="budget-month">Bulan</label>
+                                        <select id="budget-month" style="width: 100%;">
+                                            <option value="1">Januari</option>
+                                            <option value="2">Februari</option>
+                                            <option value="3">Maret</option>
+                                            <option value="4">April</option>
+                                            <option value="5">Mei</option>
+                                            <option value="6">Juni</option>
+                                            <option value="7">Juli</option>
+                                            <option value="8">Agustus</option>
+                                            <option value="9">September</option>
+                                            <option value="10">Oktober</option>
+                                            <option value="11">November</option>
+                                            <option value="12">Desember</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="budget-year">Tahun</label>
+                                        <select id="budget-year" style="width: 100%;">
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024" selected>2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                            <option value="2028">2028</option>
+                                            <option value="2029">2029</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="budget-amount">Total Anggaran (Rp)</label>
+                                        <input type="number" id="budget-amount" min="0" placeholder="Masukkan total anggaran" style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        <label for="budget-spent">Telah Digunakan (Rp)</label>
+                                        <input type="number" id="budget-spent" min="0" placeholder="Masukkan yang telah digunakan" style="width: 100%;">
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                                    <button type="button" id="save-budget-btn" class="btn-success">Simpan</button>
+                                    <button type="button" id="cancel-budget-btn" class="btn-secondary">Batal</button>
+                                </div>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table id="budget-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Bulan</th>
+                                            <th>Tahun</th>
+                                            <th>Total Anggaran</th>
+                                            <th>Telah Digunakan</th>
+                                            <th>Sisa Anggaran</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="budget-table-body">
+                                        <!-- Data sisa anggaran bulanan akan muncul di sini -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Edit Clinic Form -->
+                        <div id="edit-content" class="monthly-content">
+                            <h4 style="color: var(--primary); font-weight: 600; margin-bottom: 25px;">Edit Informasi Klinik</h4>
+                            
+                            <form id="edit-clinic-form">
+                                <input type="hidden" id="edit-clinic-id">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                                    <div>
+                                        <label for="edit-clinic-name">Nama Klinik</label>
+                                        <input type="text" id="edit-clinic-name" required style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        <label for="edit-clinic-address">Alamat</label>
+                                        <input type="text" id="edit-clinic-address" required style="width: 100%;">
+                                    </div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                                    <div>
+                                        <label for="edit-clinic-phone">Telepon</label>
+                                        <input type="text" id="edit-clinic-phone" required style="width: 100%;">
+                                    </div>
+                                    <div>
+                                        <label for="edit-clinic-email">Email</label>
+                                        <input type="email" id="edit-clinic-email" required style="width: 100%;">
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 30px;">
+                                    <label for="edit-clinic-image">Upload Gambar Klinik</label>
+                                    <div class="image-upload" id="image-upload-area" style="border: 2px dashed var(--gray-300); padding: 30px; text-align: center; border-radius: 12px; margin: 15px 0; cursor: pointer; transition: all 0.3s;">
+                                        <p style="margin: 0; font-size: 16px; color: var(--gray-600);">Klik atau drag file gambar ke sini</p>
+                                        <p style="margin: 10px 0 0 0; font-size: 14px; color: var(--gray-500);">Format yang didukung: JPG, PNG, GIF</p>
+                                    </div>
+                                    <input type="file" id="edit-clinic-image" accept="image/*" style="display: none;">
+                                    <img id="edit-clinic-image-preview" class="image-preview" src="" alt="Preview Gambar" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px; margin: 20px 0; border: 1px solid var(--gray-200);">
+                                </div>
+                                <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                                    <button type="submit" class="btn-success">Simpan Perubahan</button>
+                                    <button type="button" id="cancel-edit-btn" class="btn-secondary">Batal</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Total Recap Content -->
+                    <div id="recap-content" class="content" style="display: none;">
+                        <div class="content-header">
+                            <h3 class="content-title">Rekap Total Semua Unit FKTP</h3>
+                            <div style="display: flex; gap: 15px;">
+                                <button id="download-excel" class="btn-info">Download Excel</button>
+                                <button id="download-powerpoint" class="btn-info">Download PowerPoint</button>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <div class="filter-grid">
+                                <div>
+                                    <label for="recap-year-filter">Tahun</label>
+                                    <select id="recap-year-filter" style="width: 100%;">
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2024" selected>2024</option>
+                                        <option value="2025">2025</option>
+                                        <option value="2026">2026</option>
+                                        <option value="2027">2027</option>
+                                        <option value="2028">2028</option>
+                                        <option value="2029">2029</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="recap-month-filter">Bulan</label>
+                                    <select id="recap-month-filter" style="width: 100%;">
+                                        <option value="all">Semua Bulan</option>
+                                        <option value="1">Januari</option>
+                                        <option value="2">Februari</option>
+                                        <option value="3">Maret</option>
+                                        <option value="4">April</option>
+                                        <option value="5">Mei</option>
+                                        <option value="6">Juni</option>
+                                        <option value="7">Juli</option>
+                                        <option value="8">Agustus</option>
+                                        <option value="9">September</option>
+                                        <option value="10">Oktober</option>
+                                        <option value="11">November</option>
+                                        <option value="12">Desember</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container" style="margin-bottom: 40px;">
+                            <div class="chart-header">
+                                <h5 class="chart-title">Distribusi Anggaran per Klinik</h5>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="recap-chart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table id="recap-table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Unit</th>
+                                        <th>Total Pendapatan</th>
+                                        <th>Total Realisasi</th>
+                                        <th>Sisa</th>
+                                        <th>Persentase Realisasi</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recap-table-body">
+                                    <!-- Data rekap akan muncul di sini -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                // Update user avatar
+                const userAvatar = document.getElementById('user-avatar');
+                if (userAvatar) {
+                    userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                }
+                
+                // Update user display
+                document.getElementById('user-display').textContent = `Halo, ${currentUser.username}`;
+                document.getElementById('user-type-display').textContent = currentUser.type === 'minkes' ? 'Admin' : 'Klinik';
+                
                 // Setup logout button
                 const logoutBtn = document.getElementById('logout-btn');
                 if (logoutBtn) {
@@ -1723,117 +1890,6 @@
                 
                 // Setup chart period selectors
                 setupChartPeriodSelectors();
-                
-                // Cek apakah user sudah login sebelumnya
-                checkSavedLogin();
-                
-                // Initialize charts
-                initializeCharts();
-            });
-            
-            // Fungsi login
-            function handleLogin() {
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                
-                // Validasi login
-                if ((username === 'minkes' && password === 'minkes123') || 
-                    (username === 'klinik' && password === 'klinik123') || 
-                    (username === 'user' && password === 'user123')) {
-                    
-                    // Simpan user ke localStorage
-                    try {
-                        localStorage.setItem('fktpUser', JSON.stringify({
-                            username: username,
-                            type: username === 'minkes' ? 'minkes' : 'klinik',
-                            isLoggedIn: true
-                        }));
-                    } catch (e) {
-                        console.log('Gagal menyimpan ke localStorage:', e);
-                    }
-                    
-                    // Set current user
-                    currentUser = {
-                        username: username,
-                        type: username === 'minkes' ? 'minkes' : 'klinik'
-                    };
-                    
-                    // Update user avatar
-                    const userAvatar = document.getElementById('user-avatar');
-                    if (userAvatar) {
-                        userAvatar.textContent = username.charAt(0).toUpperCase();
-                    }
-                    
-                    // Tampilkan dashboard
-                    document.getElementById('login-section').style.display = 'none';
-                    document.getElementById('dashboard-section').style.display = 'block';
-                    document.getElementById('user-display').textContent = `Halo, ${username}`;
-                    document.getElementById('user-type-display').textContent = username === 'minkes' ? 'Admin' : 'Klinik';
-                    
-                    // Load data klinik
-                    loadClinics();
-                    
-                    // Tampilkan dashboard content
-                    showDashboard();
-                    
-                    // Initialize charts
-                    updateDashboardCharts();
-                    loadDashboardBudgetTable();
-                } else {
-                    document.getElementById('error-message').style.display = 'block';
-                }
-            }
-            
-            // Fungsi logout
-            function handleLogout() {
-                try {
-                    localStorage.removeItem('fktpUser');
-                } catch (e) {
-                    console.log('Gagal menghapus dari localStorage:', e);
-                }
-                
-                currentUser = null;
-                currentClinic = null;
-                
-                document.getElementById('login-section').style.display = 'block';
-                document.getElementById('dashboard-section').style.display = 'none';
-                document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
-                document.getElementById('error-message').style.display = 'none';
-            }
-            
-            // Cek login yang tersimpan
-            function checkSavedLogin() {
-                try {
-                    const savedUser = localStorage.getItem('fktpUser');
-                    if (savedUser) {
-                        const userData = JSON.parse(savedUser);
-                        if (userData.isLoggedIn) {
-                            currentUser = {
-                                username: userData.username,
-                                type: userData.type
-                            };
-                            
-                            // Update user avatar
-                            const userAvatar = document.getElementById('user-avatar');
-                            if (userAvatar) {
-                                userAvatar.textContent = userData.username.charAt(0).toUpperCase();
-                            }
-                            
-                            document.getElementById('login-section').style.display = 'none';
-                            document.getElementById('dashboard-section').style.display = 'block';
-                            document.getElementById('user-display').textContent = `Halo, ${userData.username}`;
-                            document.getElementById('user-type-display').textContent = userData.type === 'minkes' ? 'Admin' : 'Klinik';
-                            
-                            loadClinics();
-                            showDashboard();
-                            updateDashboardCharts();
-                            loadDashboardBudgetTable();
-                        }
-                    }
-                } catch (e) {
-                    console.log('Error saat mengecek login yang tersimpan:', e);
-                }
             }
             
             // Setup navigation
@@ -2104,8 +2160,8 @@
                 // Budget form buttons
                 const addBudgetBtn = document.getElementById('add-budget-btn');
                 const saveBudgetBtn = document.getElementById('save-budget-btn');
-                const cancelBudgetBtn = document.getElementById('cancel-Budget-btn');
-
+                const cancelBudgetBtn = document.getElementById('cancel-budget-btn');
+                
                 if (addBudgetBtn) {
                     addBudgetBtn.addEventListener('click', function() {
                         document.getElementById('budget-form').style.display = 'block';
@@ -2227,8 +2283,812 @@
                                     borderColor: '#059669',
                                     borderWidth: 3,
                                     pointBackgroundColor: '#059669',
-                                    pointRadius
-                                                  // Add total row
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7,
+                                    fill: true,
+                                    tension: 0.3
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    labels: {
+                                        font: {
+                                            size: 14
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return context.dataset.label + ': Rp ' + context.raw.toLocaleString('id-ID');
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return 'Rp ' + value.toLocaleString('id-ID');
+                                        },
+                                        font: {
+                                            size: 12
+                                        }
+                                    },
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.1)'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        font: {
+                                            size: 12
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                // Initialize realization chart
+                const realizationChartCtx = document.getElementById('realization-chart');
+                if (realizationChartCtx) {
+                    realizationChart = new Chart(realizationChartCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Honor/Jasa', 'Operasional', 'Belanja Modal'],
+                            datasets: [{
+                                data: [0, 0, 0],
+                                backgroundColor: [
+                                    '#1e3a8a',
+                                    '#059669',
+                                    '#d97706'
+                                ],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                    labels: {
+                                        font: {
+                                            size: 14
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const label = context.label || '';
+                                            const value = context.raw || 0;
+                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                            const percentage = Math.round((value / total) * 100);
+                                            return `${label}: Rp ${value.toLocaleString('id-ID')} (${percentage}%)`;
+                                        }
+                                    }
+                                }
+                            },
+                            cutout: '60%'
+                        }
+                    });
+                }
+                
+                // Initialize recap chart
+                const recapChartCtx = document.getElementById('recap-chart');
+                if (recapChartCtx) {
+                    recapChart = new Chart(recapChartCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: [],
+                            datasets: [{
+                                label: 'Total Realisasi',
+                                data: [],
+                                backgroundColor: '#1e3a8a',
+                                borderColor: '#1e40af',
+                                borderWidth: 1,
+                                borderRadius: 8,
+                                borderSkipped: false
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    labels: {
+                                        font: {
+                                            size: 14
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return context.dataset.label + ': Rp ' + context.raw.toLocaleString('id-ID');
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return 'Rp ' + value.toLocaleString('id-ID');
+                                        },
+                                        font: {
+                                            size: 12
+                                        }
+                                    },
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.1)'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        font: {
+                                            size: 12
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                // Initialize budget category chart
+                const budgetCategoryChartCtx = document.getElementById('budget-category-chart');
+                if (budgetCategoryChartCtx) {
+                    budgetCategoryChart = new Chart(budgetCategoryChartCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Honor/Jasa', 'Operasional', 'Belanja Modal'],
+                            datasets: [{
+                                data: [0, 0, 0],
+                                backgroundColor: [
+                                    '#1e3a8a',
+                                    '#059669',
+                                    '#d97706'
+                                ],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                    labels: {
+                                        font: {
+                                            size: 14
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const label = context.label || '';
+                                            const value = context.raw || 0;
+                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                            const percentage = Math.round((value / total) * 100);
+                                            return `${label}: Rp ${value.toLocaleString('id-ID')} (${percentage}%)`;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // Update dashboard charts
+            function updateDashboardCharts() {
+                if (!budgetChart) return;
+                
+                const year = document.getElementById('dashboard-year-filter').value;
+                const monthFilter = document.getElementById('dashboard-month-filter').value;
+                const periodButtons = document.querySelectorAll('.period-btn');
+                let period = 12; // default 12 months
+                
+                // Get selected period
+                periodButtons.forEach(button => {
+                    if (button.classList.contains('active')) {
+                        period = button.getAttribute('data-period') === 'all' ? 'all' : parseInt(button.getAttribute('data-period'));
+                    }
+                });
+                
+                // Get current date
+                const currentDate = new Date();
+                const currentMonth = currentDate.getMonth() + 1;
+                const currentYear = currentDate.getFullYear();
+                
+                // Calculate start month and year based on period
+                let startMonth = currentMonth;
+                let startYear = currentYear;
+                
+                if (period !== 'all' && typeof period === 'number') {
+                    const monthsToSubtract = period;
+                    startMonth = currentMonth - monthsToSubtract + 1;
+                    startYear = currentYear;
+                    
+                    while (startMonth <= 0) {
+                        startMonth += 12;
+                        startYear -= 1;
+                    }
+                }
+                
+                // Calculate monthly data
+                const monthlyData = {
+                    budget: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    realization: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                };
+                
+                // Get month labels
+                const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+                let displayedLabels = [];
+                
+                // Aggregate data from all clinics
+                clinics.forEach(clinic => {
+                    clinic.budget.monthlyRemaining.forEach(item => {
+                        if (item.year.toString() === year) {
+                            const monthIndex = item.month - 1;
+                            
+                            // Check if month is within selected period
+                            if (period === 'all' || 
+                                (item.year > startYear) || 
+                                (item.year === startYear && item.month >= startMonth)) {
+                                
+                                if (monthFilter === 'all' || monthFilter == item.month) {
+                                    monthlyData.budget[monthIndex] += item.budget;
+                                    monthlyData.realization[monthIndex] += item.spent;
+                                }
+                            }
+                        }
+                    });
+                });
+                
+                // Update chart
+                budgetChart.data.datasets[0].data = monthlyData.budget;
+                budgetChart.data.datasets[1].data = monthlyData.realization;
+                budgetChart.update();
+                
+                // Update summary stats
+                const totalBudget = monthlyData.budget.reduce((sum, val) => sum + val, 0);
+                const totalRealization = monthlyData.realization.reduce((sum, val) => sum + val, 0);
+                const totalRemaining = totalBudget - totalRealization;
+                
+                document.getElementById('total-income').textContent = `Rp ${totalBudget.toLocaleString('id-ID')}`;
+                document.getElementById('total-realization').textContent = `Rp ${totalRealization.toLocaleString('id-ID')}`;
+                document.getElementById('total-remaining').textContent = `Rp ${totalRemaining.toLocaleString('id-ID')}`;
+                document.getElementById('total-clinics').textContent = clinics.length;
+            }
+            
+            // Load dashboard budget table
+            function loadDashboardBudgetTable() {
+                const tbody = document.getElementById('dashboard-budget-table-body');
+                if (!tbody) return;
+                
+                tbody.innerHTML = '';
+                
+                const year = document.getElementById('dashboard-year-filter').value;
+                const monthFilter = document.getElementById('dashboard-month-filter').value;
+                
+                // Calculate monthly data
+                const monthlyData = [];
+                
+                for (let month = 1; month <= 12; month++) {
+                    if (monthFilter === 'all' || monthFilter == month) {
+                        let totalBudget = 0;
+                        let totalRealization = 0;
+                        
+                        clinics.forEach(clinic => {
+                            const budgetData = clinic.budget.monthlyRemaining.find(item => 
+                                item.year.toString() === year && item.month === month
+                            );
+                            
+                            if (budgetData) {
+                                totalBudget += budgetData.budget;
+                                totalRealization += budgetData.spent;
+                            }
+                        });
+                        
+                        const remaining = totalBudget - totalRealization;
+                        const percentage = totalBudget > 0 ? Math.round((totalRealization / totalBudget) * 100) : 0;
+                        
+                        monthlyData.push({
+                            month: month,
+                            budget: totalBudget,
+                            realization: totalRealization,
+                            remaining: remaining,
+                            percentage: percentage
+                        });
+                    }
+                }
+                
+                // Sort by month
+                monthlyData.sort((a, b) => a.month - b.month);
+                
+                // Create table rows
+                monthlyData.forEach(item => {
+                    const status = item.percentage < 50 ? 'warning' : item.percentage < 80 ? 'info' : 'success';
+                    const statusText = item.percentage < 50 ? 'Rendah' : item.percentage < 80 ? 'Sedang' : 'Tinggi';
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${getMonthName(item.month)}</td>
+                        <td>Rp ${item.budget.toLocaleString('id-ID')}</td>
+                        <td>Rp ${item.realization.toLocaleString('id-ID')}</td>
+                        <td>Rp ${item.remaining.toLocaleString('id-ID')}</td>
+                        <td>${item.percentage}%</td>
+                        <td><span class="badge badge-${status}">${statusText}</span></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+            
+            // Update recap chart
+            function updateRecapChart() {
+                if (!recapChart) return;
+                
+                const year = document.getElementById('recap-year-filter').value;
+                const monthFilter = document.getElementById('recap-month-filter').value;
+                
+                // Calculate data for each clinic
+                const clinicNames = [];
+                const clinicTotals = [];
+                
+                clinics.forEach(clinic => {
+                    let totalRealization = 0;
+                    
+                    if (monthFilter === 'all') {
+                        // Sum all months for the year
+                        clinic.budget.monthlyRemaining.forEach(item => {
+                            if (item.year.toString() === year) {
+                                totalRealization += item.spent;
+                            }
+                        });
+                    } else {
+                        // Get specific month
+                        const budgetData = clinic.budget.monthlyRemaining.find(item => 
+                            item.year.toString() === year && item.month.toString() === monthFilter
+                        );
+                        
+                        if (budgetData) {
+                            totalRealization = budgetData.spent;
+                        }
+                    }
+                    
+                    clinicNames.push(clinic.name);
+                    clinicTotals.push(totalRealization);
+                });
+                
+                // Update chart
+                recapChart.data.labels = clinicNames;
+                recapChart.data.datasets[0].data = clinicTotals;
+                recapChart.update();
+            }
+            
+            // Update realization chart
+            function updateRealizationChart() {
+                if (!realizationChart || !currentClinic) return;
+                
+                const year = document.getElementById('realization-year-filter').value;
+                const monthFilter = document.getElementById('realization-month-filter').value;
+                
+                // Calculate totals for the selected period
+                let honorTotal = 0;
+                let operationalTotal = 0;
+                let modalTotal = 0;
+                
+                if (monthFilter === 'all') {
+                    // Sum all months for the year
+                    currentClinic.budget.monthlyRemaining.forEach(item => {
+                        if (item.year.toString() === year) {
+                            honorTotal += currentClinic.realization.honor.medis + currentClinic.realization.honor.paramedis + currentClinic.realization.honor.pengelola;
+                            operationalTotal += currentClinic.realization.operational.atk + currentClinic.realization.operational.obat;
+                            modalTotal += currentClinic.realization.modal.reduce((sum, item) => sum + item.total, 0);
+                        }
+                    });
+                } else {
+                    // Get specific month
+                    const budgetData = currentClinic.budget.monthlyRemaining.find(item => 
+                        item.year.toString() === year && item.month.toString() === monthFilter
+                    );
+                    
+                    if (budgetData) {
+                        honorTotal = currentClinic.realization.honor.medis + currentClinic.realization.honor.paramedis + currentClinic.realization.honor.pengelola;
+                        operationalTotal = currentClinic.realization.operational.atk + currentClinic.realization.operational.obat;
+                        modalTotal = currentClinic.realization.modal.reduce((sum, item) => sum + item.total, 0);
+                    }
+                }
+                
+                // Update chart
+                realizationChart.data.datasets[0].data = [honorTotal, operationalTotal, modalTotal];
+                realizationChart.update();
+            }
+            
+            // Update budget category chart
+            function updateBudgetCategoryChart() {
+                if (!budgetCategoryChart || !currentClinic) return;
+                
+                const year = document.getElementById('budget-year-filter').value;
+                const monthFilter = document.getElementById('budget-month-filter').value;
+                
+                // Calculate totals for the selected period
+                let honorTotal = 0;
+                let operationalTotal = 0;
+                let modalTotal = 0;
+                
+                if (monthFilter === 'all') {
+                    // Sum all months for the year
+                    currentClinic.budget.monthlyRemaining.forEach(item => {
+                        if (item.year.toString() === year) {
+                            honorTotal += currentClinic.realization.honor.medis + currentClinic.realization.honor.paramedis + currentClinic.realization.honor.pengelola;
+                            operationalTotal += currentClinic.realization.operational.atk + currentClinic.realization.operational.obat;
+                            modalTotal += currentClinic.realization.modal.reduce((sum, item) => sum + item.total, 0);
+                        }
+                    });
+                } else {
+                    // Get specific month
+                    const budgetData = currentClinic.budget.monthlyRemaining.find(item => 
+                        item.year.toString() === year && item.month.toString() === monthFilter
+                    );
+                    
+                    if (budgetData) {
+                        honorTotal = currentClinic.realization.honor.medis + currentClinic.realization.honor.paramedis + currentClinic.realization.honor.pengelola;
+                        operationalTotal = currentClinic.realization.operational.atk + currentClinic.realization.operational.obat;
+                        modalTotal = currentClinic.realization.modal.reduce((sum, item) => sum + item.total, 0);
+                    }
+                }
+                
+                // Update chart
+                budgetCategoryChart.data.datasets[0].data = [honorTotal, operationalTotal, modalTotal];
+                budgetCategoryChart.update();
+            }
+            
+            // Download Excel report
+            function downloadExcelReport() {
+                const year = document.getElementById('recap-year-filter').value;
+                const monthFilter = document.getElementById('recap-month-filter').value;
+                
+                let csvContent = "text/csv;charset=utf-8,";
+                csvContent += "LAPORAN REKAPITULASI ANGGARAN FKTP DENKESYAH 02.04.03\n\n";
+                csvContent += `Tahun: ${year}\n`;
+                csvContent += `Bulan: ${monthFilter === 'all' ? 'Semua Bulan' : getMonthName(parseInt(monthFilter))}\n\n`;
+                
+                // Headers
+                csvContent += "No,Nama Klinik,Total Anggaran,Total Realisasi,Sisa Anggaran,Persentase Realisasi\n";
+                
+                // Data
+                clinics.forEach((clinic, index) => {
+                    let totalBudget = 0;
+                    let totalRealization = 0;
+                    
+                    if (monthFilter === 'all') {
+                        clinic.budget.monthlyRemaining.forEach(item => {
+                            if (item.year.toString() === year) {
+                                totalBudget += item.budget;
+                                totalRealization += item.spent;
+                            }
+                        });
+                    } else {
+                        const budgetData = clinic.budget.monthlyRemaining.find(item => 
+                            item.year.toString() === year && item.month.toString() === monthFilter
+                        );
+                        
+                        if (budgetData) {
+                            totalBudget = budgetData.budget;
+                            totalRealization = budgetData.spent;
+                        }
+                    }
+                    
+                    const remaining = totalBudget - totalRealization;
+                    const percentage = totalBudget > 0 ? Math.round((totalRealization / totalBudget) * 100) : 0;
+                    
+                    csvContent += `${index + 1},${clinic.name},${totalBudget},${totalRealization},${remaining},${percentage}%\n`;
+                });
+                
+                // Create download link
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", `Rekap_Anggaran_FKTP_${year}_${monthFilter === 'all' ? 'SemuaBulan' : getMonthName(parseInt(monthFilter))}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                alert('Laporan Excel berhasil diunduh!');
+            }
+            
+            // Download PowerPoint report (simulated)
+            function downloadPowerPointReport() {
+                alert('Fitur export ke PowerPoint akan tersedia di versi berikutnya.\n\nUntuk saat ini, Anda dapat menggunakan laporan Excel yang telah diunduh.');
+            }
+            
+            // Get month name from month number
+            function getMonthName(monthNumber) {
+                const months = [
+                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                ];
+                return months[monthNumber - 1];
+            }
+            
+            // Tampilkan dashboard
+            function showDashboard() {
+                hideAllContent();
+                document.getElementById('dashboard-content').style.display = 'block';
+                
+                // Update active button
+                setActiveButton('btn-dashboard');
+                
+                // Update charts and tables
+                updateDashboardCharts();
+                loadDashboardBudgetTable();
+            }
+            
+            // Tampilkan daftar klinik
+            function showClinics() {
+                hideAllContent();
+                document.getElementById('clinics-content').style.display = 'block';
+                
+                // Update active button
+                setActiveButton('btn-clinics');
+                
+                // Load data klinik
+                loadClinics();
+            }
+            
+            // Tampilkan rekap total
+            function showRecap() {
+                hideAllContent();
+                document.getElementById('recap-content').style.display = 'block';
+                
+                // Update active button
+                setActiveButton('btn-recap');
+                
+                // Update charts
+                updateRecapChart();
+                
+                // Load data rekap
+                loadRecapData();
+            }
+            
+            // Sembunyikan semua konten
+            function hideAllContent() {
+                document.getElementById('dashboard-content').style.display = 'none';
+                document.getElementById('clinics-content').style.display = 'none';
+                document.getElementById('clinic-detail-content').style.display = 'none';
+                document.getElementById('recap-content').style.display = 'none';
+            }
+            
+            // Set active button
+            function setActiveButton(buttonId) {
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                const activeBtn = document.getElementById(buttonId);
+                if (activeBtn) {
+                    activeBtn.classList.add('active');
+                }
+            }
+            
+            // Tampilkan info klinik
+            function showClinicInfo() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.monthly-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                // Add active class to info tab
+                document.querySelector('[data-tab="info"]').classList.add('active');
+                
+                // Hide all content
+                document.querySelectorAll('.monthly-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show info content
+                document.getElementById('info-content').classList.add('active');
+            }
+            
+            // Load daftar klinik
+            function loadClinics() {
+                const container = document.getElementById('clinics-container');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                clinics.forEach(clinic => {
+                    // Get first letter of clinic name for icon
+                    const firstLetter = clinic.name.charAt(0);
+                    
+                    const clinicCard = document.createElement('div');
+                    clinicCard.className = 'clinic-card';
+                    clinicCard.innerHTML = `
+                        <div class="clinic-header">
+                            <div class="clinic-icon">${firstLetter}</div>
+                            <div>
+                                <h4 class="clinic-name">${clinic.name}</h4>
+                                <p style="color: var(--gray-600); margin: 5px 0;">${clinic.address}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="clinic-detail">
+                            <strong>📞</strong> ${clinic.phone}
+                        </div>
+                        <div class="clinic-detail">
+                            <strong>✉️</strong> ${clinic.email}
+                        </div>
+                        
+                        <div class="clinic-actions">
+                            <button class="btn-success view-clinic-btn" data-id="${clinic.id}">Lihat Detail</button>
+                            ${currentUser && currentUser.type === 'minkes' ? `<button class="btn-warning edit-clinic-btn" data-id="${clinic.id}">Edit</button>` : ''}
+                        </div>
+                    `;
+                    container.appendChild(clinicCard);
+                });
+                
+                // Setup event listeners untuk tombol view
+                document.querySelectorAll('.view-clinic-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const clinicId = parseInt(this.getAttribute('data-id'));
+                        viewClinic(clinicId);
+                    });
+                });
+                
+                // Update total clinics display
+                document.getElementById('total-clinics').textContent = clinics.length;
+            }
+            
+            // Lihat detail klinik
+            function viewClinic(clinicId) {
+                const clinic = clinics.find(c => c.id === clinicId);
+                if (!clinic) return;
+                
+                currentClinic = clinic;
+                
+                // Update title
+                document.getElementById('clinic-detail-title').textContent = `Detail Klinik: ${clinic.name}`;
+                
+                // Update info klinik
+                document.getElementById('clinic-name').textContent = clinic.name;
+                document.getElementById('clinic-address').textContent = clinic.address;
+                document.getElementById('clinic-phone').textContent = clinic.phone;
+                document.getElementById('clinic-email').textContent = clinic.email;
+                
+                // Update icon
+                const clinicIcon = document.getElementById('clinic-icon');
+                if (clinicIcon) {
+                    clinicIcon.textContent = clinic.name.charAt(0);
+                }
+                
+                // Update stats
+                const totalIncome = clinic.income.reduce((sum, item) => sum + item.amount, 0);
+                const totalRealization = clinic.budget.monthlyRemaining.reduce((sum, item) => sum + item.spent, 0);
+                const remainingBudget = clinic.budget.remaining;
+                
+                document.getElementById('clinic-total-income').textContent = `Rp ${totalIncome.toLocaleString('id-ID')}`;
+                document.getElementById('clinic-total-realization').textContent = `Rp ${totalRealization.toLocaleString('id-ID')}`;
+                document.getElementById('clinic-remaining-budget').textContent = `Rp ${remainingBudget.toLocaleString('id-ID')}`;
+                
+                // Update gambar klinik
+                const clinicImage = document.getElementById('clinic-image');
+                if (clinicImage) {
+                    clinicImage.src = clinic.image;
+                }
+                
+                // Tampilkan tombol edit hanya untuk minkes
+                const addIncomeBtn = document.getElementById('add-income-btn');
+                const addBudgetBtn = document.getElementById('add-budget-btn');
+                
+                if (addIncomeBtn && addBudgetBtn) {
+                    if (currentUser && currentUser.type === 'minkes') {
+                        addIncomeBtn.style.display = 'inline-block';
+                        addBudgetBtn.style.display = 'inline-block';
+                    } else {
+                        addIncomeBtn.style.display = 'none';
+                        addBudgetBtn.style.display = 'none';
+                    }
+                }
+                
+                // Load data laporan
+                loadClinicIncome(clinic);
+                loadClinicRealization(clinic);
+                loadClinicBudget(clinic);
+                loadClinicEditForm(clinic);
+                
+                // Update charts
+                updateRealizationChart();
+                updateBudgetCategoryChart();
+                
+                // Tampilkan clinic detail content
+                hideAllContent();
+                document.getElementById('clinic-detail-content').style.display = 'block';
+                
+                // Tampilkan info section by default
+                showClinicInfo();
+            }
+            
+            // Load data pendapatan klinik dengan filter
+            function loadClinicIncome(clinic) {
+                const tbody = document.getElementById('income-table-body');
+                if (!tbody) return;
+                
+                tbody.innerHTML = '';
+                
+                const yearFilter = document.getElementById('income-year-filter').value;
+                const monthFilter = document.getElementById('income-month-filter').value;
+                
+                // Filter data berdasarkan tahun dan bulan
+                let filteredIncome = clinic.income.filter(item => 
+                    item.year.toString() === yearFilter
+                );
+                
+                if (monthFilter !== 'all') {
+                    filteredIncome = filteredIncome.filter(item => 
+                        item.month.toString() === monthFilter
+                    );
+                }
+                
+                // Sort by month
+                filteredIncome.sort((a, b) => a.month - b.month);
+                
+                let total = 0;
+                filteredIncome.forEach((report, index) => {
+                    total += report.amount;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${getMonthName(report.month)}</td>
+                        <td>${report.year}</td>
+                        <td>Rp ${report.amount.toLocaleString('id-ID')}</td>
+                        <td>
+                            ${currentUser && currentUser.type === 'minkes' ? `
+                            <button class="btn-warning edit-income-btn" data-index="${index}">Edit</button>
+                            <button class="btn-danger delete-income-btn" data-index="${index}">Hapus</button>
+                            ` : ''}
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+                
+                // Setup event listeners untuk tombol edit dan delete
+                if (currentUser && currentUser.type === 'minkes') {
+                    document.querySelectorAll('.edit-income-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const index = parseInt(this.getAttribute('data-index'));
+                            editIncomeData(index);
+                        });
+                    });
+                    
+                    document.querySelectorAll('.delete-income-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const index = parseInt(this.getAttribute('data-index'));
+                            deleteIncomeData(index);
+                        });
+                    });
+                }
+                
+                // Add total row
                 const totalRow = document.createElement('tr');
                 totalRow.style.fontWeight = 'bold';
                 totalRow.style.backgroundColor = '#f8fafc';
@@ -2862,32 +3722,5 @@
                 });
             }
         </script>
-        
-        <style>
-            .badge {
-                display: inline-block;
-                padding: 5px 10px;
-                border-radius: 20px;
-                font-size: 12px;
-                font-weight: 500;
-                color: white;
-            }
-            
-            .badge-success {
-                background-color: #10b981;
-            }
-            
-            .badge-info {
-                background-color: #0891b2;
-            }
-            
-            .badge-warning {
-                background-color: #f59e0b;
-            }
-            
-            .badge-danger {
-                background-color: #dc2626;
-            }
-        </style>
     </body>
 </html>
