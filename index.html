@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FKTP DENKESYAH 02.04.03 - Dashboard</title>
+    <title>FKTP DENKESYAH 02.04.03 - Sistem Manajemen Klinik</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -689,6 +689,18 @@
             background-color: white;
             border: 1px solid var(--primary);
         }
+        
+        /* Success Message */
+        .success-message {
+            background-color: #dcfce7;
+            color: #16a34a;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid #bbf7d0;
+            display: none;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -709,6 +721,10 @@
             
             <div id="error-message" class="error">
                 Username atau password salah
+            </div>
+            
+            <div id="success-message" class="success-message">
+                Login berhasil! Selamat datang.
             </div>
             
             <form id="login-form">
@@ -1098,6 +1114,15 @@
                             type: username === 'minkes' ? 'minkes' : username === 'klinik' ? 'klinik' : 'user'
                         };
                         
+                        // Tampilkan pesan sukses
+                        const successMessage = document.getElementById('success-message');
+                        if (successMessage) {
+                            successMessage.style.display = 'block';
+                            setTimeout(() => {
+                                successMessage.style.display = 'none';
+                            }, 3000);
+                        }
+                        
                         // Sembunyikan login section dan tampilkan dashboard
                         const loginSection = document.getElementById('login-section');
                         const dashboardSection = document.getElementById('dashboard-section');
@@ -1139,9 +1164,6 @@
                         if (errorMessage) {
                             errorMessage.style.display = 'block';
                         }
-                        
-                        // Tampilkan alert
-                        alert('Username atau password salah. Silakan coba lagi.');
                     }
                 } catch (error) {
                     console.error('Error during login:', error);
@@ -1179,14 +1201,15 @@
                 if (usernameInput) usernameInput.value = '';
                 if (passwordInput) passwordInput.value = '';
                 
-                // Sembunyikan pesan error
+                // Sembunyikan pesan error dan sukses
                 const errorMessage = document.getElementById('error-message');
+                const successMessage = document.getElementById('success-message');
                 if (errorMessage) {
                     errorMessage.style.display = 'none';
                 }
-                
-                // Tampilkan pesan
-                alert('Anda telah logout.');
+                if (successMessage) {
+                    successMessage.style.display = 'none';
+                }
             }
             
             // Cek login yang tersimpan
@@ -2540,7 +2563,7 @@
                 if (budgetChartCtx) {
                     budgetChart = new Chart(budgetChartCtx, {
                         type: 'line',
-                         {
+                        data: {
                             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
                             datasets: [
                                 {
@@ -2557,7 +2580,7 @@
                                 },
                                 {
                                     label: 'Total Realisasi',
-                                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                     backgroundColor: 'rgba(5, 150, 105, 0.2)',
                                     borderColor: '#059669',
                                     borderWidth: 3,
@@ -2624,10 +2647,10 @@
                 if (realizationChartCtx) {
                     realizationChart = new Chart(realizationChartCtx, {
                         type: 'doughnut',
-                         {
+                        data: {
                             labels: ['Honor/Jasa', 'Operasional', 'Belanja Modal'],
                             datasets: [{
-                                 [0, 0, 0],
+                                data: [0, 0, 0],
                                 backgroundColor: [
                                     '#1e3a8a',
                                     '#059669',
@@ -2670,11 +2693,11 @@
                 if (recapChartCtx) {
                     recapChart = new Chart(recapChartCtx, {
                         type: 'bar',
-                         {
+                        data: {
                             labels: [],
                             datasets: [{
                                 label: 'Total Realisasi',
-                                 [],
+                                data: [],
                                 backgroundColor: '#1e3a8a',
                                 borderColor: '#1e40af',
                                 borderWidth: 1,
@@ -2737,10 +2760,10 @@
                 if (budgetCategoryChartCtx) {
                     budgetCategoryChart = new Chart(budgetCategoryChartCtx, {
                         type: 'pie',
-                         {
+                        data: {
                             labels: ['Honor/Jasa', 'Operasional', 'Belanja Modal'],
                             datasets: [{
-                                 [0, 0, 0],
+                                data: [0, 0, 0],
                                 backgroundColor: [
                                     '#1e3a8a',
                                     '#059669',
@@ -3349,7 +3372,7 @@
                 currentEditIndex = actualIndex;
             }
             
-            // Simpan data pendapatan
+                        // Simpan data pendapatan
             function saveIncomeData() {
                 if (!currentClinic) return;
                 
@@ -3494,6 +3517,9 @@
                 currentClinic.realization.honor.pengelola = pengelola;
                 
                 alert('Data honor berhasil diperbarui!');
+                
+                // Update chart
+                updateRealizationChart();
             }
             
             // Simpan data operasional
@@ -3508,6 +3534,9 @@
                 currentClinic.realization.operational.obat = obat;
                 
                 alert('Data operasional berhasil diperbarui!');
+                
+                // Update chart
+                updateRealizationChart();
             }
             
             // Edit data modal
@@ -3750,6 +3779,9 @@
                 loadClinicBudget(currentClinic);
                 
                 alert('Data anggaran bulanan berhasil disimpan!');
+                
+                // Update chart
+                updateBudgetCategoryChart();
             }
             
             // Hapus data anggaran bulanan
